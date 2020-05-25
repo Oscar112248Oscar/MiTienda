@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/mitienda"
+            android:icon="@drawable/ic_mitienda"
+            android:title="Orden" />
+        <item
+            android:id="@+id/orden"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="Orden" />
+        <item
+            android:id="@+id/recompensa"
+            android:icon="@drawable/ic_card_giftcard_black_24dp"
+            android:title="Recompensa" />
+        <item
+            android:id="@+id/carro"
+            android:icon="@drawable/ic_shopping_cart_black1_24dp"
+            android:title="Carrito" />
+        <item
+            android:id="@+id/deseos"
+            android:icon="@drawable/ic_favorite_black_24dp"
+            android:title="Lista de Deseos" />
+        <item
+            android:id="@+id/cuentaUsuario"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="Usuario" />
+    </group>
+    <item
+        android:id="@+id/cerarsesion"
+        android:icon="@drawable/ic_cerrarsesion"
+        android:title="Cerrar Sesión" />
+</menu>

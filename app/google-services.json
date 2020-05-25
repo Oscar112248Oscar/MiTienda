@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "574383116093",
+    "firebase_url": "https://tienda-75707.firebaseio.com",
+    "project_id": "tienda-75707",
+    "storage_bucket": "tienda-75707.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574383116093:android:36f5d9bacf18cd8697ff54",
+        "android_client_info": {
+          "package_name": "milenium.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574383116093-6ul5b57ctqcg4m7nunk95uif6vrlrlup.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxDc6HeOK23iZZ28jDbQfwQP444Y8bgig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574383116093-6ul5b57ctqcg4m7nunk95uif6vrlrlup.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

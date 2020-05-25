@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".OlvidoContrasenaFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imgOlvidoContrasena"
+            android:layout_width="220dp"
+            android:layout_height="157dp"
+            android:layout_marginTop="16dp"
+
+            android:src="@drawable/images"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/emailUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="¿Olvidó su Contraseña?"
+            android:textColor="#CAC31A38"
+            android:textSize="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgOlvidoContrasena" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="No se preocupe, solo necesitamos su email y ya está!"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailUsuario" />
+
+        <EditText
+            android:id="@+id/emailOlvido"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:backgroundTint="#AC1F1F"
+            android:ems="10"
+            android:theme="@style/barra"
+            android:hint="Email Registrado"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <Button
+            android:id="@+id/btnEnviaPasswordOlvidado"
+            android:layout_width="210dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="88dp"
+            android:background="@drawable/ovalo"
+            android:enabled="false"
+            android:gravity="center"
+
+            android:text="Restablecer Contraseña"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailOlvido" />
+
+        <TextView
+            android:id="@+id/regresaALogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="&lt; &lt; Regresar "
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnEnviaPasswordOlvidado"
+            app:layout_constraintVertical_bias="0.799" />
+
+        <LinearLayout
+            android:id="@+id/contenedorIconos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginLeft="23dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/btnEnviaPasswordOlvidado"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.459"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailOlvido"
+            app:layout_constraintVertical_bias="0.232">
+
+            <ImageView
+                android:id="@+id/imagenEmailOlvidoContrasena"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/mail" />
+
+            <TextView
+                android:id="@+id/textoOlvidoContrasena"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Correo electrónico de recuperación enviado con éxito"
+                android:textColor="@color/verdeConfirmacion"
+                android:textSize="13dp" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/barraOlvidoContrsena"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="7dp"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:theme="@style/barra"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contenedorIconos"
+            app:layout_editor_absoluteX="181dp"
+            app:layout_editor_absoluteY="428dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
