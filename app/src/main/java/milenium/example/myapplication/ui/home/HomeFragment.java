@@ -1,16 +1,19 @@
 package milenium.example.myapplication.ui.home;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -49,6 +52,16 @@ public class HomeFragment extends Fragment {
 
     ///// Banner Slider
 
+
+
+
+    ///////////Strip ad
+private ImageView stripadImage;
+private ConstraintLayout stripadContainter;
+
+
+    ///////////Strip ad
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -74,29 +87,37 @@ public class HomeFragment extends Fragment {
 bannerSliderViewPager= view.findViewById(R.id.banner_slider);
 
 sliderModelList= new ArrayList<SliderModel>();
-        sliderModelList.add(new SliderModel(R.drawable.ic_menu_camera));
-        sliderModelList.add(new SliderModel(R.drawable.ic_mitienda));
+
+        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
 
 
-        sliderModelList.add(new SliderModel(R.drawable.ic_shopping_basket_black_24dp));
-        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp));
-        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp));
-        sliderModelList.add(new SliderModel(R.drawable.ic_card_giftcard_black_24dp));
-        sliderModelList.add(new SliderModel(R.drawable.ic_person_black_24dp));
-        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp));
-        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp));
-        sliderModelList.add(new SliderModel(R.drawable.banner2));
-        sliderModelList.add(new SliderModel(R.drawable.banner));
+        sliderModelList.add(new SliderModel(R.drawable.ic_shopping_basket_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_card_giftcard_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_person_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.banner2,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.banner,"#077AE4"));
+
+        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
 
 
-        sliderModelList.add(new SliderModel(R.drawable.ic_shopping_basket_black_24dp));
-        sliderModelList.add(new SliderModel(R.drawable.ic_card_giftcard_black_24dp));
 
 
         SliderAdapter sliderAdapter= new SliderAdapter(sliderModelList);
         bannerSliderViewPager.setAdapter(sliderAdapter);
         bannerSliderViewPager.setClipToPadding(false);
         bannerSliderViewPager.setPageMargin(20);
+
+        bannerSliderViewPager.setCurrentItem(currentPage);
+
+
+
+
             ViewPager.OnPageChangeListener onPageChangeListener= new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -137,6 +158,16 @@ sliderModelList= new ArrayList<SliderModel>();
                 }
             });
     /////// Banner Slider
+
+        ///////////Strip ad
+        stripadImage=view.findViewById(R.id.strip_ad_image);
+        stripadContainter=view.findViewById(R.id.strip_ad_container);
+
+    stripadImage.setImageResource(R.drawable.banner2);
+    stripadContainter.setBackgroundColor(Color.parseColor("#000000"));
+
+    //////////Strip ad
+
 
         return view;
     }

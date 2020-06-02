@@ -1,11 +1,16 @@
 package milenium.example.myapplication;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.List;
@@ -18,10 +23,13 @@ public class SliderAdapter extends PagerAdapter {
         this.sliderModels = sliderModels;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view= LayoutInflater.from(container.getContext()).inflate(R.layout.slider_layout,container,false);
+        ConstraintLayout bannerContainer= view.findViewById(R.id.banner_container);
+        bannerContainer.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(sliderModels.get(position).getBackgroundColor())));
         ImageView banner= view.findViewById(R.id.imagenBanner);
         banner.setImageResource(sliderModels.get(position).getBanner());
         container.addView(view,0);
