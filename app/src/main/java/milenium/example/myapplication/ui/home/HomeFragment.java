@@ -7,16 +7,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -28,6 +25,8 @@ import java.util.TimerTask;
 
 import milenium.example.myapplication.CategoriaAdaptador;
 import milenium.example.myapplication.CategoriaModelo;
+import milenium.example.myapplication.HorizontalProducScrollAdapter;
+import milenium.example.myapplication.HorizontalProductScrollModel;
 import milenium.example.myapplication.R;
 import milenium.example.myapplication.SliderAdapter;
 import milenium.example.myapplication.SliderModel;
@@ -55,12 +54,30 @@ public class HomeFragment extends Fragment {
 
 
 
-    ///////////Strip ad
+    ///////////Strip ad es el que tiene una sola imagen sin banner slider
 private ImageView stripadImage;
 private ConstraintLayout stripadContainter;
 
 
     ///////////Strip ad
+
+
+
+
+
+    ///////////// slider horizontal de productos
+private  TextView horizontallayouTitle;
+    private Button horizontalviewAllBtn;
+    private  RecyclerView horizontalRecyclerView;
+
+
+
+    ///////////  slider horizontal de productos
+
+
+
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -118,6 +135,7 @@ sliderModelList= new ArrayList<SliderModel>();
 
 
 
+
             ViewPager.OnPageChangeListener onPageChangeListener= new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -168,6 +186,34 @@ sliderModelList= new ArrayList<SliderModel>();
 
     //////////Strip ad
 
+
+        ////////////// slider de productos horizontales
+        horizontallayouTitle= view.findViewById(R.id.horizontal_scrolllayout_title);
+        horizontalviewAllBtn= view.findViewById(R.id.horizontal_scroll_view_all_boton);
+        horizontalRecyclerView= view.findViewById(R.id.horizontal_scrolllayout_recyclerview);
+
+        List<HorizontalProductScrollModel> horizontalProductScrollModelsList= new ArrayList<>();
+        horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele1,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
+        horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
+        horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ropa1,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
+        horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ropa2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
+        horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
+        horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele1,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
+        horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ropa2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
+        horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
+
+        HorizontalProducScrollAdapter  horizontalProducScrollAdapter= new HorizontalProducScrollAdapter(horizontalProductScrollModelsList);
+        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(view.getContext());
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        horizontalRecyclerView.setLayoutManager(linearLayoutManager);
+
+        horizontalRecyclerView.setAdapter(horizontalProducScrollAdapter);
+        horizontalProducScrollAdapter.notifyDataSetChanged();
+
+
+
+
+        /////////////// slider de productos horizontales
 
         return view;
     }
