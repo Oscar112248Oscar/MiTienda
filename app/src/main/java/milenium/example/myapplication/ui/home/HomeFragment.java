@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import java.util.TimerTask;
 
 import milenium.example.myapplication.CategoriaAdaptador;
 import milenium.example.myapplication.CategoriaModelo;
+import milenium.example.myapplication.GridProductLayoutAdapater;
 import milenium.example.myapplication.HorizontalProducScrollAdapter;
 import milenium.example.myapplication.HorizontalProductScrollModel;
 import milenium.example.myapplication.R;
@@ -210,10 +212,26 @@ sliderModelList= new ArrayList<SliderModel>();
         horizontalRecyclerView.setAdapter(horizontalProducScrollAdapter);
         horizontalProducScrollAdapter.notifyDataSetChanged();
 
-
-
-
         /////////////// slider de productos horizontales
+
+
+
+
+        //////////  Grilla de productos
+
+        TextView gridLayoutTitle= view.findViewById(R.id.grid_product_layout_title);
+        Button gridLayoutViewAllBtn=view.findViewById(R.id.grid_product_layout_button);
+        GridView gridView = view.findViewById(R.id.grid_product_layout_gridview);
+
+
+        gridView.setAdapter(new GridProductLayoutAdapater(horizontalProductScrollModelsList));
+
+
+
+        //////////  Grilla de productos
+
+
+
 
         return view;
     }

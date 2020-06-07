@@ -30,5 +30,4 @@
     <include layout="@layout/content_navegacion_menu" />
 
 
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

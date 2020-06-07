@@ -100,6 +100,7 @@ public class SignInFragment extends Fragment {
         noTieneCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onOlvidoContrasenaFragment= true;
                 setFragment( new SignUpFragment());// estoy en el fragemnt de login pero de ahi si esque
                 //aplasta el "no tiene cuenta" , sale el otro fragemnt para registrarse
             }
