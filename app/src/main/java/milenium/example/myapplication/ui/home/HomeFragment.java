@@ -27,6 +27,8 @@ import java.util.TimerTask;
 import milenium.example.myapplication.CategoriaAdaptador;
 import milenium.example.myapplication.CategoriaModelo;
 import milenium.example.myapplication.GridProductLayoutAdapater;
+import milenium.example.myapplication.HomePageAdapter;
+import milenium.example.myapplication.HomePageModel;
 import milenium.example.myapplication.HorizontalProducScrollAdapter;
 import milenium.example.myapplication.HorizontalProductScrollModel;
 import milenium.example.myapplication.R;
@@ -226,12 +228,37 @@ sliderModelList= new ArrayList<SliderModel>();
 
         gridView.setAdapter(new GridProductLayoutAdapater(horizontalProductScrollModelsList));
 
-
-
         //////////  Grilla de productos
 
 
 
+
+
+        /////////////// OTRO BANNER
+   RecyclerView testing= view.findViewById(R.id.testing);
+    LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
+    testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+    testing.setLayoutManager(testingLayoutManager);
+
+    List<HomePageModel> homePageModelList= new ArrayList<>();
+    homePageModelList.add(new HomePageModel(0,sliderModelList));
+    homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#FFFFFF"));
+
+    homePageModelList.add(new HomePageModel(0,sliderModelList));
+    homePageModelList.add(new HomePageModel(1,R.drawable.banner2,"#000000"));
+
+
+    homePageModelList.add(new HomePageModel(0,sliderModelList));
+        homePageModelList.add(new HomePageModel(1,R.drawable.banner2,"#000000"));
+
+
+        HomePageAdapter adapter= new HomePageAdapter(homePageModelList);
+       testing.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+
+
+        ///////////////////
 
         return view;
     }

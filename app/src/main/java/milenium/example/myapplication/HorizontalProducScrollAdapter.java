@@ -73,13 +73,13 @@ public class HorizontalProducScrollAdapter extends RecyclerView.Adapter<Horizont
         }
 
         private void setProductDescription(String description){
-            productTitle.setText(description);
+            productDescription.setText(description);
 
         }
 
 
         private void setProductPrice(String price){
-            productTitle.setText(price);
+            productPrice.setText(price);
 
         }
 
