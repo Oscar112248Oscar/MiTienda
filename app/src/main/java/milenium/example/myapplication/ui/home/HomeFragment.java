@@ -50,8 +50,8 @@ public class HomeFragment extends Fragment {
     private List<SliderModel> sliderModelList;
     private int currentPage=2;
     private Timer timer;
-    final private long DELAY_TIME=3000;
-    final private long PERIOD_TIME=3000;
+    final private long DELAY_TIME=7000;
+    final private long PERIOD_TIME=7000;
 
     ///// Banner Slider
 
@@ -179,7 +179,14 @@ sliderModelList= new ArrayList<SliderModel>();
                     return false;
                 }
             });
+
+
     /////// Banner Slider
+
+
+
+
+
 
         ///////////Strip ad
         stripadImage=view.findViewById(R.id.strip_ad_image);
@@ -204,6 +211,7 @@ sliderModelList= new ArrayList<SliderModel>();
         horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
         horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele1,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
         horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ropa2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
+        horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
         horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
 
         HorizontalProducScrollAdapter  horizontalProducScrollAdapter= new HorizontalProducScrollAdapter(horizontalProductScrollModelsList);
@@ -243,13 +251,15 @@ sliderModelList= new ArrayList<SliderModel>();
     List<HomePageModel> homePageModelList= new ArrayList<>();
     homePageModelList.add(new HomePageModel(0,sliderModelList));
     homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#FFFFFF"));
-
-    homePageModelList.add(new HomePageModel(0,sliderModelList));
+    homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelsList));
+    homePageModelList.add(new HomePageModel(3,"Deals of the day",horizontalProductScrollModelsList));
+    homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#FFFFFF"));
+    homePageModelList.add(new HomePageModel(3,"Deals of the day",horizontalProductScrollModelsList));
+    homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelsList));
+    homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#000000"));
     homePageModelList.add(new HomePageModel(1,R.drawable.banner2,"#000000"));
-
-
     homePageModelList.add(new HomePageModel(0,sliderModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner2,"#000000"));
+
 
 
         HomePageAdapter adapter= new HomePageAdapter(homePageModelList);

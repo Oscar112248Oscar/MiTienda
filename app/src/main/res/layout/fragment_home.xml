@@ -81,12 +81,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/testing"
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoriasLista" />
+        app:layout_constraintTop_toBottomOf="@+id/categoriasLista"
+        app:layout_constraintVertical_bias="0.165" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
