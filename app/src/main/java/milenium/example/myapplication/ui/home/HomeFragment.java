@@ -44,42 +44,7 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerViewCategoria;
     private CategoriaAdaptador categoriaAdaptador;
-
-    ///////// Banner Slider
-    private ViewPager bannerSliderViewPager;
-    private List<SliderModel> sliderModelList;
-    private int currentPage=2;
-    private Timer timer;
-    final private long DELAY_TIME=7000;
-    final private long PERIOD_TIME=7000;
-
-    ///// Banner Slider
-
-
-
-
-    ///////////Strip ad es el que tiene una sola imagen sin banner slider
-private ImageView stripadImage;
-private ConstraintLayout stripadContainter;
-
-
-    ///////////Strip ad
-
-
-
-
-
-    ///////////// slider horizontal de productos
-private  TextView horizontallayouTitle;
-    private Button horizontalviewAllBtn;
-    private  RecyclerView horizontalRecyclerView;
-
-
-
-    ///////////  slider horizontal de productos
-
-
-
+    private  RecyclerView testing;
 
 
 
@@ -92,7 +57,7 @@ private  TextView horizontallayouTitle;
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewCategoria.setLayoutManager(layoutManager);
 
-        List<CategoriaModelo> categoriaModelos= new ArrayList<CategoriaModelo>();
+       final List<CategoriaModelo> categoriaModelos= new ArrayList<CategoriaModelo>();
         categoriaModelos.add(new CategoriaModelo("link","Home"));
         categoriaModelos.add(new CategoriaModelo("link","Electronicos"));
         categoriaModelos.add(new CategoriaModelo("link","Moda"));
@@ -105,9 +70,9 @@ private  TextView horizontallayouTitle;
     categoriaAdaptador.notifyDataSetChanged();
 
     /////// Banner Slider
-bannerSliderViewPager= view.findViewById(R.id.banner_slider);
 
-sliderModelList= new ArrayList<SliderModel>();
+
+     List<SliderModel>sliderModelList= new ArrayList<SliderModel>();
 
         sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
         sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
@@ -126,82 +91,12 @@ sliderModelList= new ArrayList<SliderModel>();
         sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
         sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
 
-
-
-
-        SliderAdapter sliderAdapter= new SliderAdapter(sliderModelList);
-        bannerSliderViewPager.setAdapter(sliderAdapter);
-        bannerSliderViewPager.setClipToPadding(false);
-        bannerSliderViewPager.setPageMargin(20);
-
-        bannerSliderViewPager.setCurrentItem(currentPage);
-
-
-
-
-
-            ViewPager.OnPageChangeListener onPageChangeListener= new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    currentPage=position;
-
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                    if(state==ViewPager.SCROLL_STATE_IDLE){
-
-                        pageLooper();
-                    }
-
-                }
-            };
-
-
-            bannerSliderViewPager.addOnPageChangeListener(onPageChangeListener);
-
-            startBannerSliderShow();
-            bannerSliderViewPager.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-
-                    pageLooper();
-                    stopbannerSlideShow();
-                    if(event.getAction()==MotionEvent.ACTION_UP){
-
-                        startBannerSliderShow();
-                    }
-                    return false;
-                }
-            });
-
-
     /////// Banner Slider
 
 
 
-
-
-
-        ///////////Strip ad
-        stripadImage=view.findViewById(R.id.strip_ad_image);
-        stripadContainter=view.findViewById(R.id.strip_ad_container);
-
-    stripadImage.setImageResource(R.drawable.banner2);
-    stripadContainter.setBackgroundColor(Color.parseColor("#000000"));
-
-    //////////Strip ad
-
-
         ////////////// slider de productos horizontales
-        horizontallayouTitle= view.findViewById(R.id.horizontal_scrolllayout_title);
-        horizontalviewAllBtn= view.findViewById(R.id.horizontal_scroll_view_all_boton);
-        horizontalRecyclerView= view.findViewById(R.id.horizontal_scrolllayout_recyclerview);
+
 
         List<HorizontalProductScrollModel> horizontalProductScrollModelsList= new ArrayList<>();
         horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele1,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
@@ -214,36 +109,13 @@ sliderModelList= new ArrayList<SliderModel>();
         horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
         horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2,"Bolsa de Tinta Epson","WF-C579R","$350.00"));
 
-        HorizontalProducScrollAdapter  horizontalProducScrollAdapter= new HorizontalProducScrollAdapter(horizontalProductScrollModelsList);
-        LinearLayoutManager linearLayoutManager= new LinearLayoutManager(view.getContext());
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        horizontalRecyclerView.setLayoutManager(linearLayoutManager);
 
-        horizontalRecyclerView.setAdapter(horizontalProducScrollAdapter);
-        horizontalProducScrollAdapter.notifyDataSetChanged();
 
         /////////////// slider de productos horizontales
 
 
-
-
-        //////////  Grilla de productos
-
-        TextView gridLayoutTitle= view.findViewById(R.id.grid_product_layout_title);
-        Button gridLayoutViewAllBtn=view.findViewById(R.id.grid_product_layout_button);
-        GridView gridView = view.findViewById(R.id.grid_product_layout_gridview);
-
-
-        gridView.setAdapter(new GridProductLayoutAdapater(horizontalProductScrollModelsList));
-
-        //////////  Grilla de productos
-
-
-
-
-
         /////////////// OTRO BANNER
-   RecyclerView testing= view.findViewById(R.id.testing);
+    testing= view.findViewById(R.id.home_page_recyclerview);
     LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
     testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
     testing.setLayoutManager(testingLayoutManager);
@@ -274,52 +146,7 @@ sliderModelList= new ArrayList<SliderModel>();
     }
 
 
-    private void pageLooper(){
-        if(currentPage==sliderModelList.size() -2 ){
-           currentPage=2;
-           bannerSliderViewPager.setCurrentItem(currentPage,false);
 
-
-        }
-
-        if(currentPage==1 ){
-            currentPage=sliderModelList.size()-3;
-            bannerSliderViewPager.setCurrentItem(currentPage,false);
-
-
-        }
-
-
-    }
-
-    private void startBannerSliderShow(){
-        final Handler handler = new Handler();
-        final Runnable update = new Runnable() {
-            @Override
-            public void run() {
-                if(currentPage>=sliderModelList.size()){
-
-                    currentPage=1;
-                }
-              bannerSliderViewPager.setCurrentItem(currentPage++,true);
-            }
-        };
-        timer= new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(update);
-            }
-        },DELAY_TIME,PERIOD_TIME);
-
-    }
-
-
-    private void stopbannerSlideShow(){
-
-        timer.cancel();
-
-    }
 
 
 }

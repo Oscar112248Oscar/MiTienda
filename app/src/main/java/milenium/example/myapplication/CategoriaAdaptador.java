@@ -1,5 +1,6 @@
 package milenium.example.myapplication;
 
+import android.content.Intent;
 import android.telecom.TelecomManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,7 @@ private List<CategoriaModelo> listaCategoriaModelo;
 
 String icono=listaCategoriaModelo.get(position).getIconoCategoriaLink();
         String nombre=listaCategoriaModelo.get(position).getCategoriaNombre();
-        holder.setCategoriaIconoNombre(nombre);
+        holder.setCategoria(nombre,position);
         holder.setCategoriaIcono(icono);
 
 
@@ -59,8 +60,20 @@ String icono=listaCategoriaModelo.get(position).getIconoCategoriaLink();
         }
 
 
-        private void setCategoriaIconoNombre(String nombre){
+        private void setCategoria(final String nombre, final int position){
             categoriaNombre.setText(nombre);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(position !=0){
+                        Intent categoryIntent= new Intent(itemView.getContext(),CategoryActivity.class);
+                        categoryIntent.putExtra("CategoryName",nombre);
+                        itemView.getContext().startActivity(categoryIntent);
+                    }
+
+
+                }
+            });
 
         }
 

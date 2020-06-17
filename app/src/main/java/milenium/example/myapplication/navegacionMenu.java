@@ -24,6 +24,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import milenium.example.myapplication.ui.home.HomeFragment;
 
+
+//////  A ESTA ACTIVIDAD SE REFIERE CON MAIN ACTIVITY
 public class navegacionMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FrameLayout frameLayout;
     private AppBarConfiguration mAppBarConfiguration;
