@@ -74,22 +74,21 @@ public class HomeFragment extends Fragment {
 
      List<SliderModel>sliderModelList= new ArrayList<SliderModel>();
 
-        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.banner,"#FFFFFF"));
+        sliderModelList.add(new SliderModel(R.drawable.banner2,"#FFFFFF"));
 
 
-        sliderModelList.add(new SliderModel(R.drawable.ic_shopping_basket_black_24dp,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_card_giftcard_black_24dp,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_person_black_24dp,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.banner2,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.banner,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.drawable.banner3,"#FFFFFF"));
+        sliderModelList.add(new SliderModel(R.drawable.banner4,"#FFFFFF"));
+        sliderModelList.add(new SliderModel(R.drawable.banner5,"#FFFFFF"));
+        sliderModelList.add(new SliderModel(R.drawable.banner6,"#FFFFFF"));
 
-        sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
+      //  sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
+      //  sliderModelList.add(new SliderModel(R.drawable.banner2,"#077AE4"));
+        //sliderModelList.add(new SliderModel(R.drawable.banner,"#077AE4"));
+
+       // sliderModelList.add(new SliderModel(R.drawable.ic_search_black_24dp,"#077AE4"));
+        //sliderModelList.add(new SliderModel(R.drawable.ic_add_alert_black_24dp,"#077AE4"));
 
     /////// Banner Slider
 

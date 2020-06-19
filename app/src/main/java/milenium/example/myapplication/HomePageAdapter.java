@@ -125,10 +125,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
     public class bannerSliderViewHolder extends RecyclerView.ViewHolder {
         private ViewPager bannerSliderViewPager;
 
-        private int currentPage = 2;
+        private int currentPage = 0;
         private Timer timer;
-        final private long DELAY_TIME = 3000;
-        final private long PERIOD_TIME = 3000;
+        final private long DELAY_TIME = 4000;
+        final private long PERIOD_TIME = 4000;
 
         public bannerSliderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -193,19 +193,19 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
 
         private void pageLooper(List<SliderModel> sliderModelList) {
-            if (currentPage == sliderModelList.size() - 2) {
-                currentPage = 2;
+            if (currentPage == sliderModelList.size() - 1) {
+                currentPage =0;
                 bannerSliderViewPager.setCurrentItem(currentPage, false);
 
 
             }
 
-            if (currentPage == 1) {
-                currentPage = sliderModelList.size() - 3;
-                bannerSliderViewPager.setCurrentItem(currentPage, false);
+           // if (currentPage == 1) {
+             //   currentPage = sliderModelList.size() +1;
+               // bannerSliderViewPager.setCurrentItem(currentPage, false);
 
 
-            }
+            //}
 
 
         }
@@ -217,9 +217,9 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 public void run() {
                     if (currentPage >= sliderModelList.size()) {
 
-                        currentPage = 1;
+                        currentPage = 0;
                     }
-                    bannerSliderViewPager.setCurrentItem(currentPage++, true);
+                    bannerSliderViewPager.setCurrentItem(currentPage++, false);
                 }
             };
             timer = new Timer();
