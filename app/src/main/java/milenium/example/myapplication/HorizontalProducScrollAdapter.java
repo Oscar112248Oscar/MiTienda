@@ -1,5 +1,6 @@
 package milenium.example.myapplication;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,12 +61,21 @@ public class HorizontalProducScrollAdapter extends RecyclerView.Adapter<Horizont
         private TextView productDescription;
         private TextView productPrice;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             productImage= itemView.findViewById(R.id.horizontal_product_image);
             productTitle= itemView.findViewById(R.id.horizontal_productTitle);
             productDescription= itemView.findViewById(R.id.horizontal_productdescripcion);
             productPrice= itemView.findViewById(R.id.horizontal_productPrecio);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent productDetailsIntent = new Intent(itemView.getContext(),ProductDetailsActivity.class);
+                    itemView.getContext().startActivity(productDetailsIntent);
+
+                }
+            });
 
         }
 
