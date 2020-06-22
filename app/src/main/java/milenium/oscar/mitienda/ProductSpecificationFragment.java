@@ -41,16 +41,39 @@ public class ProductSpecificationFragment extends Fragment {
 
         List<ProductSpecificationModel> productSpecificationModelList= new ArrayList<>();
 
-        productSpecificationModelList.add(new ProductSpecificationModel("Color","Magenta"));
-        productSpecificationModelList.add(new ProductSpecificationModel("Color","Lila"));
 
-        productSpecificationModelList.add(new ProductSpecificationModel("Color","Rojo"));
+        productSpecificationModelList.add(new ProductSpecificationModel(0,"General"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Lila"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Rojo"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Amarilla"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Negra"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Azul"));
+        productSpecificationModelList.add(new ProductSpecificationModel(0,"Display"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
+        productSpecificationModelList.add(new ProductSpecificationModel(0,"General"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Lila"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Rojo"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Amarilla"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Negra"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Azul"));
+        productSpecificationModelList.add(new ProductSpecificationModel(0,"Display"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
 
-        productSpecificationModelList.add(new ProductSpecificationModel("Color","Azul"));
 
-        productSpecificationModelList.add(new ProductSpecificationModel("Color","Negro"));
 
-        productSpecificationModelList.add(new ProductSpecificationModel("Color","Amarillo"));
+
+
+
+
+
 
 
 
