@@ -1,5 +1,8 @@
 package milenium.oscar.mitienda;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +37,20 @@ public class GridProductLayoutAdapater extends BaseAdapter {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         View view;
         if(convertView== null){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_scroll_item_layout,null);
+           view.setBackgroundColor(Color.parseColor("#ffffff"));
 
+           view.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   Intent productDetailsIntent= new Intent(parent.getContext(),ProductDetailsActivity.class);
+                    parent.getContext().startActivity(productDetailsIntent);
 
-            //view.setBackgroundColor(Color.parseColor("#ffffff"));
+               }
+           });
 
             ImageView productImage= view.findViewById(R.id.horizontal_product_image);
             TextView productTitle = view.findViewById(R.id.horizontal_productTitle);
