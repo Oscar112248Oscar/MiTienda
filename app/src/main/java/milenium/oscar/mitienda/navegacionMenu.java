@@ -1,6 +1,7 @@
 package milenium.oscar.mitienda;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.Menu;
 import android.widget.FrameLayout;
@@ -25,7 +26,14 @@ import milenium.oscar.mitienda.ui.home.HomeFragment;
 //////  A ESTA ACTIVIDAD SE REFIERE CON MAIN ACTIVITY
 public class navegacionMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FrameLayout frameLayout;
+    private static int currentFragment;
+
+
     private AppBarConfiguration mAppBarConfiguration;
+    private static final int HOME_FRAGMENT=0;
+    private static final int CART_FRAGMENT=1;
+    private NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +44,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+         navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -48,14 +56,32 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         frameLayout= findViewById(R.id.principallayout);
-        setFragment(new HomeFragment());
+        setFragment(new HomeFragment(),HOME_FRAGMENT);
     }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer= (DrawerLayout) findViewById(R.id.drawer_layout);
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+
+        }else {
+            super.onBackPressed();
+        }
+        super.onBackPressed();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.navegacion_menu, menu);
+        if(currentFragment==HOME_FRAGMENT){
+            getMenuInflater().inflate(R.menu.navegacion_menu, menu);
+        }
         return true;
+
+
     }
 
     @Override
@@ -78,10 +104,18 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
             return true;
 
         }else  if(id==R.id.iconocarrito){
+            myCart();
             return true;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void myCart() {
+        invalidateOptionsMenu();
+        setFragment(new MyCartFragment(),CART_FRAGMENT);
+        navigationView.getMenu().getItem(3).setChecked(true);
+
     }
 
 
@@ -89,13 +123,14 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id= menuItem.getItemId();
         if(id==R.id.mitienda){
-
+        setFragment(new HomeFragment(),HOME_FRAGMENT);
 
         }  else if(id==R.id.orden){
 
         }else if(id==R.id.recompensa){
 
         }else if(id==R.id.carro){
+            myCart();
 
 
         }else if(id==R.id.deseos){
@@ -116,7 +151,8 @@ return  true;
     }
 
 
-    private void setFragment(Fragment fragment) {
+    private void setFragment(Fragment fragment, int fragmentNo) {
+        currentFragment= fragmentNo;
         FragmentTransaction fragmentTransaction= getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(frameLayout.getId(), fragment);
         fragmentTransaction.commit();
