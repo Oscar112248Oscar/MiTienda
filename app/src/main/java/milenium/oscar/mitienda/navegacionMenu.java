@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -29,6 +30,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private static int currentFragment;
 
 
+
     private AppBarConfiguration mAppBarConfiguration;
     private static final int HOME_FRAGMENT=0;
     private static final int CART_FRAGMENT=1;
@@ -44,17 +46,24 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+
          navigationView = findViewById(R.id.nav_view);
+         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
+       /* mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        NavigationUI.setupWithNavController(navigationView, navController);*/
         frameLayout= findViewById(R.id.principallayout);
         setFragment(new HomeFragment(),HOME_FRAGMENT);
     }
@@ -68,7 +77,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         }else {
             super.onBackPressed();
         }
-        super.onBackPressed();
+
     }
 
 
@@ -127,6 +136,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
         }  else if(id==R.id.orden){
 
+
         }else if(id==R.id.recompensa){
 
         }else if(id==R.id.carro){
@@ -143,7 +153,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
         }
 
-        DrawerLayout drawer=(DrawerLayout) findViewById(R.id.drawer_layout);
+       DrawerLayout drawer=(DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
 

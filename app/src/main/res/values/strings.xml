@@ -17,4 +17,6 @@
 
     <string name="home_second">Home Second</string>
     <string name="title_activity_navegacion_menu">navegacionMenu</string>
+    <string name="open">Open</string>
+    <string name="close">close</string>
 </resources>

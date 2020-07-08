@@ -8,7 +8,7 @@
         <item
             android:id="@+id/mitienda"
             android:icon="@drawable/ic_mitienda"
-            android:title="Orden" />
+            android:title="Mi Tienda" />
         <item
             android:id="@+id/orden"
             android:icon="@drawable/ic_shopping_basket_black_24dp"
