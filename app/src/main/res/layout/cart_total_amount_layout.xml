@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#d6d6d6"
+    android:layout_marginTop="4dp"
+        android:background="#d6d6d6"
     android:padding="5dp"
 
     android:elevation="3dp">
@@ -27,7 +28,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="Detalles del Precio"
-            android:textSize="16sp"
             android:textStyle="bold"
 
             app:layout_constraintStart_toStartOf="parent"

@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#ffffff"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     android:elevation="3dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -35,10 +37,9 @@
         android:id="@+id/free_cupon_icon"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:layout_marginTop="8dp"
         android:tint="#782591"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_free_cupon"
         app:layout_constraintStart_toStartOf="@+id/product_title"
-        app:layout_constraintTop_toBottomOf="@+id/product_title"
         app:srcCompat="@drawable/cupon" />
 
     <TextView
@@ -72,6 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:textSize="12sp"
         android:text="18$"
         app:layout_constraintBottom_toBottomOf="@+id/product_price"
         app:layout_constraintEnd_toStartOf="@+id/product_price" />

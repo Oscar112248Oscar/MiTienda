@@ -30,7 +30,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import static milenium.oscar.mitienda.Login.onOlvidoContrasenaFragment;
+import static milenium.oscar.mitienda.Login.onOlvidoContrasenaFragment;// esta variable le envia false o true
+// al login no importa de donde se le llame
 
 
 /**

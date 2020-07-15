@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -27,7 +29,7 @@ import milenium.oscar.mitienda.ui.home.HomeFragment;
 //////  A ESTA ACTIVIDAD SE REFIERE CON MAIN ACTIVITY
 public class navegacionMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FrameLayout frameLayout;
-    private static int currentFragment;
+    private static int currentFragment = -1;
 
 
 
@@ -35,6 +37,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private static final int HOME_FRAGMENT=0;
     private static final int CART_FRAGMENT=1;
     private NavigationView navigationView;
+    private ImageView actionBarLogo;
 
 
     @Override
@@ -42,8 +45,8 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navegacion_menu);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        actionBarLogo= findViewById(R.id.actionbar_logo);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
@@ -86,6 +89,8 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         if(currentFragment==HOME_FRAGMENT){
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+
             getMenuInflater().inflate(R.menu.navegacion_menu, menu);
         }
         return true;
@@ -121,6 +126,9 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     }
 
     private void myCart() {
+        actionBarLogo.setVisibility(View.GONE);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("MI CARRITO");
         invalidateOptionsMenu();
         setFragment(new MyCartFragment(),CART_FRAGMENT);
         navigationView.getMenu().getItem(3).setChecked(true);
@@ -132,6 +140,9 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id= menuItem.getItemId();
         if(id==R.id.mitienda){
+
+            actionBarLogo.setVisibility(View.VISIBLE);
+            invalidateOptionsMenu();
         setFragment(new HomeFragment(),HOME_FRAGMENT);
 
         }  else if(id==R.id.orden){
@@ -162,10 +173,16 @@ return  true;
 
 
     private void setFragment(Fragment fragment, int fragmentNo) {
-        currentFragment= fragmentNo;
-        FragmentTransaction fragmentTransaction= getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(frameLayout.getId(), fragment);
-        fragmentTransaction.commit();
+        if(fragmentNo != currentFragment) {
+            currentFragment= fragmentNo;
+            FragmentTransaction fragmentTransaction= getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in,R.anim.fade_out);
+
+            fragmentTransaction.replace(frameLayout.getId(), fragment);
+            fragmentTransaction.commit();
+
+        }
+
 
 
     }
