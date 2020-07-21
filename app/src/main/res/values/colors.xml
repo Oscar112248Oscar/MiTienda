@@ -6,4 +6,5 @@
     <color name="colorPrueba">#18ECD4</color>
     <color name="verdeConfirmacion">#28BC35</color>
     <color name="errorRojo">#D50D0D</color>
+    <color name="RecyclerViewBackground">#d6d6d6</color>
 </resources>

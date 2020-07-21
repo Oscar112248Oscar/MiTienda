@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -36,6 +37,8 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private AppBarConfiguration mAppBarConfiguration;
     private static final int HOME_FRAGMENT=0;
     private static final int CART_FRAGMENT=1;
+    private static final int ORDERS_FRAGMENT=2;
+
     private NavigationView navigationView;
     private ImageView actionBarLogo;
 
@@ -118,22 +121,26 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
             return true;
 
         }else  if(id==R.id.iconocarrito){
-            myCart();
+            gotFragment("Mi Carrito",new MyCartFragment(),CART_FRAGMENT);
             return true;
 
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void myCart() {
+    private void gotFragment(String title, Fragment fragment, int fragmentNo) {
         actionBarLogo.setVisibility(View.GONE);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("MI CARRITO");
+        getSupportActionBar().setTitle(title);
         invalidateOptionsMenu();
-        setFragment(new MyCartFragment(),CART_FRAGMENT);
-        navigationView.getMenu().getItem(3).setChecked(true);
+        setFragment(fragment,fragmentNo);
+        if(fragmentNo==CART_FRAGMENT) {
+            navigationView.getMenu().getItem(3).setChecked(true);
 
-    }
+        }
+        }
+
+
 
 
     @Override
@@ -146,12 +153,13 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         setFragment(new HomeFragment(),HOME_FRAGMENT);
 
         }  else if(id==R.id.orden){
+            gotFragment("Mi Orden", new MyOrdersFragment(),ORDERS_FRAGMENT);
 
 
         }else if(id==R.id.recompensa){
 
         }else if(id==R.id.carro){
-            myCart();
+            gotFragment("Mi Carrito",new MyCartFragment(),CART_FRAGMENT);
 
 
         }else if(id==R.id.deseos){
