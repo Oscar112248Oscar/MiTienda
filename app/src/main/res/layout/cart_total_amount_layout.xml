@@ -152,7 +152,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/happy_shopping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

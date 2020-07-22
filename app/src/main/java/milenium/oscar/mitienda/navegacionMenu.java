@@ -71,7 +71,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);*/
         frameLayout= findViewById(R.id.principallayout);
-        setFragment(new HomeFragment(),HOME_FRAGMENT);
+        setFragment(new OrderDetailsFragment(),HOME_FRAGMENT);
     }
 
     @Override
