@@ -47,6 +47,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navegacion_menu);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         actionBarLogo= findViewById(R.id.actionbar_logo);
         setSupportActionBar(toolbar);
@@ -71,7 +72,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);*/
         frameLayout= findViewById(R.id.principallayout);
-        setFragment(new OrderDetailsFragment(),HOME_FRAGMENT);
+        setFragment(new HomeFragment(),HOME_FRAGMENT);
     }
 
     @Override
