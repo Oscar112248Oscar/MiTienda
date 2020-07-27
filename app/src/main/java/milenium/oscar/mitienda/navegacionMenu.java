@@ -38,6 +38,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private static final int HOME_FRAGMENT=0;
     private static final int CART_FRAGMENT=1;
     private static final int ORDERS_FRAGMENT=2;
+    private static final int WISHLIST_FRAGMENT=3;
 
     private NavigationView navigationView;
     private ImageView actionBarLogo;
@@ -82,7 +83,17 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
             drawer.closeDrawer(GravityCompat.START);
 
         }else {
-            super.onBackPressed();
+            if(currentFragment == HOME_FRAGMENT){
+                super.onBackPressed();
+            }else {
+                actionBarLogo.setVisibility(View.VISIBLE);
+                invalidateOptionsMenu();
+                setFragment(new HomeFragment(),HOME_FRAGMENT);
+                navigationView.getMenu().getItem(0).setChecked(true);
+
+
+            }
+
         }
 
     }
@@ -164,6 +175,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
 
         }else if(id==R.id.deseos){
+            gotFragment("Mis Deseos",new MyWishListFragment(),WISHLIST_FRAGMENT);
 
 
         }else  if(id==R.id.cuentaUsuario){
