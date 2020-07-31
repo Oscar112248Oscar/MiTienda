@@ -14,7 +14,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
+        android:id="@+id/current_order_image"
         android:layout_width="96dp"
         android:layout_height="80dp"
         android:layout_marginTop="4dp"
@@ -33,7 +33,7 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="No Registrado"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/current_order_image"
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
@@ -54,8 +54,8 @@
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-        app:layout_constraintEnd_toEndOf="@+id/profile_image"
+        app:layout_constraintBottom_toBottomOf="@+id/current_order_image"
+        app:layout_constraintEnd_toEndOf="@+id/current_order_image"
         app:srcCompat="@drawable/anadir" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

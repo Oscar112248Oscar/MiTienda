@@ -45,6 +45,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private static final int ORDERS_FRAGMENT=2;
     private static final int WISHLIST_FRAGMENT=3;
     private static final int REWARDS_FRAGMENT=4;
+    private static final int ACCOUNT_FRAGMENT=5;
 
     private NavigationView navigationView;
     private ImageView actionBarLogo;
@@ -198,6 +199,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
 
         }else  if(id==R.id.cuentaUsuario){
+            gotFragment("Mi Cuenta", new MyAcountFragment(),ACCOUNT_FRAGMENT);
 
         } else if(id==R.id.cerarsesion){
 
