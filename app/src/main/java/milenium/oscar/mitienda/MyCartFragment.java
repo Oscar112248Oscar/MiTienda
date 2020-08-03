@@ -1,5 +1,6 @@
 package milenium.oscar.mitienda;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class MyCartFragment extends Fragment {
     }
 
     private RecyclerView cartItemRecyclerView;
+    private Button continueBtn;
 
 
 
@@ -38,6 +41,8 @@ public class MyCartFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         cartItemRecyclerView.setLayoutManager(layoutManager);
 
+        continueBtn= view.findViewById(R.id.cart_continue_btn);
+
 
         List<CartItemModel> cartItemModelList= new ArrayList<>();
         cartItemModelList.add(new CartItemModel(0,R.drawable.ele1,"Tinta Epson",2,"14$","18$",1,0,0));
@@ -48,6 +53,13 @@ public class MyCartFragment extends Fragment {
         CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
         cartItemRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent deliveryIntent= new Intent(getContext(),DeliveryActivity.class);
+                getContext().startActivity(deliveryIntent);
+            }
+        });
 
         return  view;
     }
