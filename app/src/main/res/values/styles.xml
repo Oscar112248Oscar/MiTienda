@@ -20,20 +20,21 @@
 
     <style name="barra" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/ic_launcher_background</item>
-        <item name="colorPrimaryDark">@color/ic_launcher_background</item>
-        <item name="colorAccent">#3A59BF</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- <item name="colorPrimaryDark">@android:color/transparent</item>  esta linea sirve para poner color a la cabaecera tot
+        al del celular en donde esta la hora cargador etc-->
+          <item name="colorAccent">#3A59BF</item>
 
-    </style>
+      </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+      <style name="AppTheme.NoActionBar">
+          <item name="windowActionBar">false</item>
+          <item name="windowNoTitle">true</item>
+      </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+      <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+      <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
-</resources>
+  </resources>
