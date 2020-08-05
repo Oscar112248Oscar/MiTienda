@@ -14,8 +14,10 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddAddressActivity"
-            android:theme="@style/barra"></activity>
+        <activity android:name=".MyAddressesActivity"></activity>
+        <activity
+            android:name=".AddAddressActivity"
+            android:theme="@style/barra" />
         <activity android:name=".DeliveryActivity" />
         <activity android:name=".OrderDetailsActivity" />
         <activity android:name=".ProductDetailsActivity" />
