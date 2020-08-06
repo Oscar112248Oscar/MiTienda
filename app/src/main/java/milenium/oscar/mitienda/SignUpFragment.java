@@ -250,7 +250,7 @@ public class SignUpFragment extends Fragment {
                                 Map<Object,String> usarioDatos= new HashMap<>();
                                 usarioDatos.put("nombre",nombreUsuario.getText().toString());
 
-                                   firebaseFirestore.collection("USUARIOS")
+                                   firebaseFirestore.collection("USUARIOS")/// esta lina crea automaticamente la colleccion de usuarios
                                            .add(usarioDatos)
                                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                                @Override
