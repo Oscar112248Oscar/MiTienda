@@ -1,5 +1,6 @@
 package milenium.oscar.mitienda;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,11 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHo
 
 
    private List<WishListModel> wishListModelList;
+   private Boolean wishlist;
 
-    public WishListAdapter(List<WishListModel> wishListModelList) {
+    public WishListAdapter(List<WishListModel> wishListModelList, Boolean wishlist) {
         this.wishListModelList = wishListModelList;
+        this.wishlist = wishlist;
     }
 
     @NonNull
@@ -111,12 +114,28 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHo
             cuttedPrice.setText(cuttedPriceValue);
         paymentMethod.setText(payMethod);
 
+        if(wishlist){
+            deleteBtn.setVisibility(View.VISIBLE);
+        }else {
+            deleteBtn.setVisibility(View.GONE);
+        }
+
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(itemView.getContext(),"Borrar",Toast.LENGTH_SHORT).show();
             }
         });
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent productDetailsIntent= new Intent(itemView.getContext(),ProductDetailsActivity.class);
+                itemView.getContext().startActivity(productDetailsIntent);
+
+            }
+        });
+
         }
 
 

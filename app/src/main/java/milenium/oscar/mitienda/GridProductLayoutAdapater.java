@@ -22,8 +22,8 @@ public class GridProductLayoutAdapater extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 4;
-    }
+        return horizontalProductScrollModels.size();
+    }/// podemos decir cuantos productos queremos que aparezcan
 
     @Override
     public Object getItem(int position) {
