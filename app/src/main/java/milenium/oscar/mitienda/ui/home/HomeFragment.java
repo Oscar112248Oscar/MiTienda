@@ -99,23 +99,29 @@ public class HomeFragment extends Fragment {
         /////////////// slider de productos horizontales
 
 
-        /////////////// OTRO BANNER
+        /////////////// ESTA PARTE CONTROLA TODA LA VISTA
+        //// 0 PARA SLIDER 1 PARA ANUNCIO 2 PARA LOS PRODUCTOS HORIZONTALES
+        //3 PARA LOS PRODUCTOS EN LA GRILLA
+        //testin es el Recdycler view padre de todas las vistas del inicio
+        //le manda una lista al HomePageAdapter y pone las vistas segun los numeros que
+        // se mande , aqui se muestarn enviando todos los numeros
     testing= view.findViewById(R.id.home_page_recyclerview);
     LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
     testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
     testing.setLayoutManager(testingLayoutManager);
 
     List<HomePageModel> homePageModelList= new ArrayList<>();
-    homePageModelList.add(new HomePageModel(0,sliderModelList));
-    homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelsList));
+    homePageModelList.add(new HomePageModel(0,sliderModelList));// el numero 0 es para slider
+    homePageModelList.add(new HomePageModel(2,"Ofertas del dia",horizontalProductScrollModelsList));
         homePageModelList.add(new HomePageModel(1,R.drawable.banner3,"#FFFFFF"));
    // homePageModelList.add(new HomePageModel(3,"Deals of the day",horizontalProductScrollModelsList));
    // homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#FFFFFF"));
-    homePageModelList.add(new HomePageModel(3,"Deals of the day",horizontalProductScrollModelsList));
+    homePageModelList.add(new HomePageModel(3,"Ofertas 2",horizontalProductScrollModelsList));
+
    // homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelsList));
    // homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#000000"));
    // homePageModelList.add(new HomePageModel(1,R.drawable.banner2,"#000000"));
-   // homePageModelList.add(new HomePageModel(0,sliderModelList));
+  //  homePageModelList.add(new HomePageModel(0,sliderModelList));
 
 
 

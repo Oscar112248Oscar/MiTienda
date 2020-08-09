@@ -99,6 +99,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
         }else {
             if(currentFragment == HOME_FRAGMENT){
+                currentFragment=-1;
                 super.onBackPressed();
             }else {
                 actionBarLogo.setVisibility(View.VISIBLE);
