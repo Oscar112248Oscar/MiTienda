@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-
+import static milenium.oscar.mitienda.navegacionMenu.showCart;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,6 +172,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
             return true;
 
         }else  if(id==R.id.iconocarrito){
+
+            Intent cartIntent = new Intent(ProductDetailsActivity.this,navegacionMenu.class);
+            showCart=true;
+            startActivity(cartIntent);
             return true;
 
         }

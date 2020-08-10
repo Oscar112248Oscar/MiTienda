@@ -114,14 +114,9 @@ public class HomeFragment extends Fragment {
     homePageModelList.add(new HomePageModel(0,sliderModelList));// el numero 0 es para slider
     homePageModelList.add(new HomePageModel(2,"Ofertas del dia",horizontalProductScrollModelsList));
         homePageModelList.add(new HomePageModel(1,R.drawable.banner3,"#FFFFFF"));
-   // homePageModelList.add(new HomePageModel(3,"Deals of the day",horizontalProductScrollModelsList));
-   // homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#FFFFFF"));
-    homePageModelList.add(new HomePageModel(3,"Ofertas 2",horizontalProductScrollModelsList));
+       homePageModelList.add(new HomePageModel(3,"Ofertas 2",horizontalProductScrollModelsList));
 
-   // homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelsList));
-   // homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#000000"));
-   // homePageModelList.add(new HomePageModel(1,R.drawable.banner2,"#000000"));
-  //  homePageModelList.add(new HomePageModel(0,sliderModelList));
+
 
 
 

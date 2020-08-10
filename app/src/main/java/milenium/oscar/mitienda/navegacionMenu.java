@@ -1,5 +1,6 @@
 package milenium.oscar.mitienda;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ import milenium.oscar.mitienda.ui.home.HomeFragment;
 //////  A ESTA ACTIVIDAD SE REFIERE CON MAIN ACTIVITY
 public class navegacionMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FrameLayout frameLayout;
-    private static int currentFragment = -1;
+    private  int currentFragment = -1;
 
 
 
@@ -46,6 +47,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private static final int WISHLIST_FRAGMENT=3;
     private static final int REWARDS_FRAGMENT=4;
     private static final int ACCOUNT_FRAGMENT=5;
+    public static Boolean showCart= false;
 
     private NavigationView navigationView;
     private ImageView actionBarLogo;
@@ -54,6 +56,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private Toolbar toolbar;
 
 
+    @SuppressLint("WrongConstant")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +72,9 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+       // ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
+        //drawer.addDrawerListener(toggle);
+        //toggle.syncState();
 
 
          navigationView = findViewById(R.id.nav_view);
@@ -87,7 +90,19 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);*/
         frameLayout= findViewById(R.id.principallayout);
-        setFragment(new HomeFragment(),HOME_FRAGMENT);
+        if(showCart){
+            drawer.setDrawerLockMode(1);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            gotFragment("Mi carrito",new MyCartFragment(),-2);
+
+        }else {
+            ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+            setFragment(new HomeFragment(),HOME_FRAGMENT);
+
+
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -102,10 +117,18 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
                 currentFragment=-1;
                 super.onBackPressed();
             }else {
-                actionBarLogo.setVisibility(View.VISIBLE);
-                invalidateOptionsMenu();
-                setFragment(new HomeFragment(),HOME_FRAGMENT);
-                navigationView.getMenu().getItem(0).setChecked(true);
+                if(showCart){
+                    showCart= false;
+                    finish();
+
+                }else {
+                    actionBarLogo.setVisibility(View.VISIBLE);
+                    invalidateOptionsMenu();
+                    setFragment(new HomeFragment(),HOME_FRAGMENT);
+                    navigationView.getMenu().getItem(0).setChecked(true);
+
+                }
+
 
 
             }
@@ -152,6 +175,13 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         }else  if(id==R.id.iconocarrito){
             gotFragment("Mi Carrito",new MyCartFragment(),CART_FRAGMENT);
             return true;
+
+        } else if (id == android.R.id.home) {
+            if (showCart){
+                showCart = false;
+                finish();
+                return true;
+            }
 
         }
         return super.onOptionsItemSelected(item);

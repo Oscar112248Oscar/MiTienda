@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -126,13 +127,17 @@ public class HomePageAdapter extends RecyclerView.Adapter {
         return homePageModelList.size();
     }
 
+
+
     public class bannerSliderViewHolder extends RecyclerView.ViewHolder {
         private ViewPager bannerSliderViewPager;
 
-        private int currentPage = 0;
+        private int currentPage ;// controlamos desde donde queremos que empiece el slider
+        //como es una lista empieza desde el 0
         private Timer timer;
-        final private long DELAY_TIME = 4000;
-        final private long PERIOD_TIME = 4000;
+        final private long DELAY_TIME = 3000;
+        final private long PERIOD_TIME = 3000;
+        private List<SliderModel> arrangedList;
 
         public bannerSliderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -144,7 +149,27 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
 
         private void setBannerSliderViewPager(final List<SliderModel> sliderModelList) {
-            SliderAdapter sliderAdapter = new SliderAdapter(sliderModelList);
+            currentPage = 0;
+            if (timer !=null){
+
+                timer.cancel();
+            }
+
+            arrangedList= new ArrayList<>();
+            for(int x=0;x<sliderModelList.size();x++){
+                arrangedList.add(x,sliderModelList.get(x));
+            }
+            //arrangedList.add(0,sliderModelList.get(sliderModelList.size()));
+          //  arrangedList.add(1,sliderModelList.get(sliderModelList.size()));
+            arrangedList.add(sliderModelList.get(0));// envia desde el 1 imagen del slider
+           // arrangedList.add(sliderModelList.get(1));
+
+
+
+
+
+
+            SliderAdapter sliderAdapter = new SliderAdapter(arrangedList );
             bannerSliderViewPager.setAdapter(sliderAdapter);
             bannerSliderViewPager.setClipToPadding(false);
             bannerSliderViewPager.setPageMargin(20);
@@ -168,7 +193,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 public void onPageScrollStateChanged(int state) {
                     if (state == ViewPager.SCROLL_STATE_IDLE) {
 
-                        pageLooper(sliderModelList);
+                        pageLooper(arrangedList);
                     }
 
                 }
@@ -177,16 +202,16 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
             bannerSliderViewPager.addOnPageChangeListener(onPageChangeListener);
 
-            startBannerSliderShow(sliderModelList);
+            startBannerSliderShow(arrangedList);
             bannerSliderViewPager.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
 
-                    pageLooper(sliderModelList);
+                    pageLooper(arrangedList);
                     stopbannerSlideShow();
                     if (event.getAction() == MotionEvent.ACTION_UP) {
 
-                        startBannerSliderShow(sliderModelList);
+                        startBannerSliderShow(arrangedList);
                     }
                     return false;
                 }
@@ -197,7 +222,8 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
 
         private void pageLooper(List<SliderModel> sliderModelList) {
-            if (currentPage == sliderModelList.size() - 1) {
+            if (currentPage == sliderModelList.size()-1 ) {/// controla desde el inicio y si le resta
+                // -2 -3 etc ya no deja ir a las demas imagenes que continuan y regredesa al inicio
                 currentPage =0;
                 bannerSliderViewPager.setCurrentItem(currentPage, false);
 
@@ -243,6 +269,8 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
         }
     }
+
+
 
     public class stripadBannerViewHolder extends RecyclerView.ViewHolder {
         private ImageView stripadImage;
