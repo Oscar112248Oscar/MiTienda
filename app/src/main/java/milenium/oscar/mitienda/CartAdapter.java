@@ -1,9 +1,12 @@
 package milenium.oscar.mitienda;
 
+import android.app.Dialog;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -147,6 +150,36 @@ public class CartAdapter extends RecyclerView.Adapter {
                 offersApplied.setVisibility(View.INVISIBLE);
 
             }
+            productQuantity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog quantityDialog = new Dialog(itemView.getContext());
+                    quantityDialog.setContentView(R.layout.quantity_dialog);
+                    quantityDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    quantityDialog.setCancelable(false);
+                    final EditText quantityNo= quantityDialog.findViewById(R.id.quantity_no);
+                    Button cancelBtn= quantityDialog.findViewById(R.id.cancel_btn);
+                    Button okBtn= quantityDialog.findViewById(R.id.ok_btn);
+
+                    cancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        quantityDialog.dismiss();
+
+                        }
+                    });
+
+                    okBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            productQuantity.setText("Cant: " + quantityNo.getText());
+                            quantityDialog.dismiss();
+                        }
+                    });
+                    quantityDialog.show();
+
+                }
+            });
 
         }
 

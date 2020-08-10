@@ -1,6 +1,8 @@
 package milenium.oscar.mitienda;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,8 +10,10 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -31,6 +35,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import milenium.oscar.mitienda.ui.home.HomeFragment;
+
+import static milenium.oscar.mitienda.Login.setSignUpFragment;
 
 
 //////  A ESTA ACTIVIDAD SE REFIERE CON MAIN ACTIVITY
@@ -161,7 +167,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {/// este es para el menu superior
 
         int id= item.getItemId();
         if(id==R.id.iconobuscar){
@@ -173,7 +179,44 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
             return true;
 
         }else  if(id==R.id.iconocarrito){
-            gotFragment("Mi Carrito",new MyCartFragment(),CART_FRAGMENT);
+
+            final Dialog signInDialog = new Dialog(this);
+            signInDialog.setContentView(R.layout.sign_in_dialog);
+            signInDialog.setCancelable(true);
+
+            signInDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            Button dialogSignInBtn  = signInDialog.findViewById(R.id.sign_in_btn);
+            Button dialogSignUpBtn  = signInDialog.findViewById(R.id.sign_up_btn);
+
+            final Intent registerIntent = new Intent(navegacionMenu.this,Login.class);
+            final Intent registerIntent2 = new Intent(navegacionMenu.this,Login.class);
+
+            dialogSignInBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signInDialog.dismiss();
+                    setSignUpFragment = false;
+                    startActivity(registerIntent);
+
+                }
+            });
+
+
+            dialogSignUpBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signInDialog.dismiss();
+                    setSignUpFragment = true;
+                    startActivity(registerIntent);
+
+                }
+            });
+
+            signInDialog.show();
+
+
+            // gotFragment("Mi Carrito",new MyCartFragment(),CART_FRAGMENT);
             return true;
 
         } else if (id == android.R.id.home) {

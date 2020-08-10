@@ -19,13 +19,15 @@ private FirebaseAuth firebaseAuth;
 
         setContentView(R.layout.activity_main);
 
-        SystemClock.sleep(3000);
-        Intent login= new Intent(MainActivity.this,Login.class);
-        startActivity(login);
-        finish();
-
-
         firebaseAuth= FirebaseAuth.getInstance();
+
+        SystemClock.sleep(3000);
+       // Intent login= new Intent(MainActivity.this,Login.class);
+        //startActivity(login);
+        //finish();
+
+
+
 
       //  new Handler().postDelayed(new Runnable() {
         //    @Override
@@ -49,12 +51,12 @@ private FirebaseAuth firebaseAuth;
         FirebaseUser usuarioActual= firebaseAuth.getCurrentUser();
 
         if(usuarioActual==null){
-            Intent registrointent= new Intent(this,Registro.class);
+            Intent registrointent= new Intent(this, Login.class);
             startActivity(registrointent);
             finish();
 
         }else {
-            Intent intent= new Intent(this,Login.class);
+            Intent intent= new Intent(this,navegacionMenu.class);
             startActivity(intent);
             finish();
 

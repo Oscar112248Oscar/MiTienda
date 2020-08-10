@@ -30,7 +30,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".Registro" />
         <activity android:name=".Login" />
         <activity
             android:name=".MainActivity"

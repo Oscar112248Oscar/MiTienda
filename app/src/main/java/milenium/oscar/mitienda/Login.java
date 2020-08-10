@@ -8,16 +8,25 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
- public class Login extends AppCompatActivity {
+ public class Login extends AppCompatActivity {/// esta actrivvidad se refiere a RegisterActivity
      private FrameLayout frameLayout;
      public  static boolean onOlvidoContrasenaFragment=false;
+     public static  boolean setSignUpFragment = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         frameLayout= findViewById(R.id.loginFrameLayout);
-       // setFragment(new SignInFragment());
-        setDefaultFragment(new SignInFragment());
+
+       if (setSignUpFragment){
+           setSignUpFragment= false;
+           setDefaultFragment(new SignUpFragment());
+
+       }else {
+           setDefaultFragment(new SignInFragment());
+       }
+
+
 
     }
 
