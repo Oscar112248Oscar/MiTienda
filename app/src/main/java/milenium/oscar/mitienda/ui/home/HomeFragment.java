@@ -4,11 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +38,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewCategoria;
     private CategoriaAdaptador categoriaAdaptador;
     private  RecyclerView testing;
+    private List<CategoriaModelo> categoriaModelos;
+    private FirebaseFirestore firebaseFirestore; /// creamos la variable de firebase para accerder a la base de datos, abajo la instanciamos para poder usarla
 
 
 
@@ -43,17 +52,38 @@ public class HomeFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewCategoria.setLayoutManager(layoutManager);
 
-       final List<CategoriaModelo> categoriaModelos= new ArrayList<CategoriaModelo>();
-        categoriaModelos.add(new CategoriaModelo("link","Home"));
-        categoriaModelos.add(new CategoriaModelo("link","Electronicos"));
-        categoriaModelos.add(new CategoriaModelo("link","Moda"));
-        categoriaModelos.add(new CategoriaModelo("link","Juguetes"));
-        categoriaModelos.add(new CategoriaModelo("link","Sports"));
-        categoriaModelos.add(new CategoriaModelo("link","Libros"));
-        categoriaModelos.add(new CategoriaModelo("link","Zapatos"));
-    categoriaAdaptador= new CategoriaAdaptador(categoriaModelos);
-    recyclerViewCategoria.setAdapter(categoriaAdaptador);
-    categoriaAdaptador.notifyDataSetChanged();
+
+
+        categoriaModelos = new ArrayList<CategoriaModelo>(); /// lista de categorias que va a ser cargada desde la base de datos
+        categoriaAdaptador= new CategoriaAdaptador(categoriaModelos);
+        recyclerViewCategoria.setAdapter(categoriaAdaptador);
+
+        firebaseFirestore = FirebaseFirestore.getInstance(); // FIREBASE INSTANCIADO
+
+        firebaseFirestore.collection("CATEGORIAS").orderBy("index").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+
+                                for(QueryDocumentSnapshot documentSnapshot : task.getResult() ){
+                                    categoriaModelos.add(new CategoriaModelo(documentSnapshot.get("icon").toString(),documentSnapshot.get("categoriaNombre").toString()));
+
+                                }
+                                categoriaAdaptador.notifyDataSetChanged(); /// NOTIFICA CUANDO LA LISTA ES ACTULIZADA (ELIMINAR , ACTUALIZAR , ETC)
+
+
+                            }else{
+                                String error =task.getException().getMessage();
+                                Toast.makeText(getContext(),error,Toast.LENGTH_SHORT).show();
+                            }
+
+                            }
+
+                });
+
+
+
 
     /////// Banner Slider
 

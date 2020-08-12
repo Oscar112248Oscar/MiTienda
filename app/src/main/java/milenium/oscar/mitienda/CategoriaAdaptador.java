@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 public class CategoriaAdaptador extends RecyclerView.Adapter<CategoriaAdaptador.CategoriaViewholder> {
@@ -52,8 +55,12 @@ String icono=listaCategoriaModelo.get(position).getIconoCategoriaLink();
             categoriaNombre=itemView.findViewById(R.id.categoria_nombre);
         }
 
-        private void setCategoriaIcono(String nombre){
+        private void setCategoriaIcono(String iconUrl){
 
+            if (!iconUrl.equals("null")){
+                Glide.with(itemView.getContext()).load(iconUrl).apply(new RequestOptions().placeholder(R.drawable.home)).into(iconoCategoria);
+
+            }
 
         }
 
