@@ -40,19 +40,19 @@ public class HomePageModel {
 
 
     //////////// strip ad
-    private int resources;
+    private String resources;
     private String backgroundcolor;
 
-    public HomePageModel(int type, int resources, String backgroundcolor) {
+    public HomePageModel(int type, String resources, String backgroundcolor) {
         this.type = type;
         this.resources = resources;
         this.backgroundcolor = backgroundcolor;
     }
 
-    public int getResources() {       return resources;
+    public String getResources() {       return resources;
     }
 
-    public void setResources(int resources) {   this.resources = resources;
+    public void setResources(String resources) {   this.resources = resources;
     }
 
     public String getBackgroundcolor() {     return backgroundcolor;
