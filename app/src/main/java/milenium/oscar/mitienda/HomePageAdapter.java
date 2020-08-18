@@ -1,7 +1,9 @@
 package milenium.oscar.mitienda;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.RequiresApi;
 import androidx.gridlayout.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -89,6 +92,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
@@ -106,9 +110,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
 
             case HomePageModel.HORIZONTAL_PRODUCT_VIEW:
+                String layoutcolor = homePageModelList.get(position).getBackgroundcolor();
                 String horizontalLayouttitle= homePageModelList.get(position).getTitle();
                 List<HorizontalProductScrollModel> horizontalProductScrollModelList = homePageModelList.get(position).getHorizontalProductScrollModelList();
-                ((horizontalProdcutViewHolder)holder).setHorizontalProductLayout(horizontalProductScrollModelList,horizontalLayouttitle);
+                ((horizontalProdcutViewHolder)holder).setHorizontalProductLayout(horizontalProductScrollModelList,horizontalLayouttitle,layoutcolor);
                 break;
 
 
@@ -299,12 +304,14 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
 
     public class horizontalProdcutViewHolder extends RecyclerView.ViewHolder {
+        private ConstraintLayout container;
         private TextView horizontallayouTitle;
         private Button horizontalviewAllBtn;
         private  RecyclerView horizontalRecyclerView;
 
         public horizontalProdcutViewHolder(@NonNull View itemView) {
             super(itemView);
+            container = itemView.findViewById(R.id.container);
             horizontallayouTitle= itemView.findViewById(R.id.horizontal_scrolllayout_title);
             horizontalviewAllBtn= itemView.findViewById(R.id.horizontal_scroll_view_all_boton);
             horizontalRecyclerView= itemView.findViewById(R.id.horizontal_scrolllayout_recyclerview);
@@ -312,8 +319,9 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
         }
 
-        private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelsList, String title){
-
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelsList, String title, String color){
+            container.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             horizontallayouTitle.setText(title);
 
             if(horizontalProductScrollModelsList.size()>8){
@@ -372,7 +380,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                     TextView productDescription = gridProductLayout.getChildAt(x).findViewById(R.id.horizontal_productdescripcion);
                     TextView productPrice = gridProductLayout.getChildAt(x).findViewById(R.id.horizontal_productPrecio);
 
-                    productImage.setImageResource(horizontalProductScrollModelsList.get(x).getProductImage());
+                   // Glide.with(itemView.getContext()).load(horizontalProductScrollModelsList.get())
                     productTitle.setText(horizontalProductScrollModelsList.get(x).getProductTitle());
                     productDescription.setText(horizontalProductScrollModelsList.get(x).getProductDescription());
                     productPrice.setText(horizontalProductScrollModelsList.get(x).getProductPrice());

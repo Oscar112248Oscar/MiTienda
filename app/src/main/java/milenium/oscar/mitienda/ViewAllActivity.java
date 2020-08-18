@@ -61,15 +61,7 @@ public class ViewAllActivity extends AppCompatActivity {
                 gridView.setVisibility(View.VISIBLE);
 
                 List<HorizontalProductScrollModel> horizontalProductScrollModelsList = new ArrayList<>();
-                horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele1, "Bolsa de Tinta Epson", "WF-C579R", "$350.00"));
-                horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2, "Bolsa de Tinta Epson", "WF-C579R", "$350.00"));
-                horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ropa1, "Bolsa de Tinta Epson", "WF-C579R", "$350.00"));
-                horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ropa2, "Bolsa de Tinta Epson", "WF-C579R", "$350.00"));
-                horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2, "Bolsa de Tinta Epson", "WF-C579R", "$350.00"));
-                horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele1, "Bolsa de Tinta Epson", "WF-C579R", "$350.00"));
-                horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ropa2, "Bolsa de Tinta Epson", "WF-C579R", "$350.00"));
-                horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2, "Bolsa de Tinta Epson", "WF-C579R", "$350.00"));
-                horizontalProductScrollModelsList.add(new HorizontalProductScrollModel(R.drawable.ele2, "Bolsa de Tinta Epson", "WF-C579R", "$350.00"));
+
 
 
                 GridProductLayoutAdapater gridProductLayoutAdapater = new GridProductLayoutAdapater(horizontalProductScrollModelsList);

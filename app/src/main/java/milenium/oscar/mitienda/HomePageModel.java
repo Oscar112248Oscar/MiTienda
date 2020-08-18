@@ -68,11 +68,14 @@ public class HomePageModel {
     private String title;
     private List<HorizontalProductScrollModel> horizontalProductScrollModelList;
 
-    public HomePageModel(int type, String title, List<HorizontalProductScrollModel> horizontalProductScrollModelList) {
+    public HomePageModel(int type, String title, String backgroundcolor,List<HorizontalProductScrollModel> horizontalProductScrollModelList) {
         this.type = type;
         this.title = title;
+        this.backgroundcolor = backgroundcolor;
         this.horizontalProductScrollModelList = horizontalProductScrollModelList;
     }
+
+
 
     public String getTitle() {
         return title;

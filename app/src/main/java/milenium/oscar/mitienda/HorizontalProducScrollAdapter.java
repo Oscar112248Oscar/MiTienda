@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 public class HorizontalProducScrollAdapter extends RecyclerView.Adapter<HorizontalProducScrollAdapter.ViewHolder> {
@@ -30,7 +33,7 @@ public class HorizontalProducScrollAdapter extends RecyclerView.Adapter<Horizont
 
     @Override
     public void onBindViewHolder(@NonNull HorizontalProducScrollAdapter.ViewHolder holder, int position) {
-    int resource= horizontalProductScrollModels.get(position).getProductImage();
+    String resource= horizontalProductScrollModels.get(position).getProductImage();
     String title= horizontalProductScrollModels.get(position).getProductTitle();
     String description  = horizontalProductScrollModels.get(position).getProductDescription();
         String price  = horizontalProductScrollModels.get(position).getProductPrice();
@@ -77,8 +80,11 @@ public class HorizontalProducScrollAdapter extends RecyclerView.Adapter<Horizont
 
         }
 
-        private void setProductImage(int resource){
-            productImage.setImageResource(resource);
+        private void setProductImage(String resource){
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.home)).into(productImage);// home
+            //es el icono de casa en las categorias
+
+
         }
 
         private void setProductTitle(String title){
@@ -93,7 +99,7 @@ public class HorizontalProducScrollAdapter extends RecyclerView.Adapter<Horizont
 
 
         private void setProductPrice(String price){
-            productPrice.setText(price);
+            productPrice.setText("$"+price);
 
         }
 
