@@ -3,12 +3,18 @@ package milenium.oscar.mitienda;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -36,11 +42,13 @@ public class GridProductLayoutAdapater extends BaseAdapter {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
         View view;
         if(convertView== null){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_scroll_item_layout,null);
+            view.setElevation(0);
            view.setBackgroundColor(Color.parseColor("#ffffff"));
 
            view.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +65,7 @@ public class GridProductLayoutAdapater extends BaseAdapter {
             TextView productDescription = view.findViewById(R.id.horizontal_productdescripcion);
             TextView productPrice = view.findViewById(R.id.horizontal_productPrecio);
 
-           // productImage.setImageResource(horizontalProductScrollModels.get(position).getProductImage());
+            Glide.with(parent.getContext()).load(horizontalProductScrollModels.get(position).getProductImage()).apply(new RequestOptions().placeholder(R.drawable.home)).into(productImage);
             productTitle.setText(horizontalProductScrollModels.get(position).getProductTitle());
             productDescription.setText(horizontalProductScrollModels.get(position).getProductDescription());
             productPrice.setText(horizontalProductScrollModels.get(position).getProductPrice());
