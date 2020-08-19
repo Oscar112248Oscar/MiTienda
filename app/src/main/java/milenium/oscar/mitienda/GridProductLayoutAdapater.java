@@ -68,7 +68,7 @@ public class GridProductLayoutAdapater extends BaseAdapter {
             Glide.with(parent.getContext()).load(horizontalProductScrollModels.get(position).getProductImage()).apply(new RequestOptions().placeholder(R.drawable.home)).into(productImage);
             productTitle.setText(horizontalProductScrollModels.get(position).getProductTitle());
             productDescription.setText(horizontalProductScrollModels.get(position).getProductDescription());
-            productPrice.setText(horizontalProductScrollModels.get(position).getProductPrice());
+            productPrice.setText("$"+horizontalProductScrollModels.get(position).getProductPrice());
 
         }else{
 

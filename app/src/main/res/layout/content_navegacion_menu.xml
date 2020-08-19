@@ -9,11 +9,5 @@
     tools:showIn="@layout/app_bar_navegacion_menu">
 
 
-    <ImageView
-        android:id="@+id/no_internet_connection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        />
+
 </FrameLayout>

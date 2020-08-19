@@ -43,7 +43,7 @@ import static milenium.oscar.mitienda.Login.setSignUpFragment;
 public class navegacionMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FrameLayout frameLayout;
     private  int currentFragment = -1;
-    private ImageView noInternetConnection;
+
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -96,40 +96,25 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);*/
         frameLayout= findViewById(R.id.principallayout);
-        noInternetConnection = findViewById(R.id.no_internet_connection);
 
 
-        // comandos para verificar si hay conexion a internet
-
-        ConnectivityManager  connectivityManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo  networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        if(networkInfo != null && networkInfo.isConnected()== true) {
-            noInternetConnection.setVisibility(View.GONE);
 
 
-            if (showCart) {
-                drawer.setDrawerLockMode(1);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                gotFragment("Mi carrito", new MyCartFragment(), -2);
+        if (showCart) {
+            drawer.setDrawerLockMode(1);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            gotFragment("Mi carrito", new MyCartFragment(), -2);
 
-            } else {
-                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
-                drawer.addDrawerListener(toggle);
-                toggle.syncState();
-                setFragment(new HomeFragment(), HOME_FRAGMENT);
-
-
-            }
-        }else {
-
-                Glide.with(this).load(R.drawable.noconexioninternet).into(noInternetConnection);
-            noInternetConnection.setVisibility(View.VISIBLE);
-
-
+        } else {
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+            setFragment(new HomeFragment(), HOME_FRAGMENT);
 
 
         }
+
+
 
     }
 

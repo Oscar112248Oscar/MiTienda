@@ -1,9 +1,13 @@
 package milenium.oscar.mitienda.ui.home;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,6 +50,7 @@ public class HomeFragment extends Fragment {
     private CategoriaAdaptador categoriaAdaptador;
     private  RecyclerView homePageRecyclerView;
     private HomePageAdapter adapter;
+    private ImageView noInternetConnection;
 
 
 
@@ -52,28 +58,37 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View  view=  inflater.inflate(R.layout.fragment_home,container,false);
+        noInternetConnection = view.findViewById(R.id.no_internet_connection);
+
+        // comandos para verificar si hay conexion a internet
+
+        ConnectivityManager connectivityManager= (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if(networkInfo != null && networkInfo.isConnected()== true) {
+            noInternetConnection.setVisibility(View.GONE);
             recyclerViewCategoria=view.findViewById(R.id.categoriasLista);
-        LinearLayoutManager layoutManager= new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerViewCategoria.setLayoutManager(layoutManager);
+            LinearLayoutManager layoutManager= new LinearLayoutManager(getActivity());
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            recyclerViewCategoria.setLayoutManager(layoutManager);
 
 
 
-        categoriaAdaptador= new CategoriaAdaptador(categoriaModelos);
-        recyclerViewCategoria.setAdapter(categoriaAdaptador);
+            categoriaAdaptador= new CategoriaAdaptador(categoriaModelos);
+            recyclerViewCategoria.setAdapter(categoriaAdaptador);
 
 
-        if(categoriaModelos.size()== 0){
+            if(categoriaModelos.size()== 0){
 
-            loadCategories(categoriaAdaptador,getContext());
-        }else {
+                loadCategories(categoriaAdaptador,getContext());
+            }else {
 
-            categoriaAdaptador.notifyDataSetChanged();
+                categoriaAdaptador.notifyDataSetChanged();
 
 
-        }
+            }
 
-        ////////////// slider de productos horizontales
+            ////////////// slider de productos horizontales
 
 
        /* List<HorizontalProductScrollModel> horizontalProductScrollModelsList= new ArrayList<>();
@@ -89,33 +104,43 @@ public class HomeFragment extends Fragment {
 */
 
 
-        /////////////// slider de productos horizontales
+            /////////////// slider de productos horizontales
 
 
-        /////////////// ESTA PARTE CONTROLA TODA LA VISTA
-        //// 0 PARA SLIDER 1 PARA ANUNCIO 2 PARA LOS PRODUCTOS HORIZONTALES
-        //3 PARA LOS PRODUCTOS EN LA GRILLA
-        //testin es el Recdycler view padre de todas las vistas del inicio
-        //le manda una lista al HomePageAdapter y pone las vistas segun los numeros que
-        // se mande , aqui se muestarn enviando todos los numeros
+            /////////////// ESTA PARTE CONTROLA TODA LA VISTA
+            //// 0 PARA SLIDER 1 PARA ANUNCIO 2 PARA LOS PRODUCTOS HORIZONTALES
+            //3 PARA LOS PRODUCTOS EN LA GRILLA
+            //testin es el Recdycler view padre de todas las vistas del inicio
+            //le manda una lista al HomePageAdapter y pone las vistas segun los numeros que
+            // se mande , aqui se muestarn enviando todos los numeros
 
-        homePageRecyclerView= view.findViewById(R.id.home_page_recyclerview);
-        LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
-        testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        homePageRecyclerView.setLayoutManager(testingLayoutManager);
+            homePageRecyclerView= view.findViewById(R.id.home_page_recyclerview);
+            LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
+            testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            homePageRecyclerView.setLayoutManager(testingLayoutManager);
 
-        adapter= new HomePageAdapter(homePageModelList);// variable homePageList importada
-        homePageRecyclerView.setAdapter(adapter);
+            adapter= new HomePageAdapter(homePageModelList);// variable homePageList importada
+            homePageRecyclerView.setAdapter(adapter);
 
-        if(homePageModelList.size()== 0){
+            if(homePageModelList.size()== 0){
 
-            loadFragmentData(adapter,getContext());/// funcion importada de queriues
+                loadFragmentData(adapter,getContext());/// funcion importada de queriues
+            }else {
+
+                adapter.notifyDataSetChanged();
+
+
+            }
+
+
         }else {
 
-            adapter.notifyDataSetChanged();
+            Glide.with(this).load(R.drawable.noconexioninternet).into(noInternetConnection);
+            noInternetConnection.setVisibility(View.VISIBLE);
 
 
         }
+
 
 
         ///////////////////
