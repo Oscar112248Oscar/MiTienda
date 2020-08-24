@@ -38,11 +38,6 @@ public class MyWishListFragment extends Fragment {
         wishilistRecyclerView.setLayoutManager(linearLayoutManager);
 
         List<WishListModel> wishListModelList = new ArrayList<>();
-        wishListModelList.add(new WishListModel(R.drawable.ele1,"Ropa de Bebe",1,"3",145,"$25.00","$25.00","Contra Entrega"));
-        wishListModelList.add(new WishListModel(R.drawable.ele1,"Ropa de Bebe",0,"3",145,"$25.00","$25.00","Contra Entrega"));
-        wishListModelList.add(new WishListModel(R.drawable.ele1,"Ropa de Bebe",2,"3",145,"$25.00","$25.00","Contra Entrega"));
-        wishListModelList.add(new WishListModel(R.drawable.ele1,"Ropa de Bebe",4,"3",145,"$25.00","$25.00","Contra Entrega"));
-        wishListModelList.add(new WishListModel(R.drawable.ele1,"Ropa de Bebe",1,"3",145,"$25.00","$25.00","Contra Entrega"));
 
         WishListAdapter wishListAdapter = new WishListAdapter(wishListModelList,true);
         wishilistRecyclerView.setAdapter(wishListAdapter);

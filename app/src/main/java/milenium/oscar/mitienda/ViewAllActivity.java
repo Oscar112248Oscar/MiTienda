@@ -18,6 +18,7 @@ public class ViewAllActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private GridView  gridView;
+    public static List<WishListModel> wishListModelList;
    public static List<HorizontalProductScrollModel> horizontalProductScrollModelsList ;
 
     @Override
@@ -44,16 +45,8 @@ public class ViewAllActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(layoutManager);
 
 
-                List<WishListModel> wishListModelList = new ArrayList<>();
-                wishListModelList.add(new WishListModel(R.drawable.ele1, "Ropa de Bebe", 1, "3", 145, "$25.00", "$25.00", "Contra Entrega"));
-                wishListModelList.add(new WishListModel(R.drawable.ele1, "Ropa de Bebe", 0, "3", 145, "$25.00", "$25.00", "Contra Entrega"));
-                wishListModelList.add(new WishListModel(R.drawable.ele1, "Ropa de Bebe", 2, "3", 145, "$25.00", "$25.00", "Contra Entrega"));
-                wishListModelList.add(new WishListModel(R.drawable.ele1, "Ropa de Bebe", 4, "3", 145, "$25.00", "$25.00", "Contra Entrega"));
-                wishListModelList.add(new WishListModel(R.drawable.ele1, "Ropa de Bebe", 1, "3", 145, "$25.00", "$25.00", "Contra Entrega"));
-
 
                 WishListAdapter adapter = new WishListAdapter(wishListModelList, false);
-
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             } else if (layout_code ==1 ) {
@@ -63,7 +56,7 @@ public class ViewAllActivity extends AppCompatActivity {
 
                 GridProductLayoutAdapater gridProductLayoutAdapater = new GridProductLayoutAdapater(horizontalProductScrollModelsList);
                 gridView.setAdapter(gridProductLayoutAdapater);
-                // gridProductLayoutAdapater.notifyDataSetChanged();
+               //  gridProductLayoutAdapater.notifyDataSetChanged();
             }
     }
 

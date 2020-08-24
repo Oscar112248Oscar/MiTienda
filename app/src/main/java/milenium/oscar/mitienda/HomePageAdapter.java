@@ -112,8 +112,9 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             case HomePageModel.HORIZONTAL_PRODUCT_VIEW:
                 String layoutcolor = homePageModelList.get(position).getBackgroundcolor();
                 String horizontalLayouttitle= homePageModelList.get(position).getTitle();
+                List <WishListModel> viewAllProductList = homePageModelList.get(position).getViewAllProdcutList();
                 List<HorizontalProductScrollModel> horizontalProductScrollModelList = homePageModelList.get(position).getHorizontalProductScrollModelList();
-                ((horizontalProdcutViewHolder)holder).setHorizontalProductLayout(horizontalProductScrollModelList,horizontalLayouttitle,layoutcolor);
+                ((horizontalProdcutViewHolder)holder).setHorizontalProductLayout(horizontalProductScrollModelList,horizontalLayouttitle,layoutcolor,viewAllProductList);
                 break;
 
 
@@ -321,17 +322,19 @@ public class HomePageAdapter extends RecyclerView.Adapter {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelsList, String title, String color){
+        private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelsList, final String title, String color, final List<WishListModel> viewAllProductList){
             container.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             horizontallayouTitle.setText(title);
 
-            if(horizontalProductScrollModelsList.size()>8){
+            if(horizontalProductScrollModelsList.size()>5){
                 horizontalviewAllBtn.setVisibility(View.VISIBLE);
                 horizontalviewAllBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ViewAllActivity.wishListModelList = viewAllProductList;
                         Intent viewAllIntent= new Intent(itemView.getContext(),ViewAllActivity.class);
                         viewAllIntent.putExtra("layout_code",0);
+                        viewAllIntent.putExtra("title",title);
                         itemView.getContext().startActivity(viewAllIntent);
 
                     }
