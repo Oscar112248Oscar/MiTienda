@@ -13,9 +13,14 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import static milenium.oscar.mitienda.DBqueries.lists;
+import static milenium.oscar.mitienda.DBqueries.loadCategoriesNames;
+import static milenium.oscar.mitienda.DBqueries.loadFragmentData;
+
 public class CategoryActivity extends AppCompatActivity {
 
     private RecyclerView categoryRecyclerView;
+    private HomePageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +37,32 @@ public class CategoryActivity extends AppCompatActivity {
         categoryRecyclerView= findViewById(R.id.category_recyclerview);
 
 
-
-
-
-
-
-        /////////////// OTRO BANNER
-
         LinearLayoutManager testingLayoutManager = new LinearLayoutManager(this);
         testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         categoryRecyclerView.setLayoutManager(testingLayoutManager);
-        List<HomePageModel> homePageModelList= new ArrayList<>();
-        HomePageAdapter adapter= new HomePageAdapter(homePageModelList);
+
+
+        int listPosition=0;
+        for(int x =0 ; x < loadCategoriesNames.size();x++){
+
+            if(loadCategoriesNames.get(x).equals(title.toUpperCase())){
+                listPosition =x;
+
+            }
+        }
+
+        if(listPosition==0){
+            loadCategoriesNames.add(title.toUpperCase());
+            lists.add(new ArrayList<HomePageModel>());
+            adapter= new HomePageAdapter(lists.get(loadCategoriesNames.size()-1));// variable homePageList importada
+            loadFragmentData(adapter,getApplicationContext(), loadCategoriesNames.size()-1,title);/// funcion importada de queriues
+
+        }else {
+            adapter= new HomePageAdapter(lists.get(listPosition));// variable homePageList importada
+
+        }
+
+
         categoryRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

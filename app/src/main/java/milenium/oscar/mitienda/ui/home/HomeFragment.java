@@ -35,8 +35,9 @@ import milenium.oscar.mitienda.SliderModel;
 
 import static milenium.oscar.mitienda.DBqueries.categoriaModelos;// variable importada de la clase DBqueires
 import static milenium.oscar.mitienda.DBqueries.firebaseFirestore;
-import static milenium.oscar.mitienda.DBqueries.homePageModelList;
+import static milenium.oscar.mitienda.DBqueries.lists;
 import static milenium.oscar.mitienda.DBqueries.loadCategories;
+import static milenium.oscar.mitienda.DBqueries.loadCategoriesNames;
 import static milenium.oscar.mitienda.DBqueries.loadFragmentData;
 
 public class HomeFragment extends Fragment {
@@ -119,20 +120,22 @@ public class HomeFragment extends Fragment {
             testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             homePageRecyclerView.setLayoutManager(testingLayoutManager);
 
-            adapter= new HomePageAdapter(homePageModelList);// variable homePageList importada
-            homePageRecyclerView.setAdapter(adapter);
 
-            if(homePageModelList.size()== 0){
 
-                loadFragmentData(adapter,getContext());/// funcion importada de queriues
+            if(lists.size()== 0){
+                loadCategoriesNames.add("HOME");
+                lists.add(new ArrayList<HomePageModel>());
+                adapter= new HomePageAdapter(lists.get(0));// variable homePageList importada
+
+                loadFragmentData(adapter,getContext(), 0,"Home");/// funcion importada de queriues
             }else {
-
+                adapter = new HomePageAdapter(lists.get(0));
                 adapter.notifyDataSetChanged();
-
 
             }
 
 
+            homePageRecyclerView.setAdapter(adapter);
         }else {
 
             Glide.with(this).load(R.drawable.noconexioninternet).into(noInternetConnection);
