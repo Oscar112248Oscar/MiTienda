@@ -73,6 +73,7 @@ public class DBqueries {
 
                                     }
 
+
                                     lists.get(index).add(new HomePageModel(0,sliderModelList));
 
 

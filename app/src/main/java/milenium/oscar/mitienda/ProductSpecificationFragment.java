@@ -24,6 +24,8 @@ public class ProductSpecificationFragment extends Fragment {
     }
 
     private RecyclerView productSpecificationRecyclerView;
+    public  List<ProductSpecificationModel> productSpecificationModelList;
+
 
 
 
@@ -39,10 +41,7 @@ public class ProductSpecificationFragment extends Fragment {
 
         productSpecificationRecyclerView.setLayoutManager(linearLayoutManager);
 
-        List<ProductSpecificationModel> productSpecificationModelList= new ArrayList<>();
-
-
-        productSpecificationModelList.add(new ProductSpecificationModel(0,"General"));
+       /* productSpecificationModelList.add(new ProductSpecificationModel(0,"General"));
         productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
         productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Lila"));
         productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Rojo"));
@@ -65,15 +64,7 @@ public class ProductSpecificationFragment extends Fragment {
         productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
         productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
         productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
-        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));
-
-
-
-
-
-
-
-
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Color","Magenta"));*/
 
 
 
