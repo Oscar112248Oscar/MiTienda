@@ -4,6 +4,8 @@ import android.content.Context;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import milenium.oscar.mitienda.ui.home.HomeFragment;
+
 public class DBqueries {
     public static  FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance(); // FIREBASE INSTANCIADO
     public static List<CategoriaModelo> categoriaModelos = new ArrayList<>();/// esta llena las imagenes de las categorias con el recyclerview
@@ -24,7 +28,7 @@ public class DBqueries {
     public static List<String> loadCategoriesNames = new ArrayList<>();
 
 
-    public static void loadCategories(final CategoriaAdaptador  categoriaAdaptador, final Context context){
+    public static void loadCategories(final RecyclerView categoriaRecyclerView, final Context context){
 
 
         firebaseFirestore.collection("CATEGORIAS").orderBy("index").get()
@@ -37,6 +41,8 @@ public class DBqueries {
                                 categoriaModelos.add(new CategoriaModelo(documentSnapshot.get("icon").toString(),documentSnapshot.get("categoriaNombre").toString()));
 
                             }
+                            CategoriaAdaptador categoriaAdaptador = new CategoriaAdaptador(categoriaModelos);
+                            categoriaRecyclerView.setAdapter(categoriaAdaptador);
                             categoriaAdaptador.notifyDataSetChanged(); /// NOTIFICA CUANDO LA LISTA ES ACTULIZADA (ELIMINAR , ACTUALIZAR , ETC)
 
 
@@ -51,7 +57,7 @@ public class DBqueries {
 
     }
 
-    public static void loadFragmentData(final HomePageAdapter adapter, final Context context, final int index, String categoryName){
+    public static void loadFragmentData(final RecyclerView homeRecyclerView, final Context context, final int index, String categoryName){
         firebaseFirestore.collection("CATEGORIAS").document(categoryName.toUpperCase())// puedo darle el orden que quiera a las vistas, en
                 // las colecciones con el index
                 .collection("TOP_DEALS").orderBy("index").get()
@@ -133,7 +139,12 @@ public class DBqueries {
 
 
                             }
-                            adapter.notifyDataSetChanged();
+                            HomePageAdapter  homePageAdapter= new HomePageAdapter(lists.get(index));
+                            homeRecyclerView.setAdapter(homePageAdapter);
+
+                            homePageAdapter.notifyDataSetChanged();
+                            HomeFragment.swipeRefreshLayout.setRefreshing(false);
+
                         }else{
                             String error =task.getException().getMessage();
                             Toast.makeText(context,error,Toast.LENGTH_SHORT).show();
