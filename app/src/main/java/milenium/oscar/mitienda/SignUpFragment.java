@@ -55,6 +55,7 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private String emailVerifica="[a-zA-Z0-9._-]+@[a-z]+.[a-z]+";
+    public static boolean disableCloseBtn = false;
 
 
     @Override
@@ -75,6 +76,13 @@ public class SignUpFragment extends Fragment {
         //INSTANCIAS A FIREBASE
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseFirestore=FirebaseFirestore.getInstance();
+
+        if (disableCloseBtn){
+            btnImgSalir.setVisibility(View.GONE);
+        }else {
+            btnImgSalir.setVisibility(View.VISIBLE);
+        }
+
         return view;
     }
 
@@ -256,9 +264,16 @@ public class SignUpFragment extends Fragment {
                                                @Override
                                                public void onComplete(@NonNull Task<DocumentReference> task) {
                                                         if(task.isSuccessful()){
-                                                            Intent intent= new Intent(getActivity(),Login.class);
-                                                            startActivity(intent);
+
+                                                            if(disableCloseBtn){
+                                                                disableCloseBtn = false;
+                                                            }else {
+                                                                Intent intent = new Intent(getActivity(),Login.class);
+                                                                startActivity(intent);
+                                                            }
+
                                                             getActivity().finish();
+
 
                                                         }else {
                                                             barra.setVisibility(View.INVISIBLE);
@@ -291,4 +306,9 @@ public class SignUpFragment extends Fragment {
 
 
     }
+
+
+
+
+
 }

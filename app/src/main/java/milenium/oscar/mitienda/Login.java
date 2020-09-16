@@ -35,6 +35,8 @@ import android.widget.FrameLayout;
      public boolean onKeyDown(int keyCode, KeyEvent event) {
 
          if(keyCode== KeyEvent.KEYCODE_BACK){
+             SignInFragment.disableCloseBtn = false;
+             SignUpFragment.disableCloseBtn = false;
              if(onOlvidoContrasenaFragment){
                  onOlvidoContrasenaFragment=false;
                  setFragment(new SignInFragment());

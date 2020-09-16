@@ -9,6 +9,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -20,6 +22,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import milenium.oscar.mitienda.ui.home.HomeFragment;
 
 public class DBqueries {
+    public  static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    public static FirebaseUser currentUser = firebaseAuth.getCurrentUser();
     public static  FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance(); // FIREBASE INSTANCIADO
     public static List<CategoriaModelo> categoriaModelos = new ArrayList<>();/// esta llena las imagenes de las categorias con el recyclerview
    // public static List<HomePageModel> homePageModelList= new ArrayList<>();// esta llena todas las vistas despendiendo lo que se le envie

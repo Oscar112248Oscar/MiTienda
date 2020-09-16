@@ -60,6 +60,8 @@ public class SignInFragment extends Fragment {
 
     private String emailVerifica="[a-zA-Z0-9._-]+@[a-z]+.[a-z]+";
 
+    public static boolean disableCloseBtn = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,7 +79,11 @@ public class SignInFragment extends Fragment {
 
         firebaseAuth= FirebaseAuth.getInstance();
 
-
+            if (disableCloseBtn){
+                btnSalir.setVisibility(View.GONE);
+            }else {
+                btnSalir.setVisibility(View.VISIBLE);
+            }
 
         return view;
     }
@@ -211,9 +217,14 @@ public class SignInFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
-                                    Intent intent = new Intent(getActivity(),Login.class);
-                                    startActivity(intent);
-                                    getActivity().finish();
+                                    if(disableCloseBtn){
+                                        disableCloseBtn = false;
+                                    }else {
+                                        Intent intent = new Intent(getActivity(),Login.class);
+                                        startActivity(intent);
+                                    }
+
+                                     getActivity().finish();
 
 
                                 }else{

@@ -36,6 +36,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import milenium.oscar.mitienda.ui.home.HomeFragment;
 
+import static milenium.oscar.mitienda.DBqueries.currentUser;
 import static milenium.oscar.mitienda.Login.setSignUpFragment;
 
 
@@ -60,6 +61,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
     private Window window;
     private Toolbar toolbar;
+    private  Dialog signInDialog;
 
 
     @SuppressLint("WrongConstant")
@@ -77,6 +79,8 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+
 
        // ActionBarDrawerToggle toggle= new ActionBarDrawerToggle(this,drawer,toolbar,R.string.open,R.string.close);
         //drawer.addDrawerListener(toggle);
@@ -111,9 +115,50 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
             toggle.syncState();
             setFragment(new HomeFragment(), HOME_FRAGMENT);
 
-
         }
 
+        if(currentUser == null){
+            navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(false);
+        }else {
+            navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(true);
+   }
+
+         signInDialog = new Dialog(this);
+        signInDialog.setContentView(R.layout.sign_in_dialog);
+        signInDialog.setCancelable(true);
+
+        signInDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        Button dialogSignInBtn  = signInDialog.findViewById(R.id.sign_in_btn);
+        Button dialogSignUpBtn  = signInDialog.findViewById(R.id.sign_up_btn);
+
+        final Intent registerIntent = new Intent(navegacionMenu.this,Login.class);
+        final Intent registerIntent2 = new Intent(navegacionMenu.this,Login.class);
+
+        dialogSignInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SignInFragment.disableCloseBtn = true;
+                SignUpFragment.disableCloseBtn = true;
+                signInDialog.dismiss();
+                setSignUpFragment = false;
+                startActivity(registerIntent);
+
+            }
+        });
+
+
+        dialogSignUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SignUpFragment.disableCloseBtn = true;
+                SignInFragment.disableCloseBtn = true;
+                signInDialog.dismiss();
+                setSignUpFragment = true;
+                startActivity(registerIntent);
+
+            }
+        });
 
 
     }
@@ -187,43 +232,11 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
         }else  if(id==R.id.iconocarrito){
 
-            final Dialog signInDialog = new Dialog(this);
-            signInDialog.setContentView(R.layout.sign_in_dialog);
-            signInDialog.setCancelable(true);
-
-            signInDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-
-            Button dialogSignInBtn  = signInDialog.findViewById(R.id.sign_in_btn);
-            Button dialogSignUpBtn  = signInDialog.findViewById(R.id.sign_up_btn);
-
-            final Intent registerIntent = new Intent(navegacionMenu.this,Login.class);
-            final Intent registerIntent2 = new Intent(navegacionMenu.this,Login.class);
-
-            dialogSignInBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    signInDialog.dismiss();
-                    setSignUpFragment = false;
-                    startActivity(registerIntent);
-
-                }
-            });
-
-
-            dialogSignUpBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    signInDialog.dismiss();
-                    setSignUpFragment = true;
-                    startActivity(registerIntent);
-
-                }
-            });
-
-            signInDialog.show();
-
-
-            // gotFragment("Mi Carrito",new MyCartFragment(),CART_FRAGMENT);
+            if(currentUser == null) {
+                signInDialog.show();
+            }else {
+                gotFragment("Mi Carrito", new MyCartFragment(), CART_FRAGMENT);
+            }
             return true;
 
         } else if (id == android.R.id.home) {
@@ -256,42 +269,49 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int id= menuItem.getItemId();
-        if(id==R.id.mitienda){
+        DrawerLayout drawer=(DrawerLayout) findViewById(R.id.drawer_layout);
 
-            actionBarLogo.setVisibility(View.VISIBLE);
-            invalidateOptionsMenu();
-        setFragment(new HomeFragment(),HOME_FRAGMENT);
+        if(currentUser != null) {
+            int id = menuItem.getItemId();
+            if (id == R.id.mitienda) {
 
-        }  else if(id==R.id.orden){
-            gotFragment("Mi Orden", new MyOrdersFragment(),ORDERS_FRAGMENT);
+                actionBarLogo.setVisibility(View.VISIBLE);
+                invalidateOptionsMenu();
+                setFragment(new HomeFragment(), HOME_FRAGMENT);
 
-
-        }else if(id==R.id.recompensa){
-            gotFragment("Mis Recompensas", new MyRewardsFragment(),REWARDS_FRAGMENT);
-
-
-        }else if(id==R.id.carro){
-            gotFragment("Mi Carrito",new MyCartFragment(),CART_FRAGMENT);
+            } else if (id == R.id.orden) {
+                gotFragment("Mi Orden", new MyOrdersFragment(), ORDERS_FRAGMENT);
 
 
-        }else if(id==R.id.deseos){
-            gotFragment("Mis Deseos",new MyWishListFragment(),WISHLIST_FRAGMENT);
+            } else if (id == R.id.recompensa) {
+                gotFragment("Mis Recompensas", new MyRewardsFragment(), REWARDS_FRAGMENT);
 
 
-        }else  if(id==R.id.cuentaUsuario){
-            gotFragment("Mi Cuenta", new MyAcountFragment(),ACCOUNT_FRAGMENT);
-
-        } else if(id==R.id.cerarsesion){
+            } else if (id == R.id.carro) {
+                gotFragment("Mi Carrito", new MyCartFragment(), CART_FRAGMENT);
 
 
+            } else if (id == R.id.deseos) {
+                gotFragment("Mis Deseos", new MyWishListFragment(), WISHLIST_FRAGMENT);
+
+
+            } else if (id == R.id.cuentaUsuario) {
+                gotFragment("Mi Cuenta", new MyAcountFragment(), ACCOUNT_FRAGMENT);
+
+            } else if (id == R.id.cerarsesion) {
+
+
+            }
+            drawer.closeDrawer(GravityCompat.START);
+            return  true;
+
+        }else {
+            drawer.closeDrawer(GravityCompat.START);
+            signInDialog.show();
+            return false;
         }
 
-       DrawerLayout drawer=(DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
 
-
-return  true;
     }
 
 
