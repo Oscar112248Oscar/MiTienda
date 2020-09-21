@@ -30,10 +30,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import static milenium.oscar.mitienda.DBqueries.currentUser;
+
 import static milenium.oscar.mitienda.Login.setSignUpFragment;
 import static milenium.oscar.mitienda.navegacionMenu.showCart;
 
@@ -96,12 +98,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
     public static TextView coupenTitle;
     public static TextView coupenExpiryDate;
     public static TextView coupenBody;
-   private static RecyclerView coupenRecyclerView;
+    private static RecyclerView coupenRecyclerView;
     private static LinearLayout selectedCoupen;
        ////coupenDialog
-       private  Dialog signInDialog;
+    private  Dialog signInDialog;
+    private LinearLayout coupenRedemptionLayout;
+    private FirebaseUser currentUser;
 
-       private LinearLayout coupenRedemptionLayout;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +149,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         final List<String> productImages = new ArrayList<>();
 
-        firebaseFirestore.collection("PRODUCTOS").document("AAJNQsUkVx9sHkPeYdhA").get()
+        firebaseFirestore.collection("PRODUCTOS").document(getIntent().getStringExtra("PRODUCT_ID")).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -238,18 +244,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 if(currentUser == null){
                     signInDialog.show();
                 }else {
-
-
                     if (ALREADY_ADDED_TO_WISHLIST) {
                         ALREADY_ADDED_TO_WISHLIST = false;
                         addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
-
-
                     } else {
                         ALREADY_ADDED_TO_WISHLIST = true;
                         addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
-
-
                     }
                 }
 
@@ -426,11 +426,20 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
 
         ////// sign dialog
-            if (currentUser == null){
 
-                coupenRedemptionLayout.setVisibility(View.GONE);
+    }
 
-            }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null){
+            coupenRedemptionLayout.setVisibility(View.GONE);
+        }else {
+            coupenRedemptionLayout.setVisibility(View.VISIBLE);
+        }
 
 
     }

@@ -22,8 +22,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import milenium.oscar.mitienda.ui.home.HomeFragment;
 
 public class DBqueries {
-    public  static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    public static FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
     public static  FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance(); // FIREBASE INSTANCIADO
     public static List<CategoriaModelo> categoriaModelos = new ArrayList<>();/// esta llena las imagenes de las categorias con el recyclerview
    // public static List<HomePageModel> homePageModelList= new ArrayList<>();// esta llena todas las vistas despendiendo lo que se le envie

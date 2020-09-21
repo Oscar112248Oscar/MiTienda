@@ -22,6 +22,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -36,7 +38,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import milenium.oscar.mitienda.ui.home.HomeFragment;
 
-import static milenium.oscar.mitienda.DBqueries.currentUser;
 import static milenium.oscar.mitienda.Login.setSignUpFragment;
 
 
@@ -63,6 +64,10 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private Toolbar toolbar;
     private  Dialog signInDialog;
 
+    private FirebaseUser currentUser;
+
+    public static   DrawerLayout drawer;
+
 
     @SuppressLint("WrongConstant")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -78,7 +83,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         window= getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
 
 
 
@@ -117,11 +122,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
         }
 
-        if(currentUser == null){
-            navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(false);
-        }else {
-            navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(true);
-   }
+
 
          signInDialog = new Dialog(this);
         signInDialog.setContentView(R.layout.sign_in_dialog);
@@ -163,6 +164,18 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser == null){
+            navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(false);// con esto controlo el icono de logout
+            // y le digo que si ya esta logeado se active o desactive el icono
+        }else {
+            navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(true);
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBackPressed() {
@@ -186,8 +199,6 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
                     navigationView.getMenu().getItem(0).setChecked(true);
 
                 }
-
-
 
             }
 
@@ -299,8 +310,10 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
                 gotFragment("Mi Cuenta", new MyAcountFragment(), ACCOUNT_FRAGMENT);
 
             } else if (id == R.id.cerarsesion) {
-
-
+                FirebaseAuth.getInstance().signOut();
+                Intent registerIntent = new Intent(navegacionMenu.this,Login.class);
+                startActivity(registerIntent);
+                finish();
             }
             drawer.closeDrawer(GravityCompat.START);
             return  true;

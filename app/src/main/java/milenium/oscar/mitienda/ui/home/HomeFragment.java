@@ -1,5 +1,6 @@
 package milenium.oscar.mitienda.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -43,6 +44,7 @@ import static milenium.oscar.mitienda.DBqueries.lists;
 import static milenium.oscar.mitienda.DBqueries.loadCategories;
 import static milenium.oscar.mitienda.DBqueries.loadCategoriesNames;
 import static milenium.oscar.mitienda.DBqueries.loadFragmentData;
+import static milenium.oscar.mitienda.navegacionMenu.drawer;
 
 public class HomeFragment extends Fragment {
 
@@ -66,6 +68,7 @@ public class HomeFragment extends Fragment {
     private Button retryBtn;
 
 
+    @SuppressLint("WrongConstant")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -138,6 +141,7 @@ public class HomeFragment extends Fragment {
          networkInfo = connectivityManager.getActiveNetworkInfo();
 
         if(networkInfo != null && networkInfo.isConnected()== true) {
+            drawer.setDrawerLockMode(0);
             noInternetConnection.setVisibility(View.GONE);
             retryBtn.setVisibility(View.GONE);
             recyclerViewCategoria.setVisibility(View.VISIBLE);
@@ -193,6 +197,7 @@ public class HomeFragment extends Fragment {
             homePageRecyclerView.setAdapter(adapter);
 
         }else {
+            drawer.setDrawerLockMode(1);
             recyclerViewCategoria.setVisibility(View.GONE);
             homePageRecyclerView.setVisibility(View.GONE);
             Glide.with(this).load(R.drawable.noconexioninternet).into(noInternetConnection);
@@ -227,6 +232,7 @@ swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener
     }
 
 
+    @SuppressLint("WrongConstant")
     private void reloadPage(){
         networkInfo = connectivityManager.getActiveNetworkInfo();
         categoriaModelos.clear();
@@ -234,6 +240,7 @@ swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener
         loadCategoriesNames.clear();
 
         if(networkInfo != null && networkInfo.isConnected()== true) {
+            drawer.setDrawerLockMode(0);
             noInternetConnection.setVisibility(View.GONE);
             retryBtn.setVisibility(View.GONE);
             recyclerViewCategoria.setVisibility(View.VISIBLE);
@@ -251,7 +258,7 @@ swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener
 
 
         }else {
-
+            drawer.setDrawerLockMode(1);
             Toast.makeText(getContext(), "No hay conexion a Internet",Toast.LENGTH_SHORT).show();
             recyclerViewCategoria.setVisibility(View.GONE);
             homePageRecyclerView.setVisibility(View.GONE);

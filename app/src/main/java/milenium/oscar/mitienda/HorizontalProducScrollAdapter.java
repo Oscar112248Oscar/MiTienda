@@ -36,9 +36,9 @@ public class HorizontalProducScrollAdapter extends RecyclerView.Adapter<Horizont
     String resource= horizontalProductScrollModels.get(position).getProductImage();
     String title= horizontalProductScrollModels.get(position).getProductTitle();
     String description  = horizontalProductScrollModels.get(position).getProductDescription();
-        String price  = horizontalProductScrollModels.get(position).getProductPrice();
-
-        holder.setData(resource,title,description,price);
+    String price  = horizontalProductScrollModels.get(position).getProductPrice();
+    String productId = horizontalProductScrollModels.get(position).getProductID();
+        holder.setData(productId,resource,title,description,price);
 
     }
 
@@ -71,7 +71,7 @@ public class HorizontalProducScrollAdapter extends RecyclerView.Adapter<Horizont
 
         }
 
-        private void setData(String resource,String title,String description,String price){
+        private void setData(final String productId,String resource,String title,String description,String price){
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.sinfondo)).into(productImage);// home
             //es el icono de casa en las categorias
             productPrice.setText("$"+price);
@@ -84,6 +84,7 @@ public class HorizontalProducScrollAdapter extends RecyclerView.Adapter<Horizont
                     @Override
                     public void onClick(View v) {
                         Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                        productDetailsIntent.putExtra("PRODUCT_ID",productId);
                         itemView.getContext().startActivity(productDetailsIntent);
 
                     }

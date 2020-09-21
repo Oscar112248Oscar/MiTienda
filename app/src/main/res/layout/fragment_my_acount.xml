@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     tools:context="milenium.oscar.mitienda.MyAcountFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -29,5 +29,5 @@
                 android:layout_marginBottom="16dp"
                 android:textSize="14sp"/>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>
