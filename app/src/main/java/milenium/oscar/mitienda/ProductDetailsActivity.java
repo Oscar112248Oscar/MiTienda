@@ -36,11 +36,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
+import static milenium.oscar.mitienda.DBqueries.loadWishList;
+import static milenium.oscar.mitienda.DBqueries.wishList;
 import static milenium.oscar.mitienda.Login.setSignUpFragment;
 import static milenium.oscar.mitienda.navegacionMenu.showCart;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -104,11 +108,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private  Dialog signInDialog;
     private LinearLayout coupenRedemptionLayout;
     private FirebaseUser currentUser;
+    private String productID;
+    private Dialog loadingDialog;;
 
 
 
 
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,11 +151,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
         addToCartBtn = findViewById(R.id.add_to_cart_btn);
         coupenRedemptionLayout = findViewById(R.id.coupen_edeemption_layout);
 
+        //// loading dialog
+        loadingDialog = new Dialog(ProductDetailsActivity.this);
+        loadingDialog.setContentView(R.layout.loading_progress_dialog);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        loadingDialog.show();
+        //// loading dialog
+
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         final List<String> productImages = new ArrayList<>();
+        productID = getIntent().getStringExtra("PRODUCT_ID");
 
-        firebaseFirestore.collection("PRODUCTOS").document(getIntent().getStringExtra("PRODUCT_ID")).get()
+
+        firebaseFirestore.collection("PRODUCTOS").document(productID).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -222,8 +239,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
                             productDetailsViewpager.setAdapter(new ProductDetailsAdapter(getSupportFragmentManager(),productDetailsTablayout.getTabCount(),productDescription,productOtherDetails,productSpecificationModelList));
 
+                            if (wishList.size()==0){
+                                loadWishList(ProductDetailsActivity.this,loadingDialog);
+
+                            }else {
+                                loadingDialog.dismiss();
+                            }
+
+                            if(wishList.contains(productID)){
+                                ALREADY_ADDED_TO_WISHLIST= true;
+                                addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
+
+                            }else {
+                                ALREADY_ADDED_TO_WISHLIST= false;
+                            }
+
 
                         }else {
+                            loadingDialog.dismiss();
                             String error = task.getException().getMessage();
                             Toast.makeText(ProductDetailsActivity.this,error,Toast.LENGTH_SHORT).show();
                         }
@@ -248,8 +281,42 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         ALREADY_ADDED_TO_WISHLIST = false;
                         addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
                     } else {
-                        ALREADY_ADDED_TO_WISHLIST = true;
-                        addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
+
+                        Map<String,Object> addProduct= new HashMap<>();
+                        addProduct.put("product_ID_"+String.valueOf(wishList.size()),productID);
+
+
+                        firebaseFirestore.collection("USUARIOS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
+                        .set(addProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Map<String,Object> updateListSize= new HashMap<>();
+                                    updateListSize.put("list_size",(long)wishList.size() + 1);
+
+                                    firebaseFirestore.collection("USUARIOS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
+                                            .update(updateListSize).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                ALREADY_ADDED_TO_WISHLIST=true;
+                                                addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
+                                                wishList.add(productID);
+                                                Toast.makeText(ProductDetailsActivity.this,"Añadido a la lista de Deseos!",Toast.LENGTH_SHORT).show();
+                                            }else{
+                                                String error = task.getException().getMessage();
+                                                Toast.makeText(ProductDetailsActivity.this,error,Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                                }else{
+                                    String error = task.getException().getMessage();
+                                    Toast.makeText(ProductDetailsActivity.this,error,Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
                     }
                 }
 
@@ -391,7 +458,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         signInDialog = new Dialog(ProductDetailsActivity.this);
         signInDialog.setContentView(R.layout.sign_in_dialog);
         signInDialog.setCancelable(true);
-
         signInDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 
         Button dialogSignInBtn  = signInDialog.findViewById(R.id.sign_in_btn);

@@ -188,14 +188,13 @@ public class SignInFragment extends Fragment {
 
             } else {
                 btnIngresa.setEnabled(false);
-                btnIngresa.setTextColor(Color.argb(50, 255, 255, 255));
+                btnIngresa.setTextColor(Color.argb(50,255,0,0));
 
 
             }
         } else {
             btnIngresa.setEnabled(false);
-            btnIngresa.setTextColor(Color.argb(50, 255, 255, 255));
-
+            btnIngresa.setTextColor(Color.argb(50,255,0,0));
         }
     }
 
@@ -209,7 +208,7 @@ public class SignInFragment extends Fragment {
 
                 barra.setVisibility(View.VISIBLE);
                 btnIngresa.setEnabled(false);
-                btnIngresa.setTextColor(Color.argb(50, 255, 255, 255));
+                btnIngresa.setTextColor(Color.argb(50,255,0,0));
 
 
                 firebaseAuth.signInWithEmailAndPassword(emailUsuario.getText().toString(),password.getText().toString())
@@ -230,7 +229,7 @@ public class SignInFragment extends Fragment {
                                 }else{
                                     barra.setVisibility(View.INVISIBLE);
                                     btnIngresa.setEnabled(false);
-                                    btnIngresa.setTextColor(Color.argb(50, 255, 255, 255));
+                                    btnIngresa.setTextColor(Color.argb(50,255,0,0));
 
                                     String error=task.getException().getMessage();
                                     Toast.makeText(getActivity(),error,Toast.LENGTH_SHORT).show();
