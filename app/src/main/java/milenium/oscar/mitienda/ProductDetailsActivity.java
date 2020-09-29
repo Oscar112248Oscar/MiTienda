@@ -37,7 +37,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import static milenium.oscar.mitienda.DBqueries.loadWishList;
+import static milenium.oscar.mitienda.DBqueries.removeFromWishList;
 import static milenium.oscar.mitienda.DBqueries.wishList;
+import static milenium.oscar.mitienda.DBqueries.wishListModelList;
 import static milenium.oscar.mitienda.Login.setSignUpFragment;
 import static milenium.oscar.mitienda.navegacionMenu.showCart;
 
@@ -91,8 +93,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     //// descripcion del producto
 
 
-    private static   boolean ALREADY_ADDED_TO_WISHLIST= false;
-    private FloatingActionButton addWhisListBtn;
+    public static   boolean ALREADY_ADDED_TO_WISHLIST= false;
+    public static FloatingActionButton addWhisListBtn;
     private Button buyNowBtn;
     private LinearLayout addToCartBtn;
     private FirebaseFirestore firebaseFirestore;
@@ -108,8 +110,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private  Dialog signInDialog;
     private LinearLayout coupenRedemptionLayout;
     private FirebaseUser currentUser;
-    private String productID;
-    private Dialog loadingDialog;;
+    public static String productID;
+    private Dialog loadingDialog;
+    private DocumentSnapshot documentSnapshot;
+
 
 
 
@@ -165,13 +169,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         final List<String> productImages = new ArrayList<>();
         productID = getIntent().getStringExtra("PRODUCT_ID");
 
-
         firebaseFirestore.collection("PRODUCTOS").document(productID).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
-                            DocumentSnapshot documentSnapshot = task.getResult();
+                             documentSnapshot = task.getResult();
 
                             for(long x =1 ;x < (long)documentSnapshot.get("no_of_product_images")+1;x++){
 
@@ -239,9 +242,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
                             productDetailsViewpager.setAdapter(new ProductDetailsAdapter(getSupportFragmentManager(),productDetailsTablayout.getTabCount(),productDescription,productOtherDetails,productSpecificationModelList));
 
-                            if (wishList.size()==0){
-                                loadWishList(ProductDetailsActivity.this,loadingDialog);
 
+                            if(currentUser != null) {
+                                if (wishList.size() == 0) {
+                                    loadWishList(ProductDetailsActivity.this, loadingDialog,false);
+
+                                } else {
+                                    loadingDialog.dismiss();
+                                }
                             }else {
                                 loadingDialog.dismiss();
                             }
@@ -251,6 +259,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                 addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
 
                             }else {
+                                addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
                                 ALREADY_ADDED_TO_WISHLIST= false;
                             }
 
@@ -277,17 +286,18 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 if(currentUser == null){
                     signInDialog.show();
                 }else {
-                    if (ALREADY_ADDED_TO_WISHLIST) {
-                        ALREADY_ADDED_TO_WISHLIST = false;
-                        addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
-                    } else {
+                    addWhisListBtn.setEnabled(false);
 
+                    if (ALREADY_ADDED_TO_WISHLIST) {
+                        int index= wishList.indexOf(productID);
+                        removeFromWishList(index,ProductDetailsActivity.this);
+                         addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                    } else {
+                        addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
                         Map<String,Object> addProduct= new HashMap<>();
                         addProduct.put("product_ID_"+String.valueOf(wishList.size()),productID);
-
-
                         firebaseFirestore.collection("USUARIOS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
-                        .set(addProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        .update(addProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
@@ -299,18 +309,36 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
+
+                                                if(wishListModelList.size() !=0){
+
+                                                    wishListModelList.add(new WishListModel(documentSnapshot.get("product_image_1").toString()
+                                                            , documentSnapshot.get("product_title").toString(),
+                                                            (long)documentSnapshot.get("free_coupens"),
+                                                            documentSnapshot.get("average_rating").toString(),
+                                                            (long)documentSnapshot.get("total_ratings"),
+                                                            documentSnapshot.get("product_price").toString(),
+                                                            documentSnapshot.get("cutted_price").toString(),
+                                                            (boolean)documentSnapshot.get("COD")
+                                                    ));
+
+                                                }
+
                                                 ALREADY_ADDED_TO_WISHLIST=true;
                                                 addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
                                                 wishList.add(productID);
                                                 Toast.makeText(ProductDetailsActivity.this,"Añadido a la lista de Deseos!",Toast.LENGTH_SHORT).show();
                                             }else{
+                                                addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
                                                 String error = task.getException().getMessage();
                                                 Toast.makeText(ProductDetailsActivity.this,error,Toast.LENGTH_SHORT).show();
                                             }
+                                            addWhisListBtn.setEnabled(true);
                                         }
                                     });
 
                                 }else{
+                                    addWhisListBtn.setEnabled(true);
                                     String error = task.getException().getMessage();
                                     Toast.makeText(ProductDetailsActivity.this,error,Toast.LENGTH_SHORT).show();
                                 }
@@ -505,6 +533,26 @@ public class ProductDetailsActivity extends AppCompatActivity {
             coupenRedemptionLayout.setVisibility(View.GONE);
         }else {
             coupenRedemptionLayout.setVisibility(View.VISIBLE);
+        }
+
+        if(currentUser != null) {
+            if (wishList.size() == 0) {
+                loadWishList(ProductDetailsActivity.this, loadingDialog,false);
+
+            } else {
+                loadingDialog.dismiss();
+            }
+        }else {
+            loadingDialog.dismiss();
+        }
+
+        if(wishList.contains(productID)){
+            ALREADY_ADDED_TO_WISHLIST= true;
+            addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
+
+        }else {
+            addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+            ALREADY_ADDED_TO_WISHLIST= false;
         }
 
 

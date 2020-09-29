@@ -38,6 +38,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import milenium.oscar.mitienda.ui.home.HomeFragment;
 
+import static milenium.oscar.mitienda.DBqueries.clearData;
 import static milenium.oscar.mitienda.Login.setSignUpFragment;
 
 
@@ -311,6 +312,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
             } else if (id == R.id.cerarsesion) {
                 FirebaseAuth.getInstance().signOut();
+                clearData();
                 Intent registerIntent = new Intent(navegacionMenu.this,Login.class);
                 startActivity(registerIntent);
                 finish();
