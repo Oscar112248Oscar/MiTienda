@@ -28,10 +28,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -255,6 +258,7 @@ public class SignUpFragment extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
 
+
                                 Map<String,Object> usarioDatos= new HashMap<>();
                                 usarioDatos.put("nombre",nombreUsuario.getText().toString());
 
@@ -266,28 +270,51 @@ public class SignUpFragment extends Fragment {
 
 
                                                    if(task.isSuccessful()){
-                                                       Map<String,Object> listSize= new HashMap<>();
-                                                       listSize.put("list_size", (long) 0);
 
-                                                       firebaseFirestore.collection("USUARIOS").document(firebaseAuth.getUid()).collection("USER_DATA")
-                                                       .document("MY_WISHLIST").set(listSize).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                           @Override
-                                                           public void onComplete(@NonNull Task<Void> task) {
+                                                       CollectionReference userDataReference  =  firebaseFirestore.collection("USUARIOS").document(firebaseAuth.getUid()).collection("USER_DATA");
 
-                                                               if(task.isSuccessful()){
 
-                                                                   mainIntent();
+                                                       Map<String,Object> wishlistMap= new HashMap<>();
+                                                       wishlistMap.put("list_size", (long) 0);
 
-                                                               }else {
-                                                                   barra.setVisibility(View.INVISIBLE);
-                                                                   btnRegistrar.setEnabled(false);
-                                                                   btnRegistrar.setTextColor(Color.argb(50,255,0,0));
-                                                                   String error=task.getException().getMessage();
-                                                                   Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                                                       Map<String,Object> ratingsMap= new HashMap<>();
+                                                       ratingsMap.put("list_size", (long) 0);
+
+                                                       final List<String> documentNames = new ArrayList<>();
+                                                       documentNames.add("MY_WISHLIST");
+                                                       documentNames.add("MY_RATINGS");
+
+                                                       List< Map<String,Object>> documentFields = new ArrayList<>();
+                                                       documentFields.add(wishlistMap);
+                                                       documentFields.add(ratingsMap);
+
+                                                       for(int x=0 ; x < documentNames.size(); x++){
+
+                                                           final int finalX = x;
+                                                           userDataReference.document(documentNames.get(x))
+                                                                   .set(documentFields.get(x)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                               @Override
+                                                               public void onComplete(@NonNull Task<Void> task) {
+
+                                                                   if(task.isSuccessful()){
+                                                                       if(finalX == documentNames.size()-1) {
+
+                                                                           mainIntent();
+                                                                       }
+
+                                                                   }else {
+                                                                       barra.setVisibility(View.INVISIBLE);
+                                                                       btnRegistrar.setEnabled(false);
+                                                                       btnRegistrar.setTextColor(Color.argb(50,255,0,0));
+                                                                       String error=task.getException().getMessage();
+                                                                       Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                                                                   }
+
+
                                                                }
+                                                           });
 
-                                                           }
-                                                       });
+                                                       }
 
 
                                                    }else {

@@ -29,7 +29,7 @@
         android:gravity="center"
         android:text="Productos"
         android:textColor="#000"
-        android:textSize="10.5dp"
+        android:textSize="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
