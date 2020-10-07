@@ -34,6 +34,7 @@ import static milenium.oscar.mitienda.MyWishListFragment.wishListAdapter;
 import static milenium.oscar.mitienda.ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST;
 import static milenium.oscar.mitienda.ProductDetailsActivity.addWhisListBtn;
 import static milenium.oscar.mitienda.ProductDetailsActivity.productID;
+import static milenium.oscar.mitienda.ProductDetailsActivity.running_rating_query;
 import static milenium.oscar.mitienda.ProductDetailsActivity.running_wishlist_query;
 
 public class DBqueries<_> {
@@ -290,39 +291,49 @@ public class DBqueries<_> {
 
 
     public static void loadRatingList(final Context context){
-        myRateIds.clear();
-        myRating.clear();
 
-        firebaseFirestore.collection("USUARIOS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA")
-                .document("MY_RATINGS").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                if (task.isSuccessful()){
+        if(!ProductDetailsActivity.running_rating_query) {
+            running_rating_query = true;
+            myRateIds.clear();
+            myRating.clear();
 
-                    for(long x=0; x < (long) task.getResult().get("list_size");x++){
+            firebaseFirestore.collection("USUARIOS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA")
+                    .document("MY_RATINGS").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                        myRateIds.add(task.getResult().get("product_ID_"+x).toString());
-                        myRating.add((long) task.getResult().get("rating_"+x));
+                    if (task.isSuccessful()) {
 
-                        if(task.getResult().get("product_ID_"+x).toString().equals(productID) && ProductDetailsActivity.rateNowContainer != null){
+                        for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
 
-                            ProductDetailsActivity.initialRating= Integer.parseInt(String.valueOf((long) task.getResult().get("rating_"+x)))-1;
-                            ProductDetailsActivity.setRating(ProductDetailsActivity.initialRating);
+                            myRateIds.add(task.getResult().get("product_ID_" + x).toString());
+                            myRating.add((long) task.getResult().get("rating_" + x));
+
+                            if (task.getResult().get("product_ID_" + x).toString().equals(productID) ) {
+
+                                ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((long) task.getResult().get("rating_" + x))) - 1;
+
+                                if(ProductDetailsActivity.rateNowContainer != null) {
+                                    ProductDetailsActivity.setRating(ProductDetailsActivity.initialRating);
+                                }
+
+                            }
 
                         }
 
+                    } else {
+                        String error = task.getException().getMessage();
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+
                     }
 
-                }else {
-                    String error =task.getException().getMessage();
-                    Toast.makeText(context,error,Toast.LENGTH_SHORT).show();
+                    running_rating_query = false;
 
                 }
-
-            }
-        });
+            });
+        }
 
     }
 

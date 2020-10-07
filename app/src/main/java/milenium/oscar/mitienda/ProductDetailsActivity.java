@@ -232,7 +232,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                 productOnlyDescriptionBody.setText(documentSnapshot.get("product_description").toString());
 
                             }
-                            totalRaitings.setText((long)documentSnapshot.get("total_ratings")+"calificaciones");
+                            totalRaitings.setText((long)documentSnapshot.get("total_ratings")+ " calificaciones");
 
                             for(int x=0 ;x < 5; x++){
                                 TextView rating = (TextView) ratingNoContainer.getChildAt(x);
@@ -416,65 +416,106 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             if(!running_rating_query) {
                                 running_rating_query = true;
                                 setRating(starPosition);
-                                if (myRateIds.contains(productID)) {/// poner codigo
+                                Map<String, Object> updateRating = new HashMap<>();
+
+                                if (myRateIds.contains(productID)) {
+
+                                    TextView oldlRating = (TextView) ratingNoContainer.getChildAt(5 - initialRating - 1);
+                                    TextView finalRating = (TextView) ratingNoContainer.getChildAt(5 - starPosition - 1);
+
+                                    updateRating.put(initialRating+ 1 +"_star",Long.parseLong(oldlRating.getText().toString())-1 );
+                                    updateRating.put(starPosition+1+"_star",Long.parseLong(finalRating.getText().toString())+1);
+                                    updateRating.put("average_rating",String.valueOf(calcularAverageRating((long)starPosition+1)));
+
 
                                 } else {
 
+                                    updateRating.put(starPosition + 1 + "_star", (long) documentSnapshot.get(starPosition + 1 + "_star") + 1);
+                                    updateRating.put("average_rating", String.valueOf(calcularAverageRating((long) starPosition + 1)));
+                                    updateRating.put("total_ratings", (long) documentSnapshot.get("total_ratings") + 1);
+                                }
 
-                                    Map<String, Object> productRating = new HashMap<>();
-                                    productRating.put(starPosition + 1 + "_star", (long) documentSnapshot.get(starPosition + 1 + "_star") + 1);
-                                    productRating.put("average_rating", calcularAverageRating(starPosition + 1));
-                                    productRating.put("total_ratings", (long) documentSnapshot.get("total_ratings") + 1);
 
                                     firebaseFirestore.collection("PRODUCTOS").document(productID)
-                                            .update(productRating).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            .update(updateRating).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
 
                                             if (task.isSuccessful()) {
-                                                Map<String, Object> rating = new HashMap<>();
-                                                rating.put("list_size", myRateIds.size()+1);
-                                                rating.put("product_ID_" + myRateIds.size(), productID);
-                                                rating.put("rating_" + myRateIds.size(), (long) starPosition + 1);
 
+                                                Map<String, Object> myRatings = new HashMap<>();
 
+                                                if (myRateIds.contains(productID)) {
+                                                    myRatings.put("rating_"+myRateIds.indexOf(productID),(long)starPosition +1);
+
+                                                }else {
+
+                                                    myRatings.put("list_size", myRateIds.size()+1);
+                                                    myRatings.put("product_ID_" + myRateIds.size(), productID);
+                                                    myRatings.put("rating_" + myRateIds.size(), (long) starPosition + 1);
+
+                                                }
 
                                                 firebaseFirestore.collection("USUARIOS").document(currentUser.getUid()).collection("USER_DATA")
-                                                        .document("MY_RATINGS").update(rating).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        .document("MY_RATINGS").update(myRatings).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
 
                                                         if (task.isSuccessful()) {
-                                                            myRateIds.add(productID);
-                                                            myRating.add((long) starPosition + 1);
 
 
-                                                            TextView rating = (TextView) ratingNoContainer.getChildAt(5 - starPosition -1);
-                                                            rating.setText(String.valueOf(Integer.parseInt(rating.getText().toString()) + 1));
+                                                            if (myRateIds.contains(productID)) {
+
+                                                                myRating.set(myRateIds.indexOf(productID), (long) starPosition + 1);
+
+                                                                TextView oldlRating = (TextView) ratingNoContainer.getChildAt(5 - initialRating - 1);
+                                                                TextView finalRating = (TextView) ratingNoContainer.getChildAt(5 - starPosition - 1);
+
+                                                                oldlRating.setText(String.valueOf(Integer.parseInt(oldlRating.getText().toString()) - 1));
+                                                                finalRating.setText(String.valueOf(Integer.parseInt(finalRating.getText().toString()) + 1));
+
+                                                            }else {
+
+                                                                myRateIds.add(productID);
+                                                                myRating.add((long) starPosition + 1);
 
 
-                                                            totalRaitingMiniView.setText("("+((long)documentSnapshot.get("total_ratings")+1) +") calificaciones");
-                                                            totalRaitings.setText((long)documentSnapshot.get("total_ratings")+ 1 +" calificaciones");
-                                                            totalRatingsFigure.setText(String.valueOf((long)documentSnapshot.get("total_ratings")+1));
-
-                                                            averageRating.setText(String.valueOf( calcularAverageRating(starPosition + 1)));
-
-                                                            averageRaitingMiniView.setText(String.valueOf( calcularAverageRating(starPosition + 1)));
+                                                                TextView rating = (TextView) ratingNoContainer.getChildAt(5 - starPosition - 1);
+                                                                rating.setText(String.valueOf(Integer.parseInt(rating.getText().toString()) + 1));
 
 
-                                                            for(int x=0 ;x < 5; x++){
+                                                                totalRaitingMiniView.setText("(" + ((long) documentSnapshot.get("total_ratings") + 1) + ") calificaciones");
+                                                                totalRaitings.setText((long) documentSnapshot.get("total_ratings") + 1 + " calificaciones");
+                                                                totalRatingsFigure.setText(String.valueOf((long) documentSnapshot.get("total_ratings") + 1));
 
-                                                                TextView ratingFigures = (TextView) ratingNoContainer.getChildAt(5 - starPosition +1);
-
-                                                                ProgressBar  progressBar = (ProgressBar) ratingsProgresBarContainer.getChildAt(x);
-
-                                                                int maxProgress= Integer.parseInt(String.valueOf((long)documentSnapshot.get("total_ratings")+1));
-                                                                progressBar.setMax(maxProgress);
-                                                                progressBar.setProgress(Integer.parseInt(ratingFigures.getText().toString()));
+                                                                Toast.makeText(ProductDetailsActivity.this, "Gracias por calificar", Toast.LENGTH_SHORT).show();
                                                             }
 
 
-                                                            Toast.makeText(ProductDetailsActivity.this, "Gracias por calificar", Toast.LENGTH_SHORT).show();
+                                                            for (int x = 0; x < 5; x++) {
+
+                                                                TextView ratingFigures = (TextView) ratingNoContainer.getChildAt(x);
+
+                                                                ProgressBar progressBar = (ProgressBar) ratingsProgresBarContainer.getChildAt(x);
+
+                                                                if(!myRateIds.contains(productID)) {
+                                                                    int maxProgress = Integer.parseInt(String.valueOf((long) documentSnapshot.get("total_ratings") + 1));
+                                                                    progressBar.setMax(maxProgress);
+                                                                }
+                                                                progressBar.setProgress(Integer.parseInt(ratingFigures.getText().toString()));
+                                                            }
+
+                                                                initialRating = starPosition;
+                                                            averageRating.setText(String.valueOf(calcularAverageRating(0)));
+                                                            averageRaitingMiniView.setText(String.valueOf(calcularAverageRating(0)));
+
+
+                                                            if(wishList.contains(productID) && wishListModelList.size() != 0){
+                                                                int index = wishList.indexOf(productID);
+                                                                wishListModelList.get(index).setRating(averageRating.getText().toString());
+                                                                wishListModelList.get(index).setTotalRatings(Long.parseLong(totalRatingsFigure.getText().toString()));
+
+                                                            }
 
                                                         } else { // aqui puedo poner error a la conexion con la BD
                                                             setRating(initialRating);
@@ -502,7 +543,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         }
 
 
-                    }
+
                 });
 
 
@@ -726,11 +767,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     }
 
-    private long calcularAverageRating(long currentUserRating){
+    private float calcularAverageRating(long currentUserRating){
         long totalStars =0;
         for (int x =1; x<6; x++){
-
-            totalStars = totalStars + ((long) documentSnapshot.get(x + "_star") * x);
+            TextView ratingNo = (TextView) ratingNoContainer.getChildAt(x - 1);
+            totalStars = totalStars + (Long.parseLong(ratingNo.getText().toString()) * x);
         }
         totalStars = totalStars + currentUserRating;
 
