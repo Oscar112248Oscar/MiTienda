@@ -1,8 +1,11 @@
 package milenium.oscar.mitienda;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,30 +32,48 @@ public class MyCartFragment extends Fragment {
     private Button continueBtn;
 
 
+    private Dialog loadingDialog;
+    public  static  CartAdapter cartAdapter;
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View  view= inflater.inflate(R.layout.fragment_my_cart, container, false);
 
+        //// loading dialog
+        loadingDialog = new Dialog(getContext());
+        loadingDialog.setContentView(R.layout.loading_progress_dialog);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        loadingDialog.show();
+        //// loading dialog
+
+
         cartItemRecyclerView= view.findViewById(R.id.cart_item_recyclerView);
+        continueBtn= view.findViewById(R.id.cart_continue_btn);
+
         LinearLayoutManager  layoutManager= new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         cartItemRecyclerView.setLayoutManager(layoutManager);
 
-        continueBtn= view.findViewById(R.id.cart_continue_btn);
+        if(DBqueries.cartItemModelList.size()== 0){
+            DBqueries.cartList.clear();
+            DBqueries.loadCartList(getContext(),loadingDialog,true);
+        }else {
+            loadingDialog.dismiss();
+        }
 
-
-        List<CartItemModel> cartItemModelList= new ArrayList<>();
-        cartItemModelList.add(new CartItemModel(0,R.drawable.ele1,"Tinta Epson",2,"14$","18$",1,0,0));
-        cartItemModelList.add(new CartItemModel(0,R.drawable.ele1,"Tinta Epson",0,"14$","18$",1,1,0));
-        cartItemModelList.add(new CartItemModel(0,R.drawable.ele1,"Tinta Epson",2,"14$","18$",1,2,0));
-        cartItemModelList.add(new CartItemModel(1,"Precio (3 items)","20$","Gratis","20$","5$"));
-
-        CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
+         cartAdapter = new CartAdapter(DBqueries.cartItemModelList);
         cartItemRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
+
+
+
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

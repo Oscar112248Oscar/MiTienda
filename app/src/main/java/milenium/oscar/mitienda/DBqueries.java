@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import milenium.oscar.mitienda.ui.home.HomeFragment;
 
 import static milenium.oscar.mitienda.MyWishListFragment.wishListAdapter;
+import static milenium.oscar.mitienda.ProductDetailsActivity.ALREADY_ADDED_TO_CART;
 import static milenium.oscar.mitienda.ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST;
 import static milenium.oscar.mitienda.ProductDetailsActivity.addWhisListBtn;
 import static milenium.oscar.mitienda.ProductDetailsActivity.productID;
@@ -45,11 +46,15 @@ public class DBqueries<_> {
 
     public static List<List<HomePageModel>>  lists=new ArrayList<>();
     public static List<String> loadCategoriesNames = new ArrayList<>();
+
     public static List<String> wishList = new ArrayList<>();
     public static List<WishListModel> wishListModelList = new ArrayList<>();
 
     public static List<String> myRateIds = new ArrayList<>();
     public static List<Long> myRating = new ArrayList<>();
+
+    public static List<String> cartList = new ArrayList<>();
+    public static List<CartItemModel> cartItemModelList = new ArrayList<>();
 
 
 
@@ -336,6 +341,74 @@ public class DBqueries<_> {
         }
 
     }
+
+
+    public  static void loadCartList(final Context context, final Dialog dialog, final boolean loadProductData){
+
+
+        cartList.clear();
+
+        firebaseFirestore.collection("USUARIOS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA")
+                .document("MY_CART").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+
+                if(task.isSuccessful()){
+                    for(long x= 0; x < (long)task.getResult().get("list_size");x++) {
+
+                        cartList.add(task.getResult().get("product_ID_" + x).toString());
+
+                        if(cartList.contains(productID)){
+                            ALREADY_ADDED_TO_CART= true;
+
+                        }else {
+
+                            ALREADY_ADDED_TO_CART= false;
+                        }
+
+                        if (loadProductData) {
+                            cartItemModelList.clear();
+                            final String productID= task.getResult().get("product_ID_"+x).toString();
+                            firebaseFirestore.collection("PRODUCTOS").document(task.getResult().get("product_ID_" + x).toString())
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                    if (task.isSuccessful()) {
+                                        cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM,productID,task.getResult().get("product_image_1").toString()
+                                                , task.getResult().get("product_title").toString(),
+                                                (long) task.getResult().get("free_coupens"),
+                                                 task.getResult().get("product_price").toString(),
+                                                task.getResult().get("cutted_price").toString(),
+                                                (long) 1,(long) 0,(long) 0));
+                                        MyCartFragment.cartAdapter.notifyDataSetChanged();
+
+
+                                    } else {
+                                        String error = task.getException().getMessage();
+                                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                }else{
+                    String error =task.getException().getMessage();
+                    Toast.makeText(context,error,Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+
+            }
+        });
+
+
+
+    }
+
+
 
     public static void clearData(){
         categoriaModelos.clear();
