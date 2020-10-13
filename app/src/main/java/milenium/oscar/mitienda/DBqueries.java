@@ -35,6 +35,7 @@ import static milenium.oscar.mitienda.ProductDetailsActivity.ALREADY_ADDED_TO_CA
 import static milenium.oscar.mitienda.ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST;
 import static milenium.oscar.mitienda.ProductDetailsActivity.addWhisListBtn;
 import static milenium.oscar.mitienda.ProductDetailsActivity.productID;
+import static milenium.oscar.mitienda.ProductDetailsActivity.running_cart_query;
 import static milenium.oscar.mitienda.ProductDetailsActivity.running_rating_query;
 import static milenium.oscar.mitienda.ProductDetailsActivity.running_wishlist_query;
 
@@ -256,6 +257,9 @@ public class DBqueries<_> {
 
 
     public static void removeFromWishList(final int index, final Context context){
+
+        final String removedProductId= wishList.get(index);
+
         wishList.remove(index);
 
         Map<String,Object> updateWishList = new HashMap<>();
@@ -285,6 +289,7 @@ public class DBqueries<_> {
 
                         addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
                     }
+                    wishList.add(index,removedProductId);
                         String error =task.getException().getMessage();
                     Toast.makeText(context,error,Toast.LENGTH_SHORT).show();
                 }
@@ -406,6 +411,51 @@ public class DBqueries<_> {
 
 
 
+    }
+
+
+
+    public static void removeFromCart(final int index, final Context context){
+
+        final String removedProductId= cartList.get(index);
+
+        cartList.remove(index);
+
+        Map<String,Object> updateCartList = new HashMap<>();
+
+        for (int x=0; x< cartList.size();x++){
+            updateCartList.put("product_ID_"+x,cartList.get(x));
+        }
+
+
+        updateCartList.put("list_size",(long)cartList.size());
+
+        firebaseFirestore.collection("USUARIOS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").
+                document("MY_CART").set(updateCartList).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful()){
+
+                    if(cartItemModelList.size() !=0 ){
+                        cartItemModelList.remove(index);
+                        MyCartFragment.cartAdapter.notifyDataSetChanged();
+                    }
+                    if( ProductDetailsActivity.cartItem !=  null) {
+                        ProductDetailsActivity.cartItem.setActionView(null);
+                    }
+                     Toast.makeText(context,"Eliminado con Exito",Toast.LENGTH_SHORT).show();
+
+                }else {
+
+                    cartList.add(index,removedProductId);
+                    String error =task.getException().getMessage();
+                    Toast.makeText(context,error,Toast.LENGTH_SHORT).show();
+                }
+
+                running_cart_query = false;
+            }
+        });
     }
 
 

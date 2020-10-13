@@ -5,9 +5,12 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,8 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter {
 
     private List<CartItemModel> cartItemModelList;
+
+    private int lastposition = -1;
 
     public CartAdapter(List<CartItemModel> cartItemModelList) {
         this.cartItemModelList = cartItemModelList;
@@ -73,7 +78,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                     String cuttedPrice= cartItemModelList.get(position).getCuttedPrice();
                     Long offerApplied= cartItemModelList.get(position).getOfferApplied();
 
-                    ((CartItemViewholder)holder).setImagenDetails(productID,resource,title,freeCoupens,productPrice,cuttedPrice,offerApplied);
+                    ((CartItemViewholder)holder).setItemDetails(productID,resource,title,freeCoupens,productPrice,cuttedPrice,offerApplied,position);
                     break;
                 case CartItemModel.CART_AMOUNT:
                 String totalItems= cartItemModelList.get(position).getTotalItems();
@@ -90,6 +95,13 @@ public class CartAdapter extends RecyclerView.Adapter {
                     return;
 
             }
+
+
+        if(lastposition < position){
+            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.fade_in);
+            holder.itemView.setAnimation(animation);
+            lastposition = position;
+        }
 
     }
 
@@ -110,6 +122,8 @@ public class CartAdapter extends RecyclerView.Adapter {
         private TextView coupensApplied;
         private TextView productQuantity;
 
+        private LinearLayout deleteBtn;
+
         public CartItemViewholder(@NonNull View itemView) {
             super(itemView);
             productImage= itemView.findViewById(R.id.product_image);
@@ -121,9 +135,11 @@ public class CartAdapter extends RecyclerView.Adapter {
             offersApplied= itemView.findViewById(R.id.offers_aplied);
             coupensApplied= itemView.findViewById(R.id.cupons_applied);
             productQuantity= itemView.findViewById(R.id.product_quantity);
+
+            deleteBtn = itemView.findViewById(R.id.remove_item_btn);
         }
 
-        private void setImagenDetails(String productId,String resource,String title, Long freeCoupensNo, String productPriceText,String cuttedPriceText, Long offerAppliedNo){
+        private void setItemDetails(String productId, String resource, String title, Long freeCoupensNo, String productPriceText, String cuttedPriceText, Long offerAppliedNo , final int position){
 
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.sinfondo)).into(productImage);
 
@@ -184,6 +200,19 @@ public class CartAdapter extends RecyclerView.Adapter {
                     });
                     quantityDialog.show();
 
+                }
+            });
+
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(! ProductDetailsActivity.running_cart_query){
+
+                        ProductDetailsActivity.running_cart_query = true;
+                        DBqueries.removeFromCart(position, itemView.getContext());
+
+                    }
                 }
             });
 

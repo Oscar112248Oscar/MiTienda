@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
@@ -38,6 +39,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import milenium.oscar.mitienda.ui.home.HomeFragment;
 
+import static milenium.oscar.mitienda.DBqueries.cartList;
 import static milenium.oscar.mitienda.DBqueries.clearData;
 import static milenium.oscar.mitienda.Login.setSignUpFragment;
 
@@ -175,6 +177,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         }else {
             navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(true);
         }
+        invalidateOptionsMenu();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -216,6 +219,41 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
             getMenuInflater().inflate(R.menu.navegacion_menu, menu);
+
+            MenuItem cartItem = menu.findItem(R.id.iconocarrito);
+
+            if(DBqueries.cartList.size() > 0){
+
+                cartItem.setActionView(R.layout.badge_layout);
+                ImageView badgeIcon = cartItem.getActionView().findViewById(R.id.badge_icon);
+                badgeIcon.setImageResource(R.drawable.ic_shopping_cart_black_24dp);
+                TextView badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
+
+                if(cartList.size() < 99){
+                    badgeCount.setText(String.valueOf(cartList.size()));
+                }else{
+                    badgeCount.setText("99");
+
+                }
+
+                cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onClick(View v) {
+                        if(currentUser == null) {
+                            signInDialog.show();
+                        }else {
+                            gotFragment("Mi Carrito", new MyCartFragment(), CART_FRAGMENT);
+                        }
+
+                    }
+                });
+
+            }else {
+                cartItem.setActionView(null);
+
+            }
+
         }
         return true;
 
