@@ -41,6 +41,7 @@ import milenium.oscar.mitienda.ui.home.HomeFragment;
 
 import static milenium.oscar.mitienda.DBqueries.cartList;
 import static milenium.oscar.mitienda.DBqueries.clearData;
+import static milenium.oscar.mitienda.DBqueries.loadCartList;
 import static milenium.oscar.mitienda.Login.setSignUpFragment;
 
 
@@ -70,6 +71,8 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private FirebaseUser currentUser;
 
     public static   DrawerLayout drawer;
+
+    private TextView badgeCount;
 
 
     @SuppressLint("WrongConstant")
@@ -221,20 +224,30 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
             getMenuInflater().inflate(R.menu.navegacion_menu, menu);
 
             MenuItem cartItem = menu.findItem(R.id.iconocarrito);
-
-            if(DBqueries.cartList.size() > 0){
-
                 cartItem.setActionView(R.layout.badge_layout);
                 ImageView badgeIcon = cartItem.getActionView().findViewById(R.id.badge_icon);
                 badgeIcon.setImageResource(R.drawable.ic_shopping_cart_black_24dp);
-                TextView badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
+                 badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
 
-                if(cartList.size() < 99){
-                    badgeCount.setText(String.valueOf(cartList.size()));
-                }else{
-                    badgeCount.setText("99");
+               if(currentUser != null){
 
-                }
+                     if(cartList.size() ==0){
+                         loadCartList(this, new Dialog(this),false,badgeCount);
+                       // badgeCount.setVisibility(View.VISIBLE);
+                     }else {
+
+                          badgeCount.setVisibility(View.VISIBLE);
+                         if(cartList.size() < 99){
+                             badgeCount.setText(String.valueOf(cartList.size()));
+                         }else{
+                             badgeCount.setText("99");
+
+                         }
+
+
+                     }
+                 }
+
 
                 cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -249,10 +262,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
                     }
                 });
 
-            }else {
-                cartItem.setActionView(null);
 
-            }
 
         }
         return true;

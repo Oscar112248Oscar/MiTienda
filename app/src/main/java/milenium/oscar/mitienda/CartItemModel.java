@@ -116,59 +116,10 @@ public class CartItemModel {
 
 /////// cart total
 
-    private String totalItems;
-    private String totalItemPrice;
-    private String deliveyPrice;
-    private String savedAmount;
-    private String totalAmount;
 
-    public CartItemModel(int type, String totalItems, String totalItemPrice, String deliveyPrice,String totalAmount ,String savedAmount) {
-        this.totalAmount=totalAmount;
-        this.type = type;
-        this.totalItems = totalItems;
-        this.totalItemPrice = totalItemPrice;
-        this.deliveyPrice = deliveyPrice;
-        this.savedAmount = savedAmount;
-    }
 
-    public String getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(String totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getTotalItems() {
-        return totalItems;
-    }
-
-    public void setTotalItems(String  totalItems) {
-        this.totalItems = totalItems;
-    }
-
-    public String getTotalItemPrice() {
-        return totalItemPrice;
-    }
-
-    public void setTotalItemPrice(String totalItemPrice) {
-        this.totalItemPrice = totalItemPrice;
-    }
-
-    public String getDeliveyPrice() {
-        return deliveyPrice;
-    }
-
-    public void setDeliveyPrice(String deliveyPrice) {
-        this.deliveyPrice = deliveyPrice;
-    }
-
-    public String getSavedAmount() {
-        return savedAmount;
-    }
-
-    public void setSavedAmount(String savedAmount) {
-        this.savedAmount = savedAmount;
+    public CartItemModel (int type){
+        this.type =type;
     }
 
 

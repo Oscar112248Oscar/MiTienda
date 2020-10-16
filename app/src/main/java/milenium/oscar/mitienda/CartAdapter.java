@@ -81,11 +81,34 @@ public class CartAdapter extends RecyclerView.Adapter {
                     ((CartItemViewholder)holder).setItemDetails(productID,resource,title,freeCoupens,productPrice,cuttedPrice,offerApplied,position);
                     break;
                 case CartItemModel.CART_AMOUNT:
-                String totalItems= cartItemModelList.get(position).getTotalItems();
-                    String totalItemPrice= cartItemModelList.get(position).getTotalItemPrice();
-                    String deliveryPrice= cartItemModelList.get(position).getDeliveyPrice();
-                    String totalAmount= cartItemModelList.get(position).getTotalAmount();
-                    String savedAmount= cartItemModelList.get(position).getSavedAmount();
+
+                    int totalItems =0;
+                    double totalItemPrice = 0;
+                    String deliveryPrice;
+                    double totalAmount;
+                    double savedAmount = 0;
+
+                    double saldo =Double.parseDouble(cartItemModelList.get(0).getProductPrice());
+
+                    for(int x =0; x < cartItemModelList.size() ; x++){
+
+                        if(cartItemModelList.get(x).getType()== CartItemModel.CART_ITEM){
+                            totalItems++;
+
+                            totalItemPrice = totalItemPrice + Double.parseDouble(cartItemModelList.get(x).getProductPrice());
+                        }
+                    }
+
+
+
+                    if(totalItemPrice > 50){
+                        deliveryPrice ="GRATIS";
+                        totalAmount = totalItemPrice;
+                    }else {
+                        deliveryPrice ="2.50";
+                        totalAmount = totalItemPrice + 2.50;
+                    }
+
 
                     ((CartTotalAmountViewholder) holder).setTotalAmount(totalItems,totalItemPrice,deliveryPrice,totalAmount,savedAmount);
 
@@ -234,12 +257,17 @@ public class CartAdapter extends RecyclerView.Adapter {
             totalAmount=itemView.findViewById(R.id.total_price);
             savedAmount=itemView.findViewById(R.id.saved_amount);
         }
-        private void setTotalAmount(String totalItemText,String totalItemPriceText, String deliveryPriceText,String totalAmountText,String savedAmountText){
-            totalItems.setText(totalItemText);
-            totalItemPrice.setText(totalItemPriceText);
-            deliveryPrice.setText(deliveryPriceText);
-            totalAmount.setText(totalAmountText);
-            savedAmount.setText(savedAmountText);
+        private void setTotalAmount(int totalItemText,double totalItemPriceText, String deliveryPriceText,double totalAmountText,double  savedAmountText){
+            totalItems.setText("Precio ("+totalItemText+" items)");
+            totalItemPrice.setText("$"+totalItemPriceText);
+            if(deliveryPriceText.equals("GRATIS")){
+                deliveryPrice.setText(deliveryPriceText);
+            }else {
+                deliveryPrice.setText("$"+deliveryPriceText);
+
+            }
+            totalAmount.setText("$"+totalAmountText);
+            savedAmount.setText("Has ahorrado $"+savedAmountText+" en esta orden");
         }
 
     }

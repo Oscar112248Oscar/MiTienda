@@ -6,6 +6,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.ColorSpace;
 import android.os.Build;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -348,7 +350,7 @@ public class DBqueries<_> {
     }
 
 
-    public  static void loadCartList(final Context context, final Dialog dialog, final boolean loadProductData){
+    public  static void loadCartList(final Context context, final Dialog dialog, final boolean loadProductData, final TextView badgeCount){
 
 
         cartList.clear();
@@ -381,12 +383,27 @@ public class DBqueries<_> {
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                                     if (task.isSuccessful()) {
-                                        cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM,productID,task.getResult().get("product_image_1").toString()
+
+                                        int index =0;
+                                        if(cartList.size() >=2){
+                                            index = cartList.size() -2;
+                                        }
+                                        cartItemModelList.add(index,new CartItemModel(CartItemModel.CART_ITEM,productID,task.getResult().get("product_image_1").toString()
                                                 , task.getResult().get("product_title").toString(),
                                                 (long) task.getResult().get("free_coupens"),
                                                  task.getResult().get("product_price").toString(),
                                                 task.getResult().get("cutted_price").toString(),
                                                 (long) 1,(long) 0,(long) 0));
+
+                                        if (cartList.size() == 1) {
+
+                                            cartItemModelList.add(new CartItemModel(CartItemModel.CART_AMOUNT));
+
+                                        }
+
+                                        if(cartList.size() ==0){
+                                            cartItemModelList.clear();
+                                        }
                                         MyCartFragment.cartAdapter.notifyDataSetChanged();
 
 
@@ -399,6 +416,21 @@ public class DBqueries<_> {
                             });
                         }
                     }
+
+                    if(cartList.size() != 0){
+                        badgeCount.setVisibility(View.VISIBLE);
+                    }else{
+                        badgeCount.setVisibility(View.INVISIBLE);
+
+                    }
+
+                    if(cartList.size() < 99){
+                        badgeCount.setText(String.valueOf(cartList.size()));
+                    }else{
+                        badgeCount.setText("99");
+
+                    }
+
 
                 }else{
                     String error =task.getException().getMessage();
@@ -441,9 +473,10 @@ public class DBqueries<_> {
                         cartItemModelList.remove(index);
                         MyCartFragment.cartAdapter.notifyDataSetChanged();
                     }
-                    if( ProductDetailsActivity.cartItem !=  null) {
-                        ProductDetailsActivity.cartItem.setActionView(null);
+                    if(cartList.size() ==0){
+                        cartItemModelList.clear();
                     }
+
                      Toast.makeText(context,"Eliminado con Exito",Toast.LENGTH_SHORT).show();
 
                 }else {
@@ -466,6 +499,8 @@ public class DBqueries<_> {
         loadCategoriesNames.clear();
         wishList.clear();
         wishListModelList.clear();
+        cartList.clear();
+        cartItemModelList.clear();
     }
 }
 

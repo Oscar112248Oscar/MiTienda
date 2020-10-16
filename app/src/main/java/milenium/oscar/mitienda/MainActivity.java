@@ -48,18 +48,27 @@ private FirebaseAuth firebaseAuth;
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser usuarioActual= firebaseAuth.getCurrentUser();
+     //   FirebaseUser usuarioActual= firebaseAuth.getCurrentUser();
+        String usuarioActual = FirebaseAuth.getInstance().getCurrentUser().toString();
 
-        if(usuarioActual==null){
+        if (usuarioActual.contains("zzm")){
             Intent registrointent= new Intent(this, Login.class);
             startActivity(registrointent);
             finish();
 
         }else {
-            Intent intent= new Intent(this,navegacionMenu.class);
-            startActivity(intent);
-            finish();
 
+            if (usuarioActual == null) {
+                Intent registrointent = new Intent(this, Login.class);
+                startActivity(registrointent);
+                finish();
+
+            } else {
+                Intent intent = new Intent(this, navegacionMenu.class);
+                startActivity(intent);
+                finish();
+
+            }
         }
 
     }

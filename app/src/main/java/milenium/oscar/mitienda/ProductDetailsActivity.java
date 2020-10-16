@@ -130,6 +130,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     public static MenuItem cartItem;
 
+    private TextView badgeCount;
+
 
 
 
@@ -269,7 +271,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
 
                                 if (cartList.size() == 0) {
-                                    loadCartList(ProductDetailsActivity.this, loadingDialog,false);
+                                    loadCartList(ProductDetailsActivity.this, loadingDialog,false,badgeCount);
+                                  //  badgeCount.setVisibility(View.INVISIBLE);
 
                                 }
 
@@ -753,10 +756,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             if(myRating.size()==0){
                 loadRatingList(ProductDetailsActivity.this);
             }
-            if (cartList.size() == 0) {
-                loadCartList(ProductDetailsActivity.this, loadingDialog,false);
-
-            }
 
             if (wishList.size() == 0) {
                 loadWishList(ProductDetailsActivity.this, loadingDialog,false);
@@ -794,6 +793,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
             ALREADY_ADDED_TO_WISHLIST= false;
         }
+
+        invalidateOptionsMenu();
 
 
     }
@@ -856,20 +857,32 @@ public class ProductDetailsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.search_and_cart_icon, menu);
          cartItem = menu.findItem(R.id.iconocarrito);
 
-        if(DBqueries.cartList.size() > 0){
+
 
             cartItem.setActionView(R.layout.badge_layout);
             ImageView badgeIcon = cartItem.getActionView().findViewById(R.id.badge_icon);
             badgeIcon.setImageResource(R.drawable.ic_shopping_cart_black_24dp);
-            TextView badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
+             badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
 
-            if(cartList.size() < 99){
-                badgeCount.setText(String.valueOf(cartList.size()));
-            }else{
-                badgeCount.setText("99");
+        if(currentUser != null){
+
+            if(cartList.size() ==0){
+                loadCartList(ProductDetailsActivity.this, loadingDialog,false,badgeCount);
+                //badgeCount.setVisibility(View.INVISIBLE);
+
+            }else {
+
+                badgeCount.setVisibility(View.VISIBLE);
+                if(cartList.size() < 99){
+                    badgeCount.setText(String.valueOf(cartList.size()));
+                }else{
+                    badgeCount.setText("99");
+
+                }
+
 
             }
-
+        }
             cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
@@ -887,10 +900,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 }
             });
 
-        }else {
-            cartItem.setActionView(null);
 
-        }
         return true;
     }
 
