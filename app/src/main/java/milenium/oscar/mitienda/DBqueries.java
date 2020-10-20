@@ -2,6 +2,7 @@ package milenium.oscar.mitienda;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.ColorSpace;
@@ -43,6 +44,8 @@ import static milenium.oscar.mitienda.ProductDetailsActivity.running_wishlist_qu
 
 public class DBqueries<_> {
 
+
+
     public static  FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance(); // FIREBASE INSTANCIADO
     public static List<CategoriaModelo> categoriaModelos = new ArrayList<>();/// esta llena las imagenes de las categorias con el recyclerview
    // public static List<HomePageModel> homePageModelList= new ArrayList<>();// esta llena todas las vistas despendiendo lo que se le envie
@@ -58,6 +61,10 @@ public class DBqueries<_> {
 
     public static List<String> cartList = new ArrayList<>();
     public static List<CartItemModel> cartItemModelList = new ArrayList<>();
+
+
+    public static int selectedAddress=-1;
+    public static List<AddressesModel> addressesModelList = new ArrayList<>();
 
 
 
@@ -489,6 +496,65 @@ public class DBqueries<_> {
                 running_cart_query = false;
             }
         });
+    }
+
+    public static void loadAddresses(final Context context, final Dialog loadingDialog){
+
+        addressesModelList.clear();
+
+
+        try {
+            firebaseFirestore.collection("USUARIOS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA")
+                    .document("MY_ADDRESSES").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    if(task.isSuccessful()){
+                        Intent deliveryIntent;
+
+
+                        if((long)task.getResult().get("list_size")==0){
+                            deliveryIntent= new Intent(context,AddAddressActivity.class);
+
+                        }else {
+                            for(long x=1; x < (long) task.getResult().get("list_size") + 1 ;x++){
+
+                                addressesModelList.add(new AddressesModel(task.getResult().get("fullname_"+x).toString(),
+                                        task.getResult().get("address_"+x).toString(),
+                                        task.getResult().get("pincode_"+x).toString(),
+                                        (boolean)task.getResult().get("selected_"+x) ));
+
+                                if( (boolean)task.getResult().get("selected_"+x)){
+
+                                    selectedAddress = Integer.parseInt(String.valueOf(x -1));
+
+                                }
+                            }
+
+                            deliveryIntent= new Intent(context,DeliveryActivity.class);
+
+                        }
+                        context.startActivity(deliveryIntent);
+
+                    }else {
+                        String error =task.getException().getMessage();
+                        Toast.makeText(context,error,Toast.LENGTH_SHORT).show();
+
+
+                    }
+                    loadingDialog.dismiss();
+                }
+            });
+
+        }catch (Exception e){
+            String error ="Problema al cargar Datos";
+
+            Toast.makeText(context,error,Toast.LENGTH_SHORT).show();
+
+        }
+
+
+
     }
 
 

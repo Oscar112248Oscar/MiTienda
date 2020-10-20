@@ -113,17 +113,17 @@
                     android:inputType="number"
                     android:textColor="@color/colorPrimary"></EditText>
 
-                <EditText
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/state_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:hint="Provincia*"
-                    android:inputType="textPersonName"
-                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/border_background"
+                    android:backgroundTint="@color/RecyclerViewBackground"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginRight="16dp"></EditText>
+                    android:layout_marginRight="16dp"></androidx.appcompat.widget.AppCompatSpinner>
 
 
             </LinearLayout>
