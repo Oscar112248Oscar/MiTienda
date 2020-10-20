@@ -27,10 +27,12 @@ public class CartAdapter extends RecyclerView.Adapter {
 
     private int lastposition = -1;
     private TextView cartTotalAmount;
+    private boolean showDeleteBtn;
 
-    public CartAdapter(List<CartItemModel> cartItemModelList, TextView cartTotalAmount) {
+    public CartAdapter(List<CartItemModel> cartItemModelList, TextView cartTotalAmount, boolean showDeleteBtn) {
         this.cartItemModelList = cartItemModelList;
         this.cartTotalAmount = cartTotalAmount;
+        this.showDeleteBtn = showDeleteBtn;
     }
 
     @Override
@@ -227,6 +229,13 @@ public class CartAdapter extends RecyclerView.Adapter {
 
                 }
             });
+
+            if(showDeleteBtn){
+                deleteBtn.setVisibility(View.VISIBLE);
+            }else {
+                deleteBtn.setVisibility(View.GONE);
+
+            }
 
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

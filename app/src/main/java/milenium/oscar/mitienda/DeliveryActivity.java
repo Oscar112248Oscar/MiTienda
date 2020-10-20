@@ -25,6 +25,10 @@ public class DeliveryActivity extends AppCompatActivity {
     private Button changeORaddNewAdrressBtn;
     public  static  final int SELECT_ADDRESS=0;
     private TextView totalAmount;
+    private TextView fullname;
+    private TextView fullAddress;
+    private TextView pincode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +45,22 @@ public class DeliveryActivity extends AppCompatActivity {
         deliveryRecyclerView= findViewById(R.id.delivery_reciclerview);
         changeORaddNewAdrressBtn= findViewById(R.id.change_or_add_address_btn);
         totalAmount = findViewById(R.id.total_cart_amount);
+        fullname = findViewById(R.id.fullname);
+        fullAddress = findViewById(R.id.address);
+        pincode = findViewById(R.id.pincode);
+
         LinearLayoutManager layoutManager= new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         deliveryRecyclerView.setLayoutManager(layoutManager);
 
 
-        List<CartItemModel> cartItemModelList= new ArrayList<>();
+
        /* cartItemModelList.add(new CartItemModel(0,R.drawable.ele1,"Tinta Epson",2,"14$","18$",1,0,0));
         cartItemModelList.add(new CartItemModel(0,R.drawable.ele1,"Tinta Epson",0,"14$","18$",1,1,0));
         cartItemModelList.add(new CartItemModel(0,R.drawable.ele1,"Tinta Epson",2,"14$","18$",1,2,0));*/
        // cartItemModelList.add(new CartItemModel(1,"Precio (3 items)","20$","Gratis","20$","5$"));
 
-        CartAdapter cartAdapter = new CartAdapter(cartItemModelList,totalAmount);
+        CartAdapter cartAdapter = new CartAdapter(DBqueries.cartItemModelList,totalAmount,false);
         deliveryRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 
@@ -66,6 +74,12 @@ public class DeliveryActivity extends AppCompatActivity {
                 startActivity(myAddressesIntent);
             }
         });
+
+
+        fullname.setText(DBqueries.addressesModelList.get(DBqueries.selectedAddress).getFullname());
+        fullAddress.setText(DBqueries.addressesModelList.get(DBqueries.selectedAddress).getAddress());
+        pincode.setText(DBqueries.addressesModelList.get(DBqueries.selectedAddress).getPincode());
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
