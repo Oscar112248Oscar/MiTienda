@@ -95,7 +95,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+   // @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
@@ -331,9 +331,9 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+       // @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelsList, final String title, String color, final List<WishListModel> viewAllProductList){
-            container.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
+        //    container.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             horizontallayouTitle.setText(title);
 
             if(horizontalProductScrollModelsList.size()>5){
@@ -387,9 +387,9 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
 
             }
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+         //   @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             private void setGridProductLayout(final List<HorizontalProductScrollModel> horizontalProductScrollModelsList, final String title, String color){
-               container_gridLayout.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
+           //    container_gridLayout.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
                 gridLayoutTitle.setText(title);
 
                 for (int x=0 ; x < 4; x++){
