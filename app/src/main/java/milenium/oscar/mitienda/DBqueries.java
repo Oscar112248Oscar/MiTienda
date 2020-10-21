@@ -19,12 +19,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthActionCodeException;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.net.StandardSocketOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -98,13 +101,21 @@ public class DBqueries<_> {
     }
 
     public static void loadFragmentData(final RecyclerView homeRecyclerView, final Context context, final int index, String categoryName){
-        firebaseFirestore.collection("CATEGORIAS").document(categoryName.toUpperCase())// puedo darle el orden que quiera a las vistas, en
+
+
+        firebaseFirestore.collection("CATEGORIAS").document(categoryName.toUpperCase()).collection("TOP_DEALS").orderBy("index").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()// puedo darle el orden que quiera a las vistas, en
                 // las colecciones con el index
-                .collection("TOP_DEALS").orderBy("index").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                 {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+
+
+
                         if(task.isSuccessful()){
+
+
 
                             for(QueryDocumentSnapshot documentSnapshot : task.getResult() ){
 
@@ -185,9 +196,10 @@ public class DBqueries<_> {
                             homePageAdapter.notifyDataSetChanged();
                             HomeFragment.swipeRefreshLayout.setRefreshing(false);
 
-                        }else{
-                            String error =task.getException().getMessage();
-                            Toast.makeText(context,error,Toast.LENGTH_SHORT).show();
+                        }else {
+                            String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
+                         //   String error ="ERROR AL CARGAR DATOS";
+                            Toast.makeText(context,errorCode,Toast.LENGTH_SHORT).show();
                         }
 
 
