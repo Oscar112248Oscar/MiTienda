@@ -1,16 +1,21 @@
 package milenium.oscar.mitienda;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,17 +41,26 @@ public class MyAddressesActivity extends AppCompatActivity {
     private TextView addressesSaved;
     private RecyclerView myAddressesRecyclerView;
     private Button deliverHereBtn;
+    private Dialog loadingDialog;
     private  static AddressesAdapter addressesAdapter;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_addresses);
         Toolbar toolbar  = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Mis Direcciones");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //// loading dialog
+        loadingDialog = new Dialog(this);
+        loadingDialog.setContentView(R.layout.loading_progress_dialog);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(this.getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+               //// loading dialog
 
         previousAddress = DBqueries.selectedAddress;
 
@@ -75,6 +89,7 @@ public class MyAddressesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(DBqueries.selectedAddress != previousAddress){
                     final int previousAddressIndex = previousAddress;
+                    loadingDialog.show();
 
                     Map<String,Object> updateSelection = new HashMap<>();
                     updateSelection.put("selected_"+String.valueOf(previousAddress+1),false);
@@ -96,10 +111,14 @@ public class MyAddressesActivity extends AppCompatActivity {
 
                             }
 
+                            loadingDialog.dismiss();
                         }
                     });
 
+                }else{
+                    finish();
                 }
+
             }
         });
 
@@ -118,10 +137,16 @@ public class MyAddressesActivity extends AppCompatActivity {
             }
         });
 
-        addressesSaved.setText(String.valueOf(DBqueries.addressesModelList.size())+"direcciones guardadas");
+
 
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        addressesSaved.setText(String.valueOf(DBqueries.addressesModelList.size())+" direcciones guardadas");
+    }
 
     public  static  void refreshItem (int deselected, int select){
         addressesAdapter.notifyItemChanged(deselected);
@@ -134,11 +159,29 @@ public class MyAddressesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id == android.R.id.home){
+
+            if(DBqueries.selectedAddress != previousAddress){
+                DBqueries.addressesModelList.get(DBqueries.selectedAddress).setSelected(false);
+                DBqueries.addressesModelList.get(previousAddress).setSelected(true);
+                DBqueries.selectedAddress =previousAddress;
+            }
             finish();
             return true;
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+        if(DBqueries.selectedAddress != previousAddress){
+            DBqueries.addressesModelList.get(DBqueries.selectedAddress).setSelected(false);
+            DBqueries.addressesModelList.get(previousAddress).setSelected(true);
+            DBqueries.selectedAddress =previousAddress;
+        }
+        super.onBackPressed();
     }
 }

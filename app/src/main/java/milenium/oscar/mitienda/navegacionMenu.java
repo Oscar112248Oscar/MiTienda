@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,10 +70,10 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private  Dialog signInDialog;
 
     private FirebaseUser currentUser;
-
     public static   DrawerLayout drawer;
-
     private TextView badgeCount;
+    private int scrollFlags;
+    private  AppBarLayout.LayoutParams params;
 
 
     @SuppressLint("WrongConstant")
@@ -88,6 +89,9 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
         window= getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+         params =(AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        scrollFlags = params.getScrollFlags();
 
         drawer = findViewById(R.id.drawer_layout);
 
@@ -319,9 +323,12 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         setFragment(fragment,fragmentNo);
         if(fragmentNo==CART_FRAGMENT) {
             navigationView.getMenu().getItem(3).setChecked(true);
+            params.setScrollFlags(0);
 
+        }else {
+            params.setScrollFlags(scrollFlags);
         }
-        }
+    }
 
 
 

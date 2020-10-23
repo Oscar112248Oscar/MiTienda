@@ -76,10 +76,15 @@ public class DeliveryActivity extends AppCompatActivity {
         });
 
 
+            }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         fullname.setText(DBqueries.addressesModelList.get(DBqueries.selectedAddress).getFullname());
         fullAddress.setText(DBqueries.addressesModelList.get(DBqueries.selectedAddress).getAddress());
         pincode.setText(DBqueries.addressesModelList.get(DBqueries.selectedAddress).getPincode());
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
