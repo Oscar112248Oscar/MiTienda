@@ -236,7 +236,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
                if(currentUser != null){
 
                      if(cartList.size() ==0){
-                         loadCartList(this, new Dialog(this),false,badgeCount);
+                         loadCartList(this, new Dialog(this),false,badgeCount, new TextView(navegacionMenu.this));
                        // badgeCount.setVisibility(View.VISIBLE);
                      }else {
 
@@ -321,7 +321,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         getSupportActionBar().setTitle(title);
         invalidateOptionsMenu();
         setFragment(fragment,fragmentNo);
-        if(fragmentNo==CART_FRAGMENT) {
+        if(fragmentNo==CART_FRAGMENT || showCart) {
             navigationView.getMenu().getItem(3).setChecked(true);
             params.setScrollFlags(0);
 
@@ -332,51 +332,63 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
 
 
-
+    MenuItem menuItem1;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         DrawerLayout drawer=(DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        menuItem1 = menuItem;
 
         if(currentUser != null) {
-            int id = menuItem.getItemId();
-            if (id == R.id.mitienda) {
 
-                actionBarLogo.setVisibility(View.VISIBLE);
-                invalidateOptionsMenu();
-                setFragment(new HomeFragment(), HOME_FRAGMENT);
+            drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    super.onDrawerClosed(drawerView);
 
-            } else if (id == R.id.orden) {
-                gotFragment("Mi Orden", new MyOrdersFragment(), ORDERS_FRAGMENT);
+                    int id = menuItem1.getItemId();
+                    if (id == R.id.mitienda) {
 
+                        actionBarLogo.setVisibility(View.VISIBLE);
+                        invalidateOptionsMenu();
+                        setFragment(new HomeFragment(), HOME_FRAGMENT);
 
-            } else if (id == R.id.recompensa) {
-                gotFragment("Mis Recompensas", new MyRewardsFragment(), REWARDS_FRAGMENT);
-
-
-            } else if (id == R.id.carro) {
-                gotFragment("Mi Carrito", new MyCartFragment(), CART_FRAGMENT);
+                    } else if (id == R.id.orden) {
+                        gotFragment("Mi Orden", new MyOrdersFragment(), ORDERS_FRAGMENT);
 
 
-            } else if (id == R.id.deseos) {
-                gotFragment("Mis Deseos", new MyWishListFragment(), WISHLIST_FRAGMENT);
+                    } else if (id == R.id.recompensa) {
+                        gotFragment("Mis Recompensas", new MyRewardsFragment(), REWARDS_FRAGMENT);
 
 
-            } else if (id == R.id.cuentaUsuario) {
-                gotFragment("Mi Cuenta", new MyAcountFragment(), ACCOUNT_FRAGMENT);
+                    } else if (id == R.id.carro) {
+                        gotFragment("Mi Carrito", new MyCartFragment(), CART_FRAGMENT);
 
-            } else if (id == R.id.cerarsesion) {
-                FirebaseAuth.getInstance().signOut();
-                clearData();
-                Intent registerIntent = new Intent(navegacionMenu.this,Login.class);
-                startActivity(registerIntent);
-                finish();
-            }
-            drawer.closeDrawer(GravityCompat.START);
+
+                    } else if (id == R.id.deseos) {
+                        gotFragment("Mis Deseos", new MyWishListFragment(), WISHLIST_FRAGMENT);
+
+
+                    } else if (id == R.id.cuentaUsuario) {
+                        gotFragment("Mi Cuenta", new MyAcountFragment(), ACCOUNT_FRAGMENT);
+
+                    } else if (id == R.id.cerarsesion) {
+                        FirebaseAuth.getInstance().signOut();
+                        clearData();
+                        Intent registerIntent = new Intent(navegacionMenu.this,Login.class);
+                        startActivity(registerIntent);
+                        finish();
+                    }
+                }
+            });
+
+
+
             return  true;
 
         }else {
-            drawer.closeDrawer(GravityCompat.START);
+
             signInDialog.show();
             return false;
         }

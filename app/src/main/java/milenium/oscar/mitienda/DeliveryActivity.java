@@ -20,7 +20,7 @@ import java.util.List;
 
 public class DeliveryActivity extends AppCompatActivity {
 
-
+    public static List<CartItemModel> cartItemModelList;
     private RecyclerView deliveryRecyclerView;
     private Button changeORaddNewAdrressBtn;
     public  static  final int SELECT_ADDRESS=0;
@@ -60,9 +60,10 @@ public class DeliveryActivity extends AppCompatActivity {
         cartItemModelList.add(new CartItemModel(0,R.drawable.ele1,"Tinta Epson",2,"14$","18$",1,2,0));*/
        // cartItemModelList.add(new CartItemModel(1,"Precio (3 items)","20$","Gratis","20$","5$"));
 
-        CartAdapter cartAdapter = new CartAdapter(DBqueries.cartItemModelList,totalAmount,false);
+        CartAdapter cartAdapter = new CartAdapter(cartItemModelList,totalAmount,false);
         deliveryRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
+
 
         changeORaddNewAdrressBtn.setVisibility(View.VISIBLE);
 
