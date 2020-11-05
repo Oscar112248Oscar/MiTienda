@@ -412,7 +412,8 @@ public class DBqueries<_> {
                                                 (long) task.getResult().get("free_coupens"),
                                                  task.getResult().get("product_price").toString(),
                                                 task.getResult().get("cutted_price").toString(),
-                                                (long) 1,(long) 0,(long) 0));
+                                                (long) 1,(long) 0,(long) 0,
+                                                (boolean)task.getResult().get("in_stock")));
 
                                         if (cartList.size() == 1) {
 
