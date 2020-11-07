@@ -44,7 +44,7 @@ public class DeliveryActivity extends AppCompatActivity {
 
         deliveryRecyclerView= findViewById(R.id.delivery_reciclerview);
         changeORaddNewAdrressBtn= findViewById(R.id.change_or_add_address_btn);
-        totalAmount = findViewById(R.id.total_cart_amount);
+        totalAmount = findViewById(R.id.total_cart_amount1);
         fullname = findViewById(R.id.fullname);
         fullAddress = findViewById(R.id.address);
         pincode = findViewById(R.id.pincode);
