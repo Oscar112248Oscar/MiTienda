@@ -65,6 +65,8 @@ public class MyCartFragment extends Fragment {
 
         if(DBqueries.cartItemModelList.size()== 0){
             DBqueries.cartList.clear();
+            LinearLayout parent = (LinearLayout) totalAmount.getParent().getParent();
+            parent.setVisibility(View.GONE);
             DBqueries.loadCartList(getContext(),loadingDialog,true, new TextView(getContext()),totalAmount);
         }else {
 

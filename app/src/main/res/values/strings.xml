@@ -21,7 +21,6 @@
     <string name="close">close</string>
 
 
-
     <string-array name="ecuador_states">
         <item>Azuay</item>
         <item>Bolivar</item>
@@ -49,7 +48,6 @@
         <item>Zamora Chinchipe</item>
 
     </string-array>
-
 
 
 </resources>
