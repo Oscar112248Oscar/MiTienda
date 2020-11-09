@@ -1,6 +1,7 @@
 package milenium.oscar.mitienda;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -74,6 +75,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private TextView badgeCount;
     private int scrollFlags;
     private  AppBarLayout.LayoutParams params;
+    public static Activity navegacionActivity;
 
 
     @SuppressLint("WrongConstant")
@@ -120,6 +122,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
 
         if (showCart) {
+            navegacionActivity = this;
             drawer.setDrawerLockMode(1);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             gotFragment("Mi carrito", new MyCartFragment(), -2);
@@ -200,6 +203,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
                 super.onBackPressed();
             }else {
                 if(showCart){
+                    navegacionActivity = null;
                     showCart= false;
                     finish();
 
@@ -305,6 +309,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
         } else if (id == android.R.id.home) {
             if (showCart){
+                navegacionActivity = null;
                 showCart = false;
                 finish();
                 return true;

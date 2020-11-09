@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -59,6 +60,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     public static boolean running_wishlist_query = false;
     public static boolean running_rating_query = false;
     public static boolean running_cart_query = false;
+    public static Activity productDetailsActivity;
+
 
     private ViewPager productImagesViewPager;
     private TextView productTitle;
@@ -635,10 +638,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         buyNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingDialog.show();
+
                 if(currentUser == null){
                     signInDialog.show();
                 }else {
+                    loadingDialog.show();
+                    productDetailsActivity = ProductDetailsActivity.this;
                     DeliveryActivity.cartItemModelList = new ArrayList<>();
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM, productID, documentSnapshot.get("product_image_1").toString()
                             , documentSnapshot.get("product_title").toString(),
@@ -941,6 +946,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         int id= item.getItemId();
         if(id==android.R.id.home){
+            productDetailsActivity = null;
             finish();
             return true;
 
@@ -967,6 +973,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        productDetailsActivity = null;
+        super.onBackPressed();
+    }
 }

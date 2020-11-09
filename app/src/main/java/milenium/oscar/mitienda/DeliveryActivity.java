@@ -54,6 +54,8 @@ public class DeliveryActivity extends AppCompatActivity {
     private  Dialog paymentMethodDialog;
     private ImageView paytm;
 
+    public static Activity deliveryActivity;
+
     ///PAYPAL
     private  static final int PAYPAL_REQUEST_CODE=7171;
     private static PayPalConfiguration configuration = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
@@ -148,9 +150,6 @@ public class DeliveryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 paymentMethodDialog.show();
 
-
-
-
             }
         });
 
@@ -168,6 +167,17 @@ public class DeliveryActivity extends AppCompatActivity {
 
             }
         });
+
+       /* if(navegacionMenu.navegacionActivity != null){
+            navegacionMenu.navegacionActivity.finish();
+            navegacionMenu.navegacionActivity = null;
+            navegacionMenu.showCart = false;
+        }
+
+        if(ProductDetailsActivity.productDetailsActivity != null){
+            ProductDetailsActivity.productDetailsActivity.finish();
+            ProductDetailsActivity.productDetailsActivity = null;
+        }*/
 
 
 
@@ -200,11 +210,12 @@ public class DeliveryActivity extends AppCompatActivity {
 
     String monto ="";
     private void procesarPago(){
+        deliveryActivity = this;
         loadingDialog.dismiss();
         // recibo el monto
         monto = totalAmount.getText().toString().substring(1,totalAmount.length());
 
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(monto)),"MXN","PAGADO",PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(monto)),"USD","PAGADO",PayPalPayment.PAYMENT_INTENT_SALE);
 
 
         // ENVIO LOS PARAMETROS QUE NECESITA PAYPAL
