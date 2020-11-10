@@ -50,7 +50,7 @@ public class DeliveryActivity extends AppCompatActivity {
     private TextView fullAddress;
     private TextView pincode;
     private Button continueBtn;
-    private  Dialog loadingDialog;
+    public static   Dialog loadingDialog;
     private  Dialog paymentMethodDialog;
     private ImageView paytm;
 
@@ -208,6 +208,7 @@ public class DeliveryActivity extends AppCompatActivity {
     }
 
 
+
     String monto ="";
     private void procesarPago(){
         deliveryActivity = this;
@@ -227,6 +228,21 @@ public class DeliveryActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(DetallesPago.successResponse ){
+            finish();
+            return;
+        }
+        super.onBackPressed();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

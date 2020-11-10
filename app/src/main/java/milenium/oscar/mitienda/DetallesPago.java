@@ -1,5 +1,6 @@
 package milenium.oscar.mitienda;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,14 +8,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DetallesPago extends AppCompatActivity {
 
     TextView id,estatus, monto;
     private Button continueShippingBtn;
+    public static boolean successResponse= false ;
+    public static boolean fromCart;
+    //public static List<CartItemModel> cartItemModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +38,7 @@ public class DetallesPago extends AppCompatActivity {
 
         id = findViewById(R.id.idTransaccion);
         continueShippingBtn = findViewById(R.id.continueShippingBtn);
-      //  estatus = findViewById(R.id.estatus);
+        estatus = findViewById(R.id.estatus);
     //    monto= findViewById(R.id.Monto);
 
         //Recibo los datos
@@ -39,21 +54,12 @@ public class DetallesPago extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(navegacionMenu.navegacionActivity != null){
-            navegacionMenu.navegacionActivity.finish();
-            navegacionMenu.navegacionActivity = null;
-            navegacionMenu.showCart = false;
-        }
 
-        if(ProductDetailsActivity.productDetailsActivity != null){
-            ProductDetailsActivity.productDetailsActivity.finish();
-            ProductDetailsActivity.productDetailsActivity = null;
-        }
 
-        if(DeliveryActivity.deliveryActivity != null){
-            DeliveryActivity.deliveryActivity.finish();
-            DeliveryActivity.deliveryActivity = null;
-        }
+
+
+
+
 
         continueShippingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +77,74 @@ public class DetallesPago extends AppCompatActivity {
     private void verDetalles(JSONObject response, String paymentAmount) {
 
         try {
+
+            if(navegacionMenu.navegacionActivity != null){
+                navegacionMenu.navegacionActivity.finish();
+                navegacionMenu.navegacionActivity = null;
+                navegacionMenu.showCart = false;
+            }
+
+            if(ProductDetailsActivity.productDetailsActivity != null){
+                ProductDetailsActivity.productDetailsActivity.finish();
+                ProductDetailsActivity.productDetailsActivity = null;
+            }
+
+            if(DeliveryActivity.deliveryActivity != null){
+                DeliveryActivity.deliveryActivity.finish();
+                DeliveryActivity.deliveryActivity = null;
+            }
+
+            //// esta parte conrresponde a deliveriActicity pero yo hice otra actividad que deberia contener lo mismo
+            // poe eso llamo a las variables de delivery aca
+
+            successResponse = true;
+
+
+            if(fromCart){
+                DeliveryActivity.loadingDialog.show();
+
+                Map<String,Object> updateCartList = new HashMap<>();
+                long cartListSize =0;
+                final List<Integer> indexList = new ArrayList<>();
+
+                for (int x=0; x< DBqueries.cartList.size();x++){
+                   if( !DeliveryActivity.cartItemModelList.get(x).isInStock()){
+                       updateCartList.put("product_ID_"+ cartListSize,DeliveryActivity.cartItemModelList.get(x).getProductID());
+                       cartListSize++;
+                   }else {
+                       indexList.add(x);
+                   }
+                }
+
+                updateCartList.put("list_size",cartListSize);
+
+                FirebaseFirestore.getInstance().collection("USUARIOS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").
+                        document("MY_CART").set(updateCartList).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if(task.isSuccessful()){
+
+                            for(int x=0; x < indexList.size();x++){
+                                DBqueries.cartList.remove(indexList.get(x).intValue());
+                                DBqueries.cartItemModelList.remove(indexList.get(x).intValue());
+                                DBqueries.cartItemModelList.remove(DBqueries.cartItemModelList.size()-1);
+
+                            }
+
+                        }else{
+                            String error =task.getException().getMessage();
+                            Toast.makeText(DetallesPago.this,error,Toast.LENGTH_SHORT).show();
+
+                        }
+                        DeliveryActivity.loadingDialog.dismiss();
+
+                    }
+                });
+
+            }
+
+
             id.setText(response.getString("id"));
             //estatus.setText(response.getString("state"));
 //monto.setText(response.getString("$"+ paymentAmount));
@@ -79,5 +153,18 @@ public class DetallesPago extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(successResponse){
+            if(DeliveryActivity.deliveryActivity != null){
+                DeliveryActivity.deliveryActivity.finish();
+                DeliveryActivity.deliveryActivity = null;
+            }
+            finish();
+            return;
+        }
+        super.onBackPressed();
     }
 }

@@ -428,24 +428,25 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
 
-                                         if (wishListModelList.size() != 0) {
+                                        if (wishListModelList.size() != 0) {
 
-                                                        wishListModelList.add(new WishListModel(productID, documentSnapshot.get("product_image_1").toString()
-                                                                , documentSnapshot.get("product_title").toString(),
-                                                                (long) documentSnapshot.get("free_coupens"),
-                                                                documentSnapshot.get("average_rating").toString(),
-                                                                (long) documentSnapshot.get("total_ratings"),
-                                                                documentSnapshot.get("product_price").toString(),
-                                                                documentSnapshot.get("cutted_price").toString(),
-                                                                (boolean) documentSnapshot.get("COD")
-                                                        ));
+                                            wishListModelList.add(new WishListModel(productID, documentSnapshot.get("product_image_1").toString()
+                                                    , documentSnapshot.get("product_title").toString(),
+                                                    (long) documentSnapshot.get("free_coupens"),
+                                                    documentSnapshot.get("average_rating").toString(),
+                                                    (long) documentSnapshot.get("total_ratings"),
+                                                    documentSnapshot.get("product_price").toString(),
+                                                    documentSnapshot.get("cutted_price").toString(),
+                                                    (boolean) documentSnapshot.get("COD"),
+                                                    (boolean)documentSnapshot.get("in_stock")
+                                            ));
 
-                                                    }
+                                        }
 
-                                                    ALREADY_ADDED_TO_WISHLIST = true;
-                                                    addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
-                                                    wishList.add(productID);
-                                                    Toast.makeText(ProductDetailsActivity.this, "Añadido a la lista de Deseos!", Toast.LENGTH_SHORT).show();
+                                        ALREADY_ADDED_TO_WISHLIST = true;
+                                        addWhisListBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
+                                        wishList.add(productID);
+                                        Toast.makeText(ProductDetailsActivity.this, "Añadido a la lista de Deseos!", Toast.LENGTH_SHORT).show();
 
 
                                     } else {
@@ -643,6 +644,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     signInDialog.show();
                 }else {
                     loadingDialog.show();
+                    DetallesPago.fromCart = false;
                     productDetailsActivity = ProductDetailsActivity.this;
                     DeliveryActivity.cartItemModelList = new ArrayList<>();
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM, productID, documentSnapshot.get("product_image_1").toString()

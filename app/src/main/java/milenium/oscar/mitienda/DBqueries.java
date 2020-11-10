@@ -162,7 +162,8 @@ public class DBqueries<_> {
                                                 (long)documentSnapshot.get("total_ratings_"+x),
                                                 documentSnapshot.get("product_price_"+x).toString(),
                                                 documentSnapshot.get("cutted_price_"+x).toString(),
-                                                (boolean)documentSnapshot.get("COD_"+x)
+                                                (boolean)documentSnapshot.get("COD_"+x),
+                                                (boolean)documentSnapshot.get("in_stock_"+x)
                                                   ));
 
 
@@ -210,7 +211,7 @@ public class DBqueries<_> {
     }
 
 
-    public static void loadWishList(final Context context, final Dialog dialog, final boolean loadProductData){
+     public static void loadWishList(final Context context, final Dialog dialog, final boolean loadProductData){
        wishList.clear();
 
     firebaseFirestore.collection("USUARIOS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA")
@@ -252,7 +253,8 @@ public class DBqueries<_> {
                                             (long) task.getResult().get("total_ratings"),
                                             task.getResult().get("product_price").toString(),
                                             task.getResult().get("cutted_price").toString(),
-                                            (boolean) task.getResult().get("COD")));
+                                            (boolean) task.getResult().get("COD"),
+                                            (boolean)task.getResult().get("in_stock")));
                                     wishListAdapter.notifyDataSetChanged();
 
 
@@ -583,6 +585,9 @@ public class DBqueries<_> {
         wishListModelList.clear();
         cartList.clear();
         cartItemModelList.clear();
+        myRateIds.clear();
+        myRating.clear();
+        addressesModelList.clear();
     }
 }
 

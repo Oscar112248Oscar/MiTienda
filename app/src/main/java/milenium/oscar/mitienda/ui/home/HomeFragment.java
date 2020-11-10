@@ -30,6 +30,7 @@ import java.util.List;
 
 import milenium.oscar.mitienda.CategoriaAdaptador;
 import milenium.oscar.mitienda.CategoriaModelo;
+import milenium.oscar.mitienda.DBqueries;
 import milenium.oscar.mitienda.HomePageAdapter;
 import milenium.oscar.mitienda.HomePageModel;
 import milenium.oscar.mitienda.HorizontalProductScrollModel;
@@ -235,9 +236,10 @@ swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener
     @SuppressLint("WrongConstant")
     private void reloadPage(){
         networkInfo = connectivityManager.getActiveNetworkInfo();
-        categoriaModelos.clear();
-        lists.clear();
-        loadCategoriesNames.clear();
+        //categoriaModelos.clear();
+        //lists.clear();
+        //loadCategoriesNames.clear();
+        DBqueries.clearData();
 
         if(networkInfo != null && networkInfo.isConnected()== true) {
             drawer.setDrawerLockMode(0);
