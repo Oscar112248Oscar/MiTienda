@@ -48,7 +48,7 @@ import static milenium.oscar.mitienda.ProductDetailsActivity.running_wishlist_qu
 
 public class DBqueries<_> {
 
-
+    public static String no="";
 
     public static  FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance(); // FIREBASE INSTANCIADO
     public static List<CategoriaModelo> categoriaModelos = new ArrayList<>();/// esta llena las imagenes de las categorias con el recyclerview
@@ -440,19 +440,35 @@ public class DBqueries<_> {
                         }
                     }
 
-                    if(cartList.size() != 0){
-                        badgeCount.setVisibility(View.VISIBLE);
-                    }else{
-                        badgeCount.setVisibility(View.INVISIBLE);
+
+
+
+                    try{
+                        if(cartList.size() != 0){
+                            badgeCount.setVisibility(View.VISIBLE);
+                        }else{
+                            badgeCount.setVisibility(View.INVISIBLE);
+
+                        }
+
+                        if(cartList.size() < 99){
+                            badgeCount.setText(String.valueOf(cartList.size()));
+                        }else{
+                            badgeCount.setText("99");
+
+                        }
+                    }catch (NullPointerException e ){
+
+                      //  Toast.makeText(context,"Error al cargar Datos",Toast.LENGTH_SHORT).show();
+                        no="NO";
+
+                        Intent intent = new Intent(context,navegacionMenu.class);
+                       context.startActivity(intent);
 
                     }
 
-                    if(cartList.size() < 99){
-                        badgeCount.setText(String.valueOf(cartList.size()));
-                    }else{
-                        badgeCount.setText("99");
 
-                    }
+
 
 
                 }else{
@@ -540,7 +556,8 @@ public class DBqueries<_> {
                                 addressesModelList.add(new AddressesModel(task.getResult().get("fullname_"+x).toString(),
                                         task.getResult().get("address_"+x).toString(),
                                         task.getResult().get("pincode_"+x).toString(),
-                                        (boolean)task.getResult().get("selected_"+x) ));
+                                        (boolean)task.getResult().get("selected_"+x),
+                                        task.getResult().get("mobile_no_"+x).toString()));
 
                                 if( (boolean)task.getResult().get("selected_"+x)){
 

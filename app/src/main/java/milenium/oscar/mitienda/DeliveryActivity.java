@@ -48,11 +48,12 @@ public class DeliveryActivity extends AppCompatActivity {
     private TextView totalAmount;
     private TextView fullname;
     private TextView fullAddress;
+    private String name,mobileNo;
     private TextView pincode;
     private Button continueBtn;
     public static   Dialog loadingDialog;
     private  Dialog paymentMethodDialog;
-    private ImageView paytm;
+    private ImageView paytm,cod;
 
     public static Activity deliveryActivity;
 
@@ -113,6 +114,7 @@ public class DeliveryActivity extends AppCompatActivity {
         paymentMethodDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_background));
         paymentMethodDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         paytm= paymentMethodDialog.findViewById(R.id.paymt);
+        cod= paymentMethodDialog.findViewById(R.id.cod_btn);
 
         //// loading Paymentdialog
 
@@ -153,32 +155,30 @@ public class DeliveryActivity extends AppCompatActivity {
             }
         });
 
+        cod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent otpIntent = new Intent(DeliveryActivity.this,OTPconfirmationActivity.class);
+               otpIntent.putExtra("mobileNo",mobileNo.substring(0,10));
+                startActivity(otpIntent);
+
+            }
+        });
+
         paytm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 paymentMethodDialog.dismiss();
                 loadingDialog.show();
 
-                String M_id="ARAu4Azp93pIgWj5wVx5W2ceaoDS8n7RMh68iCeWv45G7sDIXbainapZn95s1BVbzE89lWDhoJJ6Bp4s";
+             /*   String M_id="ARAu4Azp93pIgWj5wVx5W2ceaoDS8n7RMh68iCeWv45G7sDIXbainapZn95s1BVbzE89lWDhoJJ6Bp4s";
                 String customer_id = FirebaseAuth.getInstance().getUid();
-                String order_id = UUID.randomUUID().toString().substring(0,28);
+                String order_id = UUID.randomUUID().toString().substring(0,28);*/
 
                 procesarPago();
 
             }
         });
-
-       /* if(navegacionMenu.navegacionActivity != null){
-            navegacionMenu.navegacionActivity.finish();
-            navegacionMenu.navegacionActivity = null;
-            navegacionMenu.showCart = false;
-        }
-
-        if(ProductDetailsActivity.productDetailsActivity != null){
-            ProductDetailsActivity.productDetailsActivity.finish();
-            ProductDetailsActivity.productDetailsActivity = null;
-        }*/
-
 
 
             }
@@ -187,7 +187,9 @@ public class DeliveryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        fullname.setText(DBqueries.addressesModelList.get(DBqueries.selectedAddress).getFullname());
+        name = DBqueries.addressesModelList.get(DBqueries.selectedAddress).getFullname();
+        mobileNo = DBqueries.addressesModelList.get(DBqueries.selectedAddress).getMobileNo();
+        fullname.setText(name +" - "+ mobileNo);
         fullAddress.setText(DBqueries.addressesModelList.get(DBqueries.selectedAddress).getAddress());
         pincode.setText(DBqueries.addressesModelList.get(DBqueries.selectedAddress).getPincode());
     }

@@ -176,6 +176,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         addToCartBtn = findViewById(R.id.add_to_cart_btn);
         coupenRedemptionLayout = findViewById(R.id.coupen_edeemption_layout);
 
+
         initialRating = -1;
 
         //// loading dialog
@@ -895,21 +896,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.search_and_cart_icon, menu);
          cartItem = menu.findItem(R.id.iconocarrito);
-
-
-
-            cartItem.setActionView(R.layout.badge_layout);
+         cartItem.setActionView(R.layout.badge_layout);
             ImageView badgeIcon = cartItem.getActionView().findViewById(R.id.badge_icon);
             badgeIcon.setImageResource(R.drawable.ic_shopping_cart_black_24dp);
-             badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
+             badgeCount =  cartItem.getActionView().findViewById(R.id.badge_count);
 
         if(currentUser != null){
 
             if(cartList.size() ==0){
-                loadCartList(ProductDetailsActivity.this, loadingDialog,false,badgeCount, new TextView(ProductDetailsActivity.this));
+                loadCartList(ProductDetailsActivity.this, loadingDialog,false, (TextView) badgeCount, new TextView(ProductDetailsActivity.this));
                 //badgeCount.setVisibility(View.INVISIBLE);
 
             }else {
+
 
                 badgeCount.setVisibility(View.VISIBLE);
                 if(cartList.size() < 99){

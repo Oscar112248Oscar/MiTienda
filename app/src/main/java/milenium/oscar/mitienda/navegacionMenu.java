@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -118,7 +119,10 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
         NavigationUI.setupWithNavController(navigationView, navController);*/
         frameLayout= findViewById(R.id.principallayout);
 
+        if(DBqueries.no.equals("NO")){
+            Toast.makeText(navegacionMenu.this,"Error al cargar Datos",Toast.LENGTH_LONG).show();
 
+        }
 
 
         if (showCart) {

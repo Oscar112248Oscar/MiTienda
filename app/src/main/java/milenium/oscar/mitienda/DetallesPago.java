@@ -137,7 +137,7 @@ public class DetallesPago extends AppCompatActivity {
                             Toast.makeText(DetallesPago.this,error,Toast.LENGTH_SHORT).show();
 
                         }
-                        DeliveryActivity.loadingDialog.dismiss();
+                       // DeliveryActivity.loadingDialog.dismiss();
 
                     }
                 });
@@ -145,7 +145,7 @@ public class DetallesPago extends AppCompatActivity {
             }
 
 
-            id.setText(response.getString("id"));
+           id.setText(response.getString("id"));
             //estatus.setText(response.getString("state"));
 //monto.setText(response.getString("$"+ paymentAmount));
             //monto.setText("$"+paymentAmount.toString());
