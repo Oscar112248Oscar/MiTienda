@@ -56,6 +56,7 @@ public class DeliveryActivity extends AppCompatActivity {
     private ImageView paytm,cod;
 
     public static Activity deliveryActivity;
+    public static  boolean codOrderConfirmed = false;
 
     ///PAYPAL
     private  static final int PAYPAL_REQUEST_CODE=7171;
@@ -158,9 +159,13 @@ public class DeliveryActivity extends AppCompatActivity {
         cod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingDialog.dismiss();
+
                 Intent otpIntent = new Intent(DeliveryActivity.this,OTPconfirmationActivity.class);
                otpIntent.putExtra("mobileNo",mobileNo.substring(0,10));
                 startActivity(otpIntent);
+                deliveryActivity = DeliveryActivity.this;
+
 
             }
         });

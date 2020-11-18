@@ -43,22 +43,26 @@ public class DetallesPago extends AppCompatActivity {
 
         //Recibo los datos
 
-        Intent intent= getIntent();
 
-        try {
-            JSONObject  jsonObject = new JSONObject(intent.getStringExtra("PaymentDetails"));
 
-            verDetalles(jsonObject.getJSONObject("response"),intent.getStringExtra("PaymentAmount"));
+        if(OTPconfirmationActivity.envia){
+            Intent otp= getIntent();
+            int id_random= otp.getIntExtra("envia",0);
+            id.setText(""+id_random);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+        }else{
+            Intent intent= getIntent();
+
+            try {
+                JSONObject  jsonObject = new JSONObject(intent.getStringExtra("PaymentDetails"));
+
+                verDetalles(jsonObject.getJSONObject("response"),intent.getStringExtra("PaymentAmount"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
-
-
-
-
-
-
 
 
         continueShippingBtn.setOnClickListener(new View.OnClickListener() {
