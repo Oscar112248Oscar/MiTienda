@@ -23,7 +23,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -41,7 +47,7 @@ import milenium.oscar.mitienda.Config.Config;
 
 public class DeliveryActivity extends AppCompatActivity {
 
-    public static List<CartItemModel> cartItemModelList;
+    public static List<CartItemModel> cartItemModelList = DBqueries.cartItemModelList;
     private RecyclerView deliveryRecyclerView;
     private Button changeORaddNewAdrressBtn;
     public  static  final int SELECT_ADDRESS=0;
@@ -57,6 +63,12 @@ public class DeliveryActivity extends AppCompatActivity {
 
     public static Activity deliveryActivity;
     public static  boolean codOrderConfirmed = false;
+
+    private FirebaseFirestore firebaseFirestore;
+    private boolean  allProductsAvailable = true;
+    public static  boolean getQtyIds = true;
+
+    public static  String valor;
 
     ///PAYPAL
     private  static final int PAYPAL_REQUEST_CODE=7171;
@@ -120,6 +132,9 @@ public class DeliveryActivity extends AppCompatActivity {
         //// loading Paymentdialog
 
 
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        getQtyIds = true;
+
         LinearLayoutManager layoutManager= new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         deliveryRecyclerView.setLayoutManager(layoutManager);
@@ -141,6 +156,8 @@ public class DeliveryActivity extends AppCompatActivity {
         changeORaddNewAdrressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                getQtyIds = false;
                 Intent myAddressesIntent = new Intent(DeliveryActivity.this,MyAddressesActivity.class);
                 myAddressesIntent.putExtra("MODE",SELECT_ADDRESS);
                 startActivity(myAddressesIntent);
@@ -151,7 +168,9 @@ public class DeliveryActivity extends AppCompatActivity {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                paymentMethodDialog.show();
+                if(allProductsAvailable) {
+                    paymentMethodDialog.show();
+                }
 
             }
         });
@@ -159,7 +178,8 @@ public class DeliveryActivity extends AppCompatActivity {
         cod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingDialog.dismiss();
+                getQtyIds = false;
+                paymentMethodDialog.dismiss();
 
                 Intent otpIntent = new Intent(DeliveryActivity.this,OTPconfirmationActivity.class);
                otpIntent.putExtra("mobileNo",mobileNo.substring(0,10));
@@ -173,6 +193,7 @@ public class DeliveryActivity extends AppCompatActivity {
         paytm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getQtyIds = false;
                 paymentMethodDialog.dismiss();
                 loadingDialog.show();
 
@@ -192,6 +213,60 @@ public class DeliveryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        //// accesando a cantidad
+        if(getQtyIds) {
+
+            for (int x = 0; x < cartItemModelList.size() - 1; x++) {
+                final int finalX = x;
+                firebaseFirestore.collection("PRODUCTOS").document(cartItemModelList.get(x).getProductID()).collection("QUANTITY").orderBy("available", Query.Direction.DESCENDING).limit(cartItemModelList.get(x).getProductoQuantity())
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if (task.isSuccessful()) {
+
+                            for (final QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+
+                                if ((boolean) queryDocumentSnapshot.get("available")) {
+                                    firebaseFirestore.collection("PRODUCTOS").document(cartItemModelList.get(finalX).getProductID()).collection("QUANTITY").document(queryDocumentSnapshot.getId()).update("available", false)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                    if (task.isSuccessful()) {
+                                                        cartItemModelList.get(finalX).getQtyIDs().add(queryDocumentSnapshot.getId());
+
+                                                    } else {
+                                                        Toast.makeText(getApplicationContext(), "Error de Conexion!", Toast.LENGTH_SHORT).show();
+                                                    }
+
+                                                }
+                                            });
+
+                                } else {
+                                    allProductsAvailable = false;
+                                    Toast.makeText(getApplicationContext(), "Es posible que no todos los productos estén disponibles en la cantidad requerida", Toast.LENGTH_SHORT).show();
+                                    break;
+
+                                }
+
+                            }
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error de Conexion!", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+                });
+
+            }
+        }else {
+            getQtyIds = true;
+        }
+
+        ////accesando a cantidad
         name = DBqueries.addressesModelList.get(DBqueries.selectedAddress).getFullname();
         mobileNo = DBqueries.addressesModelList.get(DBqueries.selectedAddress).getMobileNo();
         fullname.setText(name +" - "+ mobileNo);
@@ -238,7 +313,25 @@ public class DeliveryActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
         loadingDialog.dismiss();
+        if(getQtyIds) {
+
+            for (int x = 0; x < cartItemModelList.size() - 1; x++) {
+
+                if(!DetallesPago.successResponse){
+                    for (String qtyID : cartItemModelList.get(x).getQtyIDs()) {
+                       valor = qtyID;
+                        firebaseFirestore.collection("PRODUCTOS").document(cartItemModelList.get(x).getProductID()).collection("QUANTITY").document(qtyID).update("available", true);
+
+                    }
+                }
+
+               cartItemModelList.get(x).getQtyIDs().clear();
+
+            }
+        }
+
     }
 
     @Override
@@ -266,6 +359,20 @@ public class DeliveryActivity extends AppCompatActivity {
                         String paymentDetails = paymentConfirmation.toJSONObject().toString(4);
 
                             startActivity(new Intent(this,DetallesPago.class).putExtra("PaymentDetails",paymentDetails).putExtra("PaymentAmount",monto));
+
+                            DetallesPago.successResponse =true;
+
+                        getQtyIds= false;
+                            for (int x=0; x < DeliveryActivity.cartItemModelList.size()-1 ; x++){
+
+
+                            for(  String recojo: DeliveryActivity.cartItemModelList.get(x).getQtyIDs()){
+                                firebaseFirestore.collection("PRODUCTOS").document(DeliveryActivity.cartItemModelList.get(x).getProductID()).collection("QUANTITY").document(recojo).update("user_ID",FirebaseAuth.getInstance().getUid());
+                            }
+
+                        }
+
+
                     }catch (JSONException e){
                         e.printStackTrace();
 

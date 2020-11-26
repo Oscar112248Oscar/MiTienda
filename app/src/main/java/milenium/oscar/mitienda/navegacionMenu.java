@@ -77,6 +77,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
     private int scrollFlags;
     private  AppBarLayout.LayoutParams params;
     public static Activity navegacionActivity;
+    public  static boolean resetNavegacionMenu = false;
 
 
     @SuppressLint("WrongConstant")
@@ -181,6 +182,7 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onStart() {
         super.onStart();
@@ -190,6 +192,14 @@ public class navegacionMenu extends AppCompatActivity implements NavigationView.
             // y le digo que si ya esta logeado se active o desactive el icono
         }else {
             navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(true);
+        }
+
+        if(resetNavegacionMenu){
+            actionBarLogo.setVisibility(View.VISIBLE);
+            resetNavegacionMenu = false;
+            setFragment(new HomeFragment(),HOME_FRAGMENT);
+            navigationView.getMenu().getItem(0).setChecked(true);
+
         }
         invalidateOptionsMenu();
     }

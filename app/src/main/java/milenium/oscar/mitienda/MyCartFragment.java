@@ -109,6 +109,7 @@ public class MyCartFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        cartAdapter.notifyDataSetChanged();
 
         if(DBqueries.cartItemModelList.size()== 0){
             DBqueries.cartList.clear();

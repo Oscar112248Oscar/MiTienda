@@ -353,14 +353,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                                                             documentSnapshot.get("product_price").toString(),
                                                                             documentSnapshot.get("cutted_price").toString(),
                                                                             (long) 1, (long) 0, (long) 0,
-                                                                            (boolean)documentSnapshot.get("in_stock")));
+                                                                            (boolean)documentSnapshot.get("in_stock"),
+                                                                            (long)documentSnapshot.get("max-quantity")));
 
                                                                 }
 
                                                                 ALREADY_ADDED_TO_CART = true;
-                                                                cartList.add(productID);
+                                                                cartList.add(productID);// en esta linea lleno la lista del carro para
+                                                                //que ponga (1,2, etc en el badge o numeracion de productos)
                                                                 Toast.makeText(ProductDetailsActivity.this, "PRODUCTO AÑADIDO!", Toast.LENGTH_SHORT).show();
-                                                                invalidateOptionsMenu();
+                                                                invalidateOptionsMenu();// esta linea me lleva nuevamente
+                                                                 // a las opciones del menu de arriba para que se llebe la lista del carro con el numero de productos
                                                                 running_cart_query = false;
 
                                                             } else {
@@ -654,7 +657,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             documentSnapshot.get("product_price").toString(),
                             documentSnapshot.get("cutted_price").toString(),
                             (long) 1, (long) 0, (long) 0,
-                            (boolean)documentSnapshot.get("in_stock")));
+                            (boolean)documentSnapshot.get("in_stock"),
+                            (long)documentSnapshot.get("max-quantity")));
 
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.CART_AMOUNT));
 
@@ -941,6 +945,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

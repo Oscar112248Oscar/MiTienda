@@ -29,6 +29,7 @@ public class DetallesPago extends AppCompatActivity {
     private Button continueShippingBtn;
     public static boolean successResponse= false ;
     public static boolean fromCart;
+    private FirebaseFirestore firebaseFirestore;
     //public static List<CartItemModel> cartItemModelList;
 
     @Override
@@ -39,6 +40,8 @@ public class DetallesPago extends AppCompatActivity {
         id = findViewById(R.id.idTransaccion);
         continueShippingBtn = findViewById(R.id.continueShippingBtn);
         estatus = findViewById(R.id.estatus);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
     //    monto= findViewById(R.id.Monto);
 
         //Recibo los datos
@@ -82,10 +85,14 @@ public class DetallesPago extends AppCompatActivity {
 
         try {
 
+
+
             if(navegacionMenu.navegacionActivity != null){
                 navegacionMenu.navegacionActivity.finish();
                 navegacionMenu.navegacionActivity = null;
                 navegacionMenu.showCart = false;
+            }else {
+                navegacionMenu.resetNavegacionMenu = true;
             }
 
             if(ProductDetailsActivity.productDetailsActivity != null){
@@ -101,7 +108,7 @@ public class DetallesPago extends AppCompatActivity {
             //// esta parte conrresponde a deliveriActicity pero yo hice otra actividad que deberia contener lo mismo
             // poe eso llamo a las variables de delivery aca
 
-            successResponse = true;
+
 
 
             if(fromCart){
@@ -147,6 +154,9 @@ public class DetallesPago extends AppCompatActivity {
                 });
 
             }
+
+            successResponse = true;
+            DeliveryActivity.getQtyIds = false;
 
 
            id.setText(response.getString("id"));

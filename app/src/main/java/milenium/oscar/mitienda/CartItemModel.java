@@ -1,5 +1,8 @@
 package milenium.oscar.mitienda;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CartItemModel {
 
     public static final int CART_ITEM=0;
@@ -23,11 +26,13 @@ public class CartItemModel {
     private String productPrice;
     private String cuttedPrice;
     private Long productoQuantity;
+    private Long maxQuantity;
     private Long offerApplied;
     private Long coupensApplied;
     private boolean inStock;
+    private List<String> qtyIDs;
 
-    public CartItemModel(int type,String productID, String productImage, String productTitle, Long freeCoupens, String productPrice, String cuttedPrice, Long productoQuantity, Long offerApplied, Long coupensApplied,boolean inStock) {
+    public CartItemModel(int type,String productID, String productImage, String productTitle, Long freeCoupens, String productPrice, String cuttedPrice, Long productoQuantity, Long offerApplied, Long coupensApplied,boolean inStock,Long maxQuantity) {
         this.type = type;
         this.productID = productID;
         this.productImage = productImage;
@@ -38,7 +43,25 @@ public class CartItemModel {
         this.productoQuantity = productoQuantity;
         this.offerApplied = offerApplied;
         this.coupensApplied = coupensApplied;
+        this.maxQuantity = maxQuantity;
         this.inStock = inStock;
+        qtyIDs = new ArrayList<>();
+    }
+
+    public List<String> getQtyIDs() {
+        return qtyIDs;
+    }
+
+    public void setQtyIDs(List<String> qtyIDs) {
+        this.qtyIDs = qtyIDs;
+    }
+
+    public Long getMaxQuantity() {
+        return maxQuantity;
+    }
+
+    public void setMaxQuantity(Long maxQuantity) {
+        this.maxQuantity = maxQuantity;
     }
 
     public boolean isInStock() {
